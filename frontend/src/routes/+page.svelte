@@ -1,0 +1,136 @@
+<!-- svelte-ignore a11y_missing_attribute -->
+<!-- svelte-ignore a11y_consider_explicit_label -->
+<script lang="ts">
+    interface Todo {
+        id: number; 
+        descript: string; 
+        done: boolean; 
+    }
+    
+    import type { PageData } from "./$types";
+
+    export let data: PageData;
+    let todos: Todo[] = data.todos;
+    let newTodoDescription: string = ''; // State to hold the new task description
+  
+    async function deleteTodo(id: number) {
+        try {
+            const response = await fetch(`http://0.0.0.0:8000/delete/${id}`, { 
+                method: "POST" 
+            });
+            
+            if (response.ok) {
+                todos = todos.filter((todo) => todo.id !== id);
+            } else {
+                const errorData = await response.json();
+                console.error('Failed to delete todo:', errorData.message || response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+        }
+    }
+  
+    async function updateTodo(todoToUpdate: Todo) {
+        try {
+            const response = await fetch(`http://0.0.0.0:8000/update`, {
+                method: "POST", 
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(todoToUpdate) 
+            });
+
+            if (response.ok) {
+                const updatedTodoFromServer: Todo = await response.json(); 
+                todos = todos.map(t => t.id === updatedTodoFromServer.id ? updatedTodoFromServer : t);
+            } else {
+                const errorData = await response.json();
+                console.error('Failed to update todo:', errorData.message || response.statusText);
+            }
+        } catch (error) {
+            console.error('Error updating todo:', error);
+        }
+    }
+
+    async function handleCreateTodo() {
+        const descript = newTodoDescription.trim();
+        if (!descript) {
+            console.warn('New task description cannot be empty.');
+            return;
+        }
+
+        try {
+            const formData = new URLSearchParams();
+            formData.append('descript', descript);
+
+            const response = await fetch(`http://0.0.0.0:8000/create`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded' 
+                },
+                body: formData.toString() 
+            });
+
+            if (response.ok) {
+                const newTodo: Todo = await response.json();
+                todos = [...todos, newTodo]; // Add the new todo to the list
+                newTodoDescription = ''; // Clear the input field
+            } else {
+                const errorData = await response.json();
+                console.error('Failed to create todo:', errorData.message || response.statusText);
+            }
+        } catch (error) {
+            console.error('Error creating todo:', error);
+        }
+    }
+</script>
+
+<div class="container mx-auto">
+
+    <ul class="list bg-base-100 rounded-box border border-base-300">
+        
+        <div class="p-4">
+            <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+                <legend class="fieldset-legend">New Task</legend>
+                <form on:submit|preventDefault={handleCreateTodo}>
+                    <input
+                        class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
+                        name="descript"
+                        type="text"
+                        placeholder="What needs to be done?"
+                        autocomplete="off"
+                        bind:value={newTodoDescription} 
+                    />
+                </form>
+                <p class="label text-xs opacity-70 mt-2">Press enter to log your task</p>
+            </fieldset>
+        </div>
+        
+        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your Tasks</li>
+        
+        {#each todos as todo (todo.id)} 
+            <li class="list-row flex items-center justify-between p-4 border-base-300">
+                <div class="flex items-center gap-2">
+                    <input 
+                        class="checkbox checkbox-primary" 
+                        type="checkbox" 
+                        bind:checked={todo.done} 
+                        on:change={() => updateTodo(todo)}
+                    />
+                    <span class="{todo.done ? 'line-through opacity-70' : ''}">{todo.descript}</span>
+                </div>
+                <button 
+                    class="btn btn-ghost btn-sm text-error" 
+                    on:click={() => deleteTodo(todo.id)}
+                >
+                    Delete
+                </button>
+            </li>
+        {/each}
+
+        {#if !todos || todos.length === 0}
+            <li class="list-row p-4 text-center text-sm opacity-60">No tasks added yet.</li>
+        {/if}
+        
+    </ul>
+  </div>

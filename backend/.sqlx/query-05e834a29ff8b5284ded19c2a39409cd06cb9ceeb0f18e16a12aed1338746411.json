@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id, descript, done FROM todos ORDER BY id",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "descript",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "done",
+        "ordinal": 2,
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "05e834a29ff8b5284ded19c2a39409cd06cb9ceeb0f18e16a12aed1338746411"
+}
