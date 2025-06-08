@@ -2,12 +2,12 @@ use std::net::SocketAddr;
 
 use axum::{
     extract::{Path, State},
-    http::StatusCode, 
+    http::StatusCode,
     routing::{get, post},
     Form, Json, Router
 };
 use serde::{Deserialize, Serialize};
-use sqlx::sqlite::SqlitePool;
+use sqlx::PgPool; 
 use tokio::net::TcpListener;
 
 use tower_http::cors::CorsLayer;
@@ -23,16 +23,16 @@ async fn main() -> Result<(), AppError> {
 
     let _ = dotenvy::dotenv()?;
     let url = std::env::var("DATABASE_URL")?;
-    let pool = SqlitePool::connect(&url).await?;
+    let pool = PgPool::connect(&url).await?; 
 
     let app = Router::new()
         .route("/", get(list))
         .route("/create", post(create))
-        .route("/delete/{id}", post(delete)) 
+        .route("/delete/{id}", post(delete))
         .route("/update", post(update))
         .with_state(pool)
         .layer(CorsLayer::very_permissive());
-                
+
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())
         .parse::<u16>()?;
@@ -44,12 +44,12 @@ async fn main() -> Result<(), AppError> {
 
     axum::serve(listener, app).await?;
 
-    Ok(())    
+    Ok(())
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct Todo{
-    id: i64,
+    id: i32,
     descript: String,
     done: bool,
 }
@@ -62,11 +62,11 @@ struct NewTodo{
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct DeleteResponse {
     success: bool,
-    id: i64,
+    id: i32,
     message: String,
 }
 
-async fn list(State(pool): State<SqlitePool>) -> Result<Json<Vec<Todo>>, AppError> {
+async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppError> { 
     let todos = sqlx::query_as!(Todo, "SELECT id, descript, done FROM todos ORDER BY id")
         .fetch_all(&pool)
         .await?;
@@ -74,25 +74,23 @@ async fn list(State(pool): State<SqlitePool>) -> Result<Json<Vec<Todo>>, AppErro
     Ok(Json(todos))
 }
 
-async fn create(State(pool): State<SqlitePool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> {
-    let result = sqlx::query!("INSERT INTO todos (descript) VALUES (?)", new_todo.descript)
-    .execute(&pool)
+async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> { 
+    let created_todo = sqlx::query_as!(
+        Todo,
+        "INSERT INTO todos (descript, done) VALUES ($1, $2) RETURNING id, descript, done", 
+        new_todo.descript,
+        false 
+    )
+    .fetch_one(&pool) 
     .await?;
-
-    let new_id = result.last_insert_rowid();
-    let created_todo = Todo {
-        id: new_id,
-        descript: new_todo.descript,
-        done: false, 
-    };
 
     Ok(Json(created_todo))
 }
 
-async fn delete(State(pool): State<SqlitePool>, Path(id): Path<i64>) -> Result<Json<DeleteResponse>, AppError> {
-    let result = sqlx::query!("DELETE FROM todos where id = ?", id)
-    .execute(&pool)
-    .await?;
+async fn delete(State(pool): State<PgPool>, Path(id): Path<i32>) -> Result<Json<DeleteResponse>, AppError> { 
+    let result = sqlx::query!("DELETE FROM todos WHERE id = $1", id) 
+        .execute(&pool)
+        .await?;
 
     if result.rows_affected() > 0 {
         Ok(Json(DeleteResponse {success: true, id, message: format!("Todo with id {} deleted successfully.", id)}))
@@ -102,9 +100,9 @@ async fn delete(State(pool): State<SqlitePool>, Path(id): Path<i64>) -> Result<J
     }
 }
 
-async fn update(State(pool): State<SqlitePool>, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> {
+async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> { 
     let result = sqlx::query!(
-        "UPDATE todos SET descript = ?, done = ? WHERE id = ?",
+        "UPDATE todos SET descript = $1, done = $2 WHERE id = $3", 
         todo.descript,
         todo.done,
         todo.id
