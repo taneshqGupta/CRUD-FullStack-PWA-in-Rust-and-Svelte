@@ -22,7 +22,10 @@ async fn main() -> Result<(), AppError> {
     telemetry::init_telemetry();
 
     // let _ = dotenvy::dotenv()?;
-    let url = std::env::var("DATABASE_URL")?;
+    let url = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| {
+            "http://0.0.0.0:8000".to_string()
+        });
 
     tracing::info!("Attempting to connect to database using URL: {:?}", url);
     let pool = PgPool::connect(&url)
@@ -33,6 +36,15 @@ async fn main() -> Result<(), AppError> {
         })?;
     tracing::info!("Successfully connected to database."); 
 
+    let cors = CorsLayer::new()
+    .allow_origin([
+        "http://localhost:5173".parse::<Origin>().unwrap(),
+        "http://127.0.0.1:5173".parse::<Origin>().unwrap(), 
+    ])
+    .allow_methods(Any) 
+    .allow_headers(Any) 
+    .allow_credentials(true); 
+
 
     let app = Router::new()
         .route("/", get(list))
@@ -40,7 +52,7 @@ async fn main() -> Result<(), AppError> {
         .route("/delete/{id}", post(delete))
         .route("/update", post(update))
         .with_state(pool)
-        .layer(CorsLayer::very_permissive());
+        .layer(cors);
 
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())
