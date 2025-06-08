@@ -23,7 +23,16 @@ async fn main() -> Result<(), AppError> {
 
     // let _ = dotenvy::dotenv()?;
     let url = std::env::var("DATABASE_URL")?;
-    let pool = PgPool::connect(&url).await?; 
+
+    tracing::info!("Attempting to connect to database using URL: {:?}", url);
+    let pool = PgPool::connect(&url)
+        .await
+        .map_err(|e| {
+            tracing::error!("Failed to connect to database: {:?}", e); // Add this line
+            e
+        })?;
+    tracing::info!("Successfully connected to database."); 
+
 
     let app = Router::new()
         .route("/", get(list))
