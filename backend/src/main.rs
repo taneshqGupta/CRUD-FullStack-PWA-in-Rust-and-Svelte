@@ -21,7 +21,7 @@ async fn main() -> Result<(), AppError> {
 
     telemetry::init_telemetry();
 
-    let _ = dotenvy::dotenv()?;
+    // let _ = dotenvy::dotenv()?;
     let url = std::env::var("DATABASE_URL")?;
     let pool = PgPool::connect(&url).await?; 
 
