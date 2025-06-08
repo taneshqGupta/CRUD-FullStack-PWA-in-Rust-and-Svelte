@@ -10,7 +10,8 @@ use serde::{Deserialize, Serialize};
 use sqlx::PgPool; 
 use tokio::net::TcpListener;
 
-use tower_http::cors::CorsLayer;
+use tower_http::cors::{Any, CorsLayer}; // Removed Origin as CorsOrigin
+use http::HeaderValue; // Added HeaderValue import
 
 mod telemetry;
 mod error;
@@ -31,15 +32,15 @@ async fn main() -> Result<(), AppError> {
     let pool = PgPool::connect(&url)
         .await
         .map_err(|e| {
-            tracing::error!("Failed to connect to database: {:?}", e); // Add this line
+            tracing::error!("Failed to connect to database: {:?}", e);
             e
         })?;
     tracing::info!("Successfully connected to database."); 
 
     let cors = CorsLayer::new()
     .allow_origin([
-        "http://localhost:5173".parse::<Origin>().unwrap(),
-        "http://127.0.0.1:5173".parse::<Origin>().unwrap(), 
+        "http://localhost:5173".parse::<HeaderValue>().unwrap(), // Changed to HeaderValue
+        "http://127.0.0.1:5173".parse::<HeaderValue>().unwrap(), // Changed to HeaderValue
     ])
     .allow_methods(Any) 
     .allow_headers(Any) 
