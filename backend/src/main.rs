@@ -11,7 +11,7 @@ use sqlx::PgPool;
 use tokio::net::TcpListener;
 
 use tower_http::cors::{Any, CorsLayer}; // Removed Origin as CorsOrigin
-use http::HeaderValue; // Added HeaderValue import
+use http::{HeaderName, HeaderValue}; // Added HeaderValue import
 
 mod telemetry;
 mod error;
@@ -43,7 +43,11 @@ async fn main() -> Result<(), AppError> {
         "http://127.0.0.1:5173".parse::<HeaderValue>().unwrap(), // Changed to HeaderValue
     ])
     .allow_methods(Any) 
-    .allow_headers(Any) 
+    .allow_headers([
+        HeaderName::from_static("Content-Type"),
+        HeaderName::from_static("Authorization"),
+        HeaderName::from_static("Accept"),
+    ]) 
     .allow_credentials(true); 
 
 
