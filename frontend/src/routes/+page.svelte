@@ -17,7 +17,7 @@
   
     async function deleteTodo(id: number) {
         try {
-            const response = await fetch(`${PUBLIC_BACKEND_URL}/delete/${id}`, { 
+            const response = await fetch(`${PUBLIC_BACKEND_URL}delete/${id}`, { 
                 method: "POST",
 				credentials: "include"
             });
@@ -35,7 +35,7 @@
   
     async function updateTodo(todoToUpdate: Todo) {
         try {
-            const response = await fetch(`${PUBLIC_BACKEND_URL}/update`, {
+            const response = await fetch(`${PUBLIC_BACKEND_URL}update`, {
                 method: "POST",
 				credentials: "include", 
                 headers: {
@@ -67,7 +67,7 @@
             const formData = new URLSearchParams();
             formData.append('descript', descript);
 
-            const response = await fetch(`${PUBLIC_BACKEND_URL}/create`, {
+            const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
                 method: "POST",
 				credentials: "include",
                 headers: {
