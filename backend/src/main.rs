@@ -37,18 +37,14 @@ async fn main() -> Result<(), AppError> {
         })?;
     tracing::info!("Successfully connected to database."); 
 
-    // let cors = CorsLayer::new()
-    // .allow_origin([
-    //     "http://localhost:5173".parse::<HeaderValue>().unwrap(), // Changed to HeaderValue
-    //     "http://127.0.0.1:5173".parse::<HeaderValue>().unwrap(), // Changed to HeaderValue
-    // ])
-    // .allow_methods(Any) 
-    // .allow_headers([
-    //     HeaderName::from_static("Content-Type"),
-    //     HeaderName::from_static("Authorization"),
-    //     HeaderName::from_static("Accept"),
-    // ]) 
-    // .allow_credentials(true); 
+    let cors = CorsLayer::new()
+    .allow_origin([
+        "https://sveltekit-tasks-frontend.vercel.app".parse().unwrap()
+    ])
+    .allow_methods(Any)
+    .allow_headers(Any)
+    .allow_credentials(true);
+
 
 
     let app = Router::new()
@@ -57,7 +53,7 @@ async fn main() -> Result<(), AppError> {
         .route("/delete/{id}", post(delete))
         .route("/update", post(update))
         .with_state(pool)
-        .layer(CorsLayer::very_permissive());
+        .layer(cors);
 
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| "8000".to_string())

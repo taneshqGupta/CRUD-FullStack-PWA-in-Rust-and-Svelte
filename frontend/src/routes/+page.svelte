@@ -17,8 +17,9 @@
   
     async function deleteTodo(id: number) {
         try {
-            const response = await fetch(`${PUBLIC_BACKEND_URL}/${id}`, { 
-                method: "POST" 
+            const response = await fetch(`${PUBLIC_BACKEND_URL}/delete/${id}`, { 
+                method: "POST",
+				credentials: "include"
             });
             
             if (response.ok) {
@@ -35,7 +36,8 @@
     async function updateTodo(todoToUpdate: Todo) {
         try {
             const response = await fetch(`${PUBLIC_BACKEND_URL}/update`, {
-                method: "POST", 
+                method: "POST",
+				credentials: "include", 
                 headers: {
                     'Content-Type': 'application/json' 
                 },
@@ -67,6 +69,7 @@
 
             const response = await fetch(`${PUBLIC_BACKEND_URL}/create`, {
                 method: "POST",
+				credentials: "include",
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded' 
                 },
