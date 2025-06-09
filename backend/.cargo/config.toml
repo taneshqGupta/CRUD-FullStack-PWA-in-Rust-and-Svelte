@@ -1,6 +1,0 @@
-[watch]
-ignore = [
-    "target/*",
-    "database/*",
-    "*.log",
-]
