@@ -1,0 +1,13 @@
+# IDE settings
+.idea/
+.vscode/
+
+# Rust
+target/
+**/*.rs.bk
+.sqlx/
+.cargo/
+
+# Env files
+.env
+
