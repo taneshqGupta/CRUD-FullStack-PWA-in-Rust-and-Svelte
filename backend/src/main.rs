@@ -42,7 +42,12 @@ async fn main() -> Result<(), AppError> {
         "https://sveltekit-tasks-frontend.vercel.app".parse().unwrap()
     ])
     .allow_methods(Any)
-    .allow_headers(Any)
+    .allow_headers([
+        HeaderName::from_static("content-type"),
+        HeaderName::from_static("authorization"),
+        HeaderName::from_static("accept"),
+
+    ])
     .allow_credentials(true);
 
 
