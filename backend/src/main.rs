@@ -11,7 +11,7 @@ use sqlx::PgPool;
 use tokio::net::TcpListener;
 
 use tower_http::cors::{Any, CorsLayer}; // Removed Origin as CorsOrigin
-use http::{HeaderName, HeaderValue}; // Added HeaderValue import
+use http::{HeaderName, HeaderValue, Method}; // Added HeaderValue import
 
 mod telemetry;
 mod error;
@@ -41,7 +41,12 @@ async fn main() -> Result<(), AppError> {
     .allow_origin([
         "https://sveltekit-tasks-frontend.vercel.app".parse().unwrap()
     ])
-    .allow_methods(Any)
+    .allow_methods([
+        Method::GET,
+        Method::POST,
+        Method::DELETE,
+        Method::PUT
+    ])
     .allow_headers([
         HeaderName::from_static("content-type"),
         HeaderName::from_static("authorization"),
