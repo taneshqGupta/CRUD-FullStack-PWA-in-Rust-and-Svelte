@@ -1,3 +1,4 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
 
 interface Todo{
@@ -8,6 +9,6 @@ interface Todo{
 
 export const load: PageLoad = async ({ fetch, params }) => {
     return {
-        todos: (await fetch("http://0.0.0.0:8000").then((data) => data.json())) as Todo[]
+        todos: (await fetch(`${PUBLIC_BACKEND_URL}`).then((data) => data.json())) as Todo[]
     };
 };

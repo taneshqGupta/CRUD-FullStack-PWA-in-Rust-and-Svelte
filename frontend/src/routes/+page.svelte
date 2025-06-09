@@ -1,6 +1,8 @@
 <!-- svelte-ignore a11y_missing_attribute -->
 <!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
+	import { PUBLIC_BACKEND_URL } from "$env/static/public";
+
     interface Todo {
         id: number; 
         descript: string; 
@@ -15,7 +17,7 @@
   
     async function deleteTodo(id: number) {
         try {
-            const response = await fetch(`http://0.0.0.0:8000/delete/${id}`, { 
+            const response = await fetch(`${PUBLIC_BACKEND_URL}/${id}`, { 
                 method: "POST" 
             });
             
@@ -32,7 +34,7 @@
   
     async function updateTodo(todoToUpdate: Todo) {
         try {
-            const response = await fetch(`http://0.0.0.0:8000/update`, {
+            const response = await fetch(`${PUBLIC_BACKEND_URL}/update`, {
                 method: "POST", 
                 headers: {
                     'Content-Type': 'application/json' 
@@ -63,7 +65,7 @@
             const formData = new URLSearchParams();
             formData.append('descript', descript);
 
-            const response = await fetch(`http://0.0.0.0:8000/create`, {
+            const response = await fetch(`${PUBLIC_BACKEND_URL}/create`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded' 
@@ -73,8 +75,8 @@
 
             if (response.ok) {
                 const newTodo: Todo = await response.json();
-                todos = [...todos, newTodo]; // Add the new todo to the list
-                newTodoDescription = ''; // Clear the input field
+                todos = [...todos, newTodo]; 
+                newTodoDescription = ''; 
             } else {
                 const errorData = await response.json();
                 console.error('Failed to create todo:', errorData.message || response.statusText);
