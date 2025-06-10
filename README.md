@@ -4,3 +4,4 @@
 ## Tech Stack:
   ### Backend: Rust(Axum)
   ### Frontend: Sveltekit
+  ### Database: Postgres
