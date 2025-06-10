@@ -1,28 +1,24 @@
+mod telemetry;
+mod funcs;
+mod structs;
+mod error;
+use error::AppError;
+use funcs::{list, create, update, delete};
 use std::net::SocketAddr;
-
 use axum::{
     routing::{get, post},
     Router
 };
 use sqlx::PgPool; 
 use tokio::net::TcpListener;
-
 use tower_http::cors::CorsLayer;
 use http::{HeaderName, Method}; 
-
-mod telemetry;
-mod funcs;
-mod structs;
-use funcs::{list, create, update, delete};
-mod error;
-use error::AppError;
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
 
     telemetry::init_telemetry();
 
-    // let _ = dotenvy::dotenv()?;
     let url = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| {
             "http://0.0.0.0:8000".to_string()
