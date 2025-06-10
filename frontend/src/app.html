@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" data-theme=""> 
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/check.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%sveltekit.assets%/check.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <title>Task Manager</title>
+        <meta name="description" content="A simple yet powerful task manager to help you efficiently organize your daily tasks and boost your productivity.">
+        <meta name="keywords" content="Rust Full Stack, Axum FullStack, SvelteKit, Rust Svelte">
+		
+        <meta property="og:title" content="Task Manager - Stay Organized & Productive">
+        <meta property="og:description" content="A simple yet powerful task manager to help you efficiently organize your daily tasks and boost your productivity.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://sveltekit-tasks-frontend.vercel.app/"> %sveltekit.head%
+    </head>
+    <body class="antialiased text-base-content" data-sveltekit-preload-data="hover">
+        <div style="display: contents">%sveltekit.body%</div>
+    </body>
 </html>

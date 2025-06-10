@@ -11,41 +11,43 @@
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
-	<div class="navbar bg-base-100 z-10 border border-base-300">
-		<div class="flex-1">
-			<a href="/" class="btn btn-ghost font-bold text-xl">Task Manager</a>
-		</div>
-		<div class="flex-none">
-			<ThemeSwitcher currentPath={data.url.pathname} />
-		</div>
-	</div>
+    <header class="navbar bg-base-100 z-10 border border-base-300">
+        <div class="flex-1">
+            <h1>
+                <a href="/" class="btn btn-ghost font-bold text-xl" aria-label="Go to Task Manager homepage">
+                    Task Manager
+                </a>
+            </h1>
+        </div>
+        <div class="flex-none">
+            <nav aria-label="Theme Selection">
+                <ThemeSwitcher currentPath={data.url.pathname} />
+            </nav>
+        </div>
+    </header>
 
-	<main class="flex-grow p-4">
-		<slot />
-	</main>
+    <main class="flex-grow p-4" id="main-content">
+        <slot />
+    </main>
 
-    <div class="divider divider-accent my-0"></div>
+    <div class="divider divider-accent my-0" aria-hidden="true"></div>
 
-	<footer class="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
-		<nav>
-			<h6 class="footer-title">Services</h6>
-			<a class="link link-hover">Branding</a>
-			<a class="link link-hover">Design</a>
-			<a class="link link-hover">Marketing</a>
-			<a class="link link-hover">Advertisement</a>
-		</nav>
-		<nav>
-			<h6 class="footer-title">Company</h6>
-			<a class="link link-hover">About us</a>
-			<a class="link link-hover">Contact</a>
-			<a class="link link-hover">Jobs</a>
-			<a class="link link-hover">Press kit</a>
-		</nav>
-		<nav>
-			<h6 class="footer-title">Legal</h6>
-			<a class="link link-hover">Terms of use</a>
-			<a class="link link-hover">Privacy policy</a>
-			<a class="link link-hover">Cookie policy</a>
-		</nav>
-	</footer>
+    <footer class="footer items-center p-4 bg-neutral text-neutral-content">
+        <aside class="grid-flow-col items-center mx-auto text-center">
+            <p>
+                This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.
+            </p>
+            <p>
+                <a 
+                    href="https://github.com/taneshqGupta/rust-svelte-template" 
+                    class="link link-hover font-bold" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label="View project on GitHub"
+                >
+                    View on GitHub
+                </a>
+            </p>
+        </aside>
+    </footer>
 </div>
