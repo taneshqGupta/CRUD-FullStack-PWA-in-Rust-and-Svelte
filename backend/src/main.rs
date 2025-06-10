@@ -1,19 +1,19 @@
 use std::net::SocketAddr;
 
 use axum::{
-    extract::{Path, State},
-    http::StatusCode,
     routing::{get, post},
-    Form, Json, Router
+    Router
 };
-use serde::{Deserialize, Serialize};
 use sqlx::PgPool; 
 use tokio::net::TcpListener;
 
-use tower_http::cors::{Any, CorsLayer}; // Removed Origin as CorsOrigin
-use http::{HeaderName, HeaderValue, Method}; // Added HeaderValue import
+use tower_http::cors::CorsLayer;
+use http::{HeaderName, Method}; 
 
 mod telemetry;
+mod funcs;
+mod structs;
+use funcs::{list, create, update, delete};
 mod error;
 use error::AppError;
 
@@ -77,74 +77,4 @@ async fn main() -> Result<(), AppError> {
     axum::serve(listener, app).await?;
 
     Ok(())
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-struct Todo{
-    id: i32,
-    descript: String,
-    done: bool,
-}
-
-#[derive(Serialize, Deserialize)]
-struct NewTodo{
-    descript: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-struct DeleteResponse {
-    success: bool,
-    id: i32,
-    message: String,
-}
-
-async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppError> { 
-    let todos = sqlx::query_as!(Todo, "SELECT id, descript, done FROM todos ORDER BY id")
-        .fetch_all(&pool)
-        .await?;
-
-    Ok(Json(todos))
-}
-
-async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> { 
-    let created_todo = sqlx::query_as!(
-        Todo,
-        "INSERT INTO todos (descript, done) VALUES ($1, $2) RETURNING id, descript, done", 
-        new_todo.descript,
-        false 
-    )
-    .fetch_one(&pool) 
-    .await?;
-
-    Ok(Json(created_todo))
-}
-
-async fn delete(State(pool): State<PgPool>, Path(id): Path<i32>) -> Result<Json<DeleteResponse>, AppError> { 
-    let result = sqlx::query!("DELETE FROM todos WHERE id = $1", id) 
-        .execute(&pool)
-        .await?;
-
-    if result.rows_affected() > 0 {
-        Ok(Json(DeleteResponse {success: true, id, message: format!("Todo with id {} deleted successfully.", id)}))
-    }
-    else {
-        Err(AppError::HttpError(StatusCode::NOT_FOUND, anyhow::anyhow!("Task with id {} not found for deletion.", id)))
-    }
-}
-
-async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> { 
-    let result = sqlx::query!(
-        "UPDATE todos SET descript = $1, done = $2 WHERE id = $3", 
-        todo.descript,
-        todo.done,
-        todo.id
-    )
-    .execute(&pool)
-    .await?;
-
-    if result.rows_affected() > 0 {
-        Ok(Json(todo))
-    } else {
-        Err(AppError::HttpError(StatusCode::NOT_FOUND, anyhow::anyhow!("Todo with id {} not found for update.", todo.id)))
-    }
 }
