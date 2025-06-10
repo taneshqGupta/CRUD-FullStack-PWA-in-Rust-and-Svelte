@@ -1,11 +1,6 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { PageLoad } from './$types';
-
-interface Todo{
-    id: number;
-    descript: string;
-    done: boolean;
-}
+import type { Todo } from './Todo';
 
 export const load: PageLoad = async ({ fetch, params }) => {
     return {
