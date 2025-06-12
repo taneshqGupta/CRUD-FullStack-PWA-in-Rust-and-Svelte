@@ -110,7 +110,7 @@
         
         {#each todos as todo (todo.id)} 
             <li class="list-row flex items-center justify-between p-4">
-                <div class="flex items-center gap-2">
+                <div class="flex gap-2">
                     <input 
                         class="checkbox checkbox-primary" 
                         type="checkbox" 
@@ -134,3 +134,4 @@
         
     </ul>
   </div>
+
