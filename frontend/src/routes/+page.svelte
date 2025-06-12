@@ -86,8 +86,8 @@
 
 <div class="w-full max-w-md p-4 sm:p-0">
 
-	<div class="p-4 mx-auto">
-		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+	<div class="p-4">
+		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 mx-auto">
 			<legend class="fieldset-legend">New Task</legend>
 			<form on:submit|preventDefault={handleCreateTodo}>
 				<input
