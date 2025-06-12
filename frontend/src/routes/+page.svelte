@@ -86,24 +86,25 @@
 
 <div class="w-full max-w-md p-4 sm:p-0">
 
+	<div class="p-4">
+		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+			<legend class="fieldset-legend">New Task</legend>
+			<form on:submit|preventDefault={handleCreateTodo}>
+				<input
+					class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
+					name="descript"
+					type="text"
+					placeholder="What needs to be done?"
+					autocomplete="off"
+					bind:value={newTodoDescription} 
+				/>
+			</form>
+			<p class="label text-xs opacity-70 mt-2">Press enter to log your task</p>
+		</fieldset>
+	</div>
+	
     <ul class="list bg-base-100 rounded-box border border-base-300">
         
-        <div class="p-4">
-            <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                <legend class="fieldset-legend">New Task</legend>
-                <form on:submit|preventDefault={handleCreateTodo}>
-                    <input
-                        class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-                        name="descript"
-                        type="text"
-                        placeholder="What needs to be done?"
-                        autocomplete="off"
-                        bind:value={newTodoDescription} 
-                    />
-                </form>
-                <p class="label text-xs opacity-70 mt-2">Press enter to log your task</p>
-            </fieldset>
-        </div>
         
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your Tasks</li>
         
