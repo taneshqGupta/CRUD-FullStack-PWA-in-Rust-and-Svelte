@@ -115,7 +115,7 @@
             <li class="list-row flex items-start justify-between p-4">
                 <div class="flex items-start gap-2">
                     <input 
-                        class="checkbox-sm checkbox-primary" 
+                        class="checkbox checkbox-sm" 
                         type="checkbox" 
                         bind:checked={todo.done} 
                         on:change={() => updateTodo(todo)}
