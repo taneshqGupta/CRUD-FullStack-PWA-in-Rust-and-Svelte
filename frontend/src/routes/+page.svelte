@@ -102,14 +102,14 @@
 			<p class="label text-xs opacity-70 mt-2">Press enter to log your task</p>
 		</fieldset>
 	</div>
-	
-    <ul class="list bg-base-100 rounded-box border border-base-300">
+
+    <ul class="list bg-base-100 rounded-box">
         
         
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your Tasks</li>
         
         {#each todos as todo (todo.id)} 
-            <li class="list-row flex items-center justify-between p-4 border-base-300">
+            <li class="list-row flex items-center justify-between p-4">
                 <div class="flex items-center gap-2">
                     <input 
                         class="checkbox checkbox-primary" 
