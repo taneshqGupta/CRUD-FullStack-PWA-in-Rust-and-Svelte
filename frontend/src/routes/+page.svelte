@@ -109,8 +109,8 @@
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Your Tasks</li>
         
         {#each todos as todo (todo.id)} 
-            <li class="list-row flex items-center justify-between p-4">
-                <div class="flex gap-2">
+            <li class="list-row flex items-start justify-between p-4">
+                <div class="flex items-start gap-2">
                     <input 
                         class="checkbox checkbox-primary" 
                         type="checkbox" 
@@ -118,13 +118,13 @@
                         on:change={() => updateTodo(todo)}
                     />
                     <span class="{todo.done ? 'line-through opacity-70' : ''}">{todo.descript}</span>
-					<button 
-						class="btn btn-ghost btn-sm text-error" 
-						on:click={() => deleteTodo(todo.id)}
-					>
-						Delete
-					</button>
                 </div>
+                <button 
+                    class="btn btn-ghost btn-sm text-error" 
+                    on:click={() => deleteTodo(todo.id)}
+                >
+                    Delete
+                </button>
             </li>
         {/each}
 
