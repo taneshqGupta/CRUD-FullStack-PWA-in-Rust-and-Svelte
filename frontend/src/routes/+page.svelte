@@ -118,13 +118,13 @@
                         on:change={() => updateTodo(todo)}
                     />
                     <span class="{todo.done ? 'line-through opacity-70' : ''}">{todo.descript}</span>
+					<button 
+						class="btn btn-ghost btn-sm text-error" 
+						on:click={() => deleteTodo(todo.id)}
+					>
+						Delete
+					</button>
                 </div>
-                <button 
-                    class="btn btn-ghost btn-sm text-error" 
-                    on:click={() => deleteTodo(todo.id)}
-                >
-                    Delete
-                </button>
             </li>
         {/each}
 
