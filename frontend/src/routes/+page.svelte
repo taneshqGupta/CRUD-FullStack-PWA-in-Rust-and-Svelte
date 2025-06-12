@@ -98,7 +98,7 @@
 					name="descript"
 					type="text"
 					placeholder="What needs to be done?"
-					autocomplete="off"
+					autocomplete="on"
 					bind:value={newTodoDescription} 
 				/>
 			</form>
