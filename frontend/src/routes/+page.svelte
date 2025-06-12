@@ -84,7 +84,7 @@
     }
 </script>
 
-<div class="w-full max-w-md mx-auto p-4 sm:p-0">
+<div class="w-full max-w-md p-4 sm:p-0">
 
     <ul class="list bg-base-100 rounded-box border border-base-300">
         
