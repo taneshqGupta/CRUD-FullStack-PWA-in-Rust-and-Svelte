@@ -88,7 +88,10 @@
 
 	<div>
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-			<legend class="fieldset-legend">New Task</legend>
+			<legend class="fieldset-legend">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                <!-- New Task -->
+            </legend>
 			<form on:submit|preventDefault={handleCreateTodo}>
 				<input
 					class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
@@ -123,7 +126,8 @@
                     class="btn btn-ghost btn-sm text-error" 
                     on:click={() => deleteTodo(todo.id)}
                 >
-                    Delete
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                    <!-- Delete -->
                 </button>
             </li>
         {/each}
