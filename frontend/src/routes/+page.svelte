@@ -87,6 +87,7 @@
 <div class="w-full max-w-md p-4 sm:p-0">
 
 	<div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
 			<legend class="fieldset-legend">New Task</legend>
 			<form on:submit|preventDefault={handleCreateTodo}>
