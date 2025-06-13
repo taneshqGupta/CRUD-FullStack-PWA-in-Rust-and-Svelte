@@ -2,8 +2,9 @@
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-
+    
     export let data;
+    
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
@@ -22,19 +23,19 @@
             </nav>
         </div>
     </header>
-
+    
     <main class="flex-grow p-4" id="main-content">
         <slot />
     </main>
-
+    
     <div class="divider divider-accent my-0" aria-hidden="true"></div>
-
+    
     <footer class="footer p-4 bg-neutral text-neutral-content justify-between items-center">
         <div class="footer-start">
-                <a class="flex items-center gap-1">
+                <div class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rabbit-icon lucide-rabbit"><path d="M13 16a3 3 0 0 1 2.24 5"/><path d="M18 12h.01"/><path d="M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3"/><path d="M20 8.54V4a2 2 0 1 0-4 0v3"/><path d="M7.612 12.524a3 3 0 1 0-1.6 4.3"/></svg>
                     This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.
-                </a>
+                </div>
         </div>
 
         <div class="footer-end">
