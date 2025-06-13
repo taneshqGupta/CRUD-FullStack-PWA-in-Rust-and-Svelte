@@ -35,7 +35,7 @@ async fn main() -> Result<(), AppError> {
 
     let cors = CorsLayer::new()
     .allow_origin([
-        "https://sveltekit-tasks-frontend.vercel.app".parse().unwrap()
+        "https://rust-svelte.vercel.app".parse().unwrap()
     ])
     .allow_methods([
         Method::GET,
