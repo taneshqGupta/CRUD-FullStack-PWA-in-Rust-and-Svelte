@@ -87,7 +87,7 @@
 <div class="w-full p-4">
 
 	<div>
-		<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4">
+		<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4" aria-label="Enter a New Task">
 			<legend class="fieldset-legend">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
                 New Task
@@ -98,6 +98,7 @@
 					name="descript"
 					type="text"
 					placeholder="What needs to be done?"
+					aria-label="What needs to be done?"
 					autocomplete="off"
 					bind:value={newTodoDescription} 
 				/>
@@ -109,10 +110,10 @@
 		</fieldset>
 	</div>
 
-    <ul class="list bg-base-100 rounded-box">
+    <ul class="list bg-base-100 rounded-box" aria-label="tasks.">
         
         
-        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide" aria-label="your tasks">
             <div class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-todo-icon lucide-list-todo"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
                 Your Tasks
@@ -120,15 +121,16 @@
         </li>
         
         {#each todos as todo (todo.id)} 
-            <li class="list-row flex items-start justify-between p-4">
-                <div class="flex items-start gap-2">
+            <li class="list-row flex items-start justify-between p-4" aria-label="list of your tasks">
+                <div class="flex items-start gap-2" aria-label="checkbox">
                     <input 
                         class="checkbox checkbox-sm" 
                         type="checkbox" 
+                        aria-label="checkbox"
                         bind:checked={todo.done} 
                         on:change={() => updateTodo(todo)}
                     />
-                    <span class="{todo.done ? 'line-through opacity-70' : ''}">{todo.descript}</span>
+                    <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
                 </div>
                 <button 
                     class="btn btn-ghost btn-sm text-error" 
@@ -142,7 +144,7 @@
         {/each}
 
         {#if !todos || todos.length === 0}
-            <li class="list-row p-4 text-center text-sm opacity-60">
+            <li class="list-row p-4 text-center text-sm opacity-60" aria-label="No Tasks">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-slash-icon lucide-circle-slash"><circle cx="12" cy="12" r="10"/><line x1="9" x2="15" y1="15" y2="9"/></svg>    
                 No tasks added yet.
             </li>
