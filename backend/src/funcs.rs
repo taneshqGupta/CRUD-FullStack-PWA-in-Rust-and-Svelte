@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 
 use crate::error;
 use error::AppError;
@@ -62,7 +62,21 @@ pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Resul
 }
 
 pub async fn readme_html_handler() -> Result<Html<String>, StatusCode> {
-    let readme_path = String::from("/app/bin/README.md");
+    // --- REVERT THIS PART ---
+    let readme_path_str = env::var("README_PATH")
+        .unwrap_or_else(|_| {
+            // This fallback is for local dev if README_PATH isn't set
+            let fallback_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .parent() // From `backend/` to `todo-app/`
+                .map(|p| p.join("README.md"))
+                .unwrap_or_else(|| PathBuf::from("README.md")); // If parent fails, default to cwd
+
+            tracing::warn!("README_PATH environment variable not set. Falling back to default: {:?}", fallback_path);
+            fallback_path.to_string_lossy().into_owned()
+        });
+
+    let readme_path = PathBuf::from(readme_path_str);
+    // --- END REVERT PART ---
 
     tracing::info!("Attempting to read README from: {:?}", readme_path);
 
