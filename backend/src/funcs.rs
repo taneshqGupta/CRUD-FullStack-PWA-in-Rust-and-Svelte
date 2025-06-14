@@ -1,11 +1,8 @@
-use std::{env, fs, path::PathBuf};
-
 use crate::error;
 use error::AppError;
-use pulldown_cmark::{html::push_html, Parser};
 use crate::structs;
 use structs::{Todo, NewTodo, DeleteResponse};
-use axum::{extract::{Path, State}, response::Html, Form, Json};
+use axum::{extract::{Path, State}, Form, Json};
 use http::StatusCode;
 use sqlx::PgPool;
 
@@ -59,37 +56,4 @@ pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Resul
     } else {
         Err(AppError::HttpError(StatusCode::NOT_FOUND, anyhow::anyhow!("Todo with id {} not found for update.", todo.id)))
     }
-}
-
-pub async fn readme_html_handler() -> Result<Html<String>, StatusCode> {
-    // --- REVERT THIS PART ---
-    let readme_path_str = env::var("README_PATH")
-        .unwrap_or_else(|_| {
-            // This fallback is for local dev if README_PATH isn't set
-            let fallback_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                .parent() // From `backend/` to `todo-app/`
-                .map(|p| p.join("README.md"))
-                .unwrap_or_else(|| PathBuf::from("README.md")); // If parent fails, default to cwd
-
-            tracing::warn!("README_PATH environment variable not set. Falling back to default: {:?}", fallback_path);
-            fallback_path.to_string_lossy().into_owned()
-        });
-
-    let readme_path = PathBuf::from(readme_path_str);
-    // --- END REVERT PART ---
-
-    tracing::info!("Attempting to read README from: {:?}", readme_path);
-
-    let markdown_input = fs::read_to_string(&readme_path)
-        .map_err(|e| {
-            tracing::error!("Failed to read README.md from {:?}: {:?}", readme_path, e);
-            StatusCode::INTERNAL_SERVER_ERROR
-        })?;
-
-    let parser = Parser::new(&markdown_input);
-    let mut html_output = String::new();
-    push_html(&mut html_output, parser);
-
-    tracing::info!("Successfully served README.md as HTML.");
-    Ok(Html(html_output))
 }

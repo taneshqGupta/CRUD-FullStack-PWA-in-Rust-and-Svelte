@@ -3,7 +3,7 @@ mod funcs;
 mod structs;
 mod error;
 use error::AppError;
-use funcs::{list, create, update, delete, readme_html_handler};
+use funcs::{list, create, update, delete, };
 use std::net::SocketAddr;
 use axum::{
     routing::{get, post},
@@ -56,7 +56,6 @@ async fn main() -> Result<(), AppError> {
         .route("/create", post(create))
         .route("/delete/{id}", post(delete))
         .route("/update", post(update))
-        .route("/about", get(readme_html_handler))
         .with_state(pool)
         .layer(cors);
 
