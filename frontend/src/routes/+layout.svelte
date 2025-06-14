@@ -34,14 +34,24 @@
     <div class="divider divider-accent my-0" aria-hidden="true"></div>
     
     <footer class="footer p-4 bg-neutral text-neutral-content justify-between items-center">
-        <div class="footer-start">
-                <div class="flex items-center gap-1">
-                    <SquirrelSvg />
-                    This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.
-                </div>
+        <div class="footer-start text-sm"> <div class="flex flex-col gap-1"> <strong>Task Manager</strong>
+                <span>This is a starter CRUD template for Rust and SvelteKit</span>
+                <span>Creation: 2025</span>
+                <span>By: Taneshq Gupta (CSE Undergrad @ IIT-Mandi)</span>
+                <span>Features:</span>
+                <ul class="list-disc list-inside ml-4"> <li>Easily installable as a PWA (Progressive Web-Application).</li>
+                    <li>Dynamic + Persistent ThemeSwitching with multi-theme setup.</li>
+                </ul>
+                <span>Tech Stack:</span>
+                <ul class="list-disc list-inside ml-4"> <li>Backend: Rust (Axum)</li>
+                    <li>Frontend: SvelteKit</li>
+                    <li>Database: Postgres</li>
+                </ul>
+            </div>
         </div>
 
         <div class="footer-end">
+
             <p>
                 <a
                     href="https://github.com/taneshqGupta/rust-svelte-template"
