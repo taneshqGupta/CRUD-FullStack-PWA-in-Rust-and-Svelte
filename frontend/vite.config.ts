@@ -20,39 +20,39 @@ export default defineConfig({
                 icons: [
                     // Android Launcher Icons (from your 'android' folder)
                     {
-                        src: 'pwa-icons/androidlauncher-icon-48-48.png',
+                        src: 'pwa-icons/android-launchericon-48-48.png',
                         sizes: '48x48',
                         type: 'image/png',
                     },
                     {
-                        src: 'pwa-icons/androidlauncher-icon-72-72.png',
+                        src: 'pwa-icons/android-launchericon-72-72.png',
                         sizes: '72x72',
                         type: 'image/png',
                     },
                     {
-                        src: 'pwa-icons/androidlauncher-icon-96-96.png',
+                        src: 'pwa-icons/android-launchericon-96-96.png',
                         sizes: '96x96',
                         type: 'image/png',
                     },
                     {
-                        src: 'pwa-icons/androidlauncher-icon-144-144.png',
+                        src: 'pwa-icons/android-launchericon-144-144.png',
                         sizes: '144x144',
                         type: 'image/png',
                     },
                     {
-                        src: 'pwa-icons/androidlauncher-icon-192-192.png',
+                        src: 'pwa-icons/android-launchericon-192-192.png',
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'any', // Can be 'any', 'maskable', 'monochrome'
                     },
                     {
-                        src: 'pwa-icons/androidlauncher-icon-512-512.png',
+                        src: 'pwa-icons/android-launchericon-512-512.png',
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'any',
                     },
                     { // This one is important for adaptive icons on modern Android
-                        src: 'pwa-icons/androidlauncher-icon-512-512.png', // Use the 512x512 maskable version if provided, or the general one.
+                        src: 'pwa-icons/android-launchericon-512-512.png', // Use the 512x512 maskable version if provided, or the general one.
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'maskable', // Crucial for Android adaptive icons
