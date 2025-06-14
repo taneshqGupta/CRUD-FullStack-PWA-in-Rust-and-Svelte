@@ -7,3 +7,5 @@ export { default as TodoSvg } from './TodoSVG.svelte';
 export { default as DeleteSvg } from './DeleteSVG.svelte';
 export { default as NullSvg } from './NullSVG.svelte';
 export { default as DownloadSvg } from './DownloadSVG.svelte';
+export { default as ThemeSvg } from './ThemeSVG.svelte';
+export { default as DropdownSvg } from './DropdownSVG.svelte';

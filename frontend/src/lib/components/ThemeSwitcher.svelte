@@ -1,7 +1,8 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <script lang="ts">
     import { enhance } from '$app/forms';
-    export let currentPath: string; // Pass the current path from the parent layout
+	import { DropdownSvg, ThemeSvg } from './icons';
+    export let currentPath: string; 
 
     const themes = [
         'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave',
@@ -32,16 +33,8 @@
         class={`btn btn-ghost text-lg ${dropdownOpen ? 'bg-base-200' : ''}`}
         aria-label="themes"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette-icon lucide-palette"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <svg
-            width="12px"
-            height="12px"
-            class="inline-block h-2 w-2 fill-current opacity-60"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 2048 2048"
-        >
-            <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
-        </svg>
+        <ThemeSvg />
+        <DropdownSvg />
     </div>
     <ul
         tabindex="0"
