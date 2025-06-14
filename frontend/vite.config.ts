@@ -13,7 +13,7 @@ export default defineConfig({
                 name: 'Tasks',
                 short_name: 'Tasks',
                 description: ' This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.',
-                theme_color: '#34d399', // Your chosen theme color
+                theme_color: '#2a303c', // Your chosen theme color
                 display: 'standalone', // Recommended for a PWA experience
                 start_url: '/',      // Where the PWA should start when launched
                 orientation: 'portrait', // Optional: 'portrait', 'landscape', 'any'
