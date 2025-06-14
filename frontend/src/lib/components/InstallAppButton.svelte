@@ -1,46 +1,38 @@
-<!-- $lib/components/InstallAppButton.svelte -->
 <script lang="ts">
     import { onMount } from 'svelte';
 
     let deferredPrompt: any = null;
-    export let showInstallButton = false; // Prop to control visibility from outside, though mostly controlled internally
+    export let showInstallButton = false; 
 
     onMount(() => {
-        // Event listener for when the browser is ready to prompt for PWA installation
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); // Prevent the default mini-infobar or browser prompt
-            deferredPrompt = e; // Stash the event
-            showInstallButton = true; // Make the button visible
+            e.preventDefault(); 
+            deferredPrompt = e; 
+            showInstallButton = true; 
             console.log('InstallAppButton: beforeinstallprompt event fired.');
         });
 
-        // Event listener for when the PWA has been successfully installed
         window.addEventListener('appinstalled', () => {
-            showInstallButton = false; // Hide the button
-            deferredPrompt = null; // Clear the prompt reference
+            showInstallButton = false; 
+            deferredPrompt = null; 
             console.log('InstallAppButton: PWA was installed successfully!');
         });
 
-        // Initial check if the app is already running in standalone mode (installed)
         if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
             console.log('InstallAppButton: App is already in standalone mode. Hiding install button.');
             showInstallButton = false;
         }
     });
 
-    /**
-     * Handles the click event for the custom install button.
-     * Triggers the PWA installation prompt if available.
-     */
     async function handleInstallClick() {
         if (deferredPrompt) {
-            deferredPrompt.prompt(); // Show the browser's PWA installation prompt
-            const { outcome } = await deferredPrompt.userChoice; // Wait for user response
+            deferredPrompt.prompt(); 
+            const { outcome } = await deferredPrompt.userChoice; 
             
             console.log(`InstallAppButton: User response to the install prompt: ${outcome}`);
             
-            deferredPrompt = null; // Clear the prompt
-            showInstallButton = false; // Hide the button
+            deferredPrompt = null; 
+            showInstallButton = false; 
         }
     }
 </script>
