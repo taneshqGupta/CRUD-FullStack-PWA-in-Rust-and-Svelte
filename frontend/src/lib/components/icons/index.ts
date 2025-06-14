@@ -6,3 +6,4 @@ export { default as LeafSvg } from './LeafSVG.svelte';
 export { default as TodoSvg } from './TodoSVG.svelte';
 export { default as DeleteSvg } from './DeleteSVG.svelte';
 export { default as NullSvg } from './NullSVG.svelte';
+export { default as DownloadSvg } from './DownloadSVG.svelte';
