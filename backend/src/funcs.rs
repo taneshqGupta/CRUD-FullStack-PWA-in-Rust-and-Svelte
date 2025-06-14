@@ -63,11 +63,6 @@ pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Resul
 
 pub async fn readme_html_handler() -> Result<Html<String>, StatusCode> {
     let readme_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .ok_or_else(|| {
-            tracing::error!("Could not get parent directory from CARGO_MANIFEST_DIR");
-            StatusCode::INTERNAL_SERVER_ERROR
-        })?
         .join("README.md");
 
     tracing::info!("Attempting to read README from: {:?}", readme_path);
