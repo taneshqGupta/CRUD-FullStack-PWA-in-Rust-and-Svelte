@@ -3,7 +3,7 @@ mod funcs;
 mod structs;
 mod error;
 use error::AppError;
-use funcs::{list, create, update, delete};
+use funcs::{list, create, update, delete, readme_html_handler};
 use std::net::SocketAddr;
 use axum::{
     routing::{get, post},
@@ -35,7 +35,8 @@ async fn main() -> Result<(), AppError> {
 
     let cors = CorsLayer::new()
     .allow_origin([
-        "https://rust-svelte.vercel.app".parse().unwrap()
+        "https://rust-svelte.vercel.app".parse().unwrap(),
+        "http://localhost:5173".parse().unwrap(),
     ])
     .allow_methods([
         Method::GET,
@@ -56,6 +57,7 @@ async fn main() -> Result<(), AppError> {
         .route("/create", post(create))
         .route("/delete/{id}", post(delete))
         .route("/update", post(update))
+        .route("/about", get(readme_html_handler))
         .with_state(pool)
         .layer(cors);
 

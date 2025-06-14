@@ -1,26 +1,26 @@
-// src/routes/about/+page.server.ts
-import { marked } from 'marked';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import type { PageServerLoad } from '../$types';
 
-export async function load() {
+export const load: PageServerLoad = async ({ fetch }) => {
+    console.log(`Fetching README from backend at: ${PUBLIC_BACKEND_URL}/api/readme`); 
+
     try {
-        const svelteKitAppRoot = process.cwd();
-        console.log('SvelteKit App Root (process.cwd()):', svelteKitAppRoot); // <--- ADD THIS LINE
+        const response = await fetch(`${PUBLIC_BACKEND_URL}/api/readme`);
 
-        const readmePath = join(svelteKitAppRoot, 'README.md');
-        console.log('Calculated README Path:', readmePath); // <--- ADD THIS LINE
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Backend error: ${response.status} - ${errorText}`);
+        }
 
-        const markdownContent = readFileSync(readmePath, 'utf8');
-        const htmlContent = marked(markdownContent);
+        const readmeHtml = await response.text();
 
         return {
-            readmeHtml: htmlContent
+            readmeHtml: readmeHtml
         };
-    } catch (error) {
-        console.error('Error reading README.md:', error);
+    } catch (error: any) {
+        console.error('Error fetching README from backend:', error);
         return {
-            readmeHtml: '<p>Could not load README.md.</p>'
+            readmeHtml: `<p>Failed to load README from backend: ${error.message}</p>`
         };
     }
-}
+};
