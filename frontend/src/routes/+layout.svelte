@@ -42,16 +42,16 @@
                     <li>Easily installable as a PWA (Progressive Web-Application).</li>
                     <li>Dynamic + Persistent ThemeSwitching with multi-theme setup.</li>
                 </ul>
-                <span class="font-bold mt-2">Tech Stack:</span> <ul class="list-disc list-inside ml-4">
-                    <li>Backend: Rust (Axum)</li>
-                    <li>Frontend: SvelteKit</li>
-                    <li>Database: Postgres</li>
-                </ul>
             </div>
         </div>
-
+        
         <div class="footer-end">
-
+            
+            <span class="font-bold mt-2">Tech Stack:</span> <ul class="list-disc list-inside ml-4">
+                <li>Backend: Rust (Axum)</li>
+                <li>Frontend: SvelteKit</li>
+                <li>Database: Postgres</li>
+            </ul>
 
             <p>
                 <a
