@@ -33,17 +33,17 @@
     
     <div class="divider divider-accent my-0" aria-hidden="true"></div>
     
-    <footer class="footer p-4 bg-neutral text-neutral-content justify-between items-center">
-        <div class="footer-start text-sm"> <div class="flex flex-col gap-1"> 
+    <footer class="footer p-4 bg-neutral text-neutral-content flex flex-col sm:flex-row justify-between items-center text-sm">
+        <div class="footer-start mb-2 sm:mb-0 sm:mr-4 max-w-full sm:max-w-[70%]"> <div class="flex flex-col gap-1">
                 <span>This is a starter CRUD template for Rust and SvelteKit</span>
                 <span>Creation: 2025</span>
                 <span>By: Taneshq Gupta (CSE Undergrad @ IIT-Mandi)</span>
-                <span>Features:</span>
-                <ul class="list-disc list-inside ml-4"> <li>Easily installable as a PWA (Progressive Web-Application).</li>
+                <span class="font-bold mt-2">Features:</span> <ul class="list-disc list-inside ml-4">
+                    <li>Easily installable as a PWA (Progressive Web-Application).</li>
                     <li>Dynamic + Persistent ThemeSwitching with multi-theme setup.</li>
                 </ul>
-                <span>Tech Stack:</span>
-                <ul class="list-disc list-inside ml-4"> <li>Backend: Rust (Axum)</li>
+                <span class="font-bold mt-2">Tech Stack:</span> <ul class="list-disc list-inside ml-4">
+                    <li>Backend: Rust (Axum)</li>
                     <li>Frontend: SvelteKit</li>
                     <li>Database: Postgres</li>
                 </ul>
@@ -51,6 +51,7 @@
         </div>
 
         <div class="footer-end">
+
 
             <p>
                 <a
