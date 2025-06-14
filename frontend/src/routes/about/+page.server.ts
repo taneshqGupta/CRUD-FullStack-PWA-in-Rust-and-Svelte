@@ -2,10 +2,10 @@ import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { PageServerLoad } from '../$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-    console.log(`Fetching README from backend at: ${PUBLIC_BACKEND_URL}/api/readme`); 
+    console.log(`Fetching README from backend at: ${PUBLIC_BACKEND_URL}about/`); 
 
     try {
-        const response = await fetch(`${PUBLIC_BACKEND_URL}/api/readme`);
+        const response = await fetch(`${PUBLIC_BACKEND_URL}about/`);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -24,3 +24,4 @@ export const load: PageServerLoad = async ({ fetch }) => {
         };
     }
 };
+
