@@ -62,8 +62,7 @@ pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Resul
 }
 
 pub async fn readme_html_handler() -> Result<Html<String>, StatusCode> {
-    let readme_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("README.md");
+    let readme_path = String::from("/app/bin/README.md");
 
     tracing::info!("Attempting to read README from: {:?}", readme_path);
 
