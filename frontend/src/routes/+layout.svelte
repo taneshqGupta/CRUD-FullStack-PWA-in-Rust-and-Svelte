@@ -1,45 +1,11 @@
+<!-- +layout.svelte -->
 <!-- svelte-ignore a11y_missing_attribute -->
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-    import { onMount } from 'svelte'; 
+    import InstallAppButton from '$lib/components/InstallAppButton.svelte'; // Import the new component
     
     export let data;
-
-    let deferredPrompt: any = null;
-    let showInstallButton = false; 
-
-    onMount(() => {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallButton = true;
-            console.log('beforeinstallprompt event fired. Install button is now visible.');
-        });
-
-        window.addEventListener('appinstalled', () => {
-            showInstallButton = false;
-            deferredPrompt = null;
-            console.log('PWA was installed successfully!');
-        });
-
-        if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
-            console.log('App is already running in standalone mode (installed). Hiding install button.');
-            showInstallButton = false;
-        }
-    });
-
-    async function handleInstallClick() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            console.log(`User response to the install prompt: ${outcome}`);
-            
-            deferredPrompt = null;
-            showInstallButton = false;
-        }
-    }
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
@@ -53,17 +19,8 @@
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
-            {#if showInstallButton}
-            <button
-                id="installButton"
-                class="btn btn-primary btn-sm"
-                on:click={handleInstallClick}
-                aria-label="Install the application"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                Install App
-            </button>
-            {/if}
+            <!-- Use the new InstallAppButton component here -->
+            <InstallAppButton />
 
             <nav aria-label="Theme Selection">
                 <ThemeSwitcher currentPath={data.url.pathname} />
