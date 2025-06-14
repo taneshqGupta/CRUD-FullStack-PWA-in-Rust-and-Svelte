@@ -19,7 +19,6 @@ export async function load() {
         };
     } catch (error) {
         console.error('Error reading README.md:', error);
-        console.error('Full error details:', error.message); // <--- ADD THIS LINE for more info
         return {
             readmeHtml: '<p>Could not load README.md.</p>'
         };
