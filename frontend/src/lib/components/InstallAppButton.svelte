@@ -40,7 +40,7 @@
 {#if showInstallButton}
 <button
     id="installButton"
-    class="btn btn-ghost text-lg btn-sm"
+    class="btn btn-ghost text-sm btn-sm"
     on:click={handleInstallClick}
     aria-label="Install the application"
 >
