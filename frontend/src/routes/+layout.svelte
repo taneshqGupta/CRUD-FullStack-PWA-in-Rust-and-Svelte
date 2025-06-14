@@ -2,113 +2,67 @@
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-    import { onMount } from 'svelte';
-	import { browser, dev } from '$app/environment';
+    import { onMount } from 'svelte'; // Import onMount for client-side logic
     
     export let data;
 
-        // --- PWA Installation Prompt Variables ---
-        let deferredPrompt: Event | null = null; // Stores the beforeinstallprompt event
-    let showInstallButton = false; // Controls visibility of the custom install button
-    // --- End PWA Installation Prompt Variables ---
+    // Variables to manage the PWA installation prompt
+    let deferredPrompt: any = null; // Stores the 'beforeinstallprompt' event
+    let showInstallButton = false; // Controls the visibility of the install button
 
-    // Function to update the theme-color meta tag (keeping this as per your last request)
-    function updateThemeColorMeta() {
-        if (!browser) return;
-
-        const htmlElement = document.documentElement;
-        const themeColor = getComputedStyle(htmlElement).getPropertyValue('--p').trim();
-
-        let themeMetaTag = document.querySelector('meta[name="theme-color"]');
-
-        if (!themeMetaTag) {
-            themeMetaTag = document.createElement('meta');
-            themeMetaTag.setAttribute('name', 'theme-color');
-            document.head.appendChild(themeMetaTag);
-        }
-
-        if (themeColor) {
-            themeMetaTag.setAttribute('content', themeColor);
-            console.log('PWA Theme Color updated to:', themeColor);
-        } else {
-            themeMetaTag.setAttribute('content', '#2a303c'); // Fallback
-            console.warn('PWA Theme Color: Could not read --p. Falling back to default.');
-        }
-    }
-
-    // Function to handle the custom install button click
-    async function handleInstallClick() {
-        if (deferredPrompt) {
-            // Show the browser's native install prompt
-            // This method is provided by the beforeinstallprompt event
-            (deferredPrompt as any).prompt();
-
-            // Wait for the user to respond to the prompt
-            const { outcome } = await (deferredPrompt as any).userChoice;
-            console.log(`User response to install prompt: ${outcome}`);
-
-            // Hide the install button regardless of user choice
-            // The PWA can only be installed once per user session from this prompt
-            showInstallButton = false;
-            deferredPrompt = null; // Clear the stored event
-        }
-    }
-
-    onMount(async () => {
-        // PWA Service Worker Registration
-        if (browser && !dev) {
-            const { registerSW } = await import('virtual:pwa-register');
-            registerSW({
-                immediate: true,
-                onNeedRefresh() {
-                    console.log('PWA: New content available! Please refresh to update.');
-                },
-                onOfflineReady() {
-                    console.log('PWA: App is now ready for offline use!');
-                }
-            });
-        }
-
-        // --- PWA Installation Prompt Logic ---
-        // Listen for the beforeinstallprompt event
+    // onMount runs only on the client-side after the component is mounted
+    onMount(() => {
+        // Event listener for when the browser is ready to prompt for PWA installation
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the default mini-infobar from appearing
+            // Prevent the default mini-infobar or browser prompt from appearing
             e.preventDefault();
-            // Store the event so it can be triggered later
+            // Stash the event so it can be triggered later by the user's action
             deferredPrompt = e;
-            // Show your custom install button
+            // Set the flag to true to display the install button in the UI
             showInstallButton = true;
-            console.log('PWA: beforeinstallprompt event fired. Showing install button.');
+            console.log('beforeinstallprompt event fired. Install button is now visible.');
         });
 
-        // Listen for the 'appinstalled' event to hide the button if the user installs it directly
+        // Event listener for when the PWA has been successfully installed
         window.addEventListener('appinstalled', () => {
+            // Hide the install button as the app is already installed
             showInstallButton = false;
+            // Clear the deferred prompt reference
             deferredPrompt = null;
-            console.log('PWA: App installed event fired. Hiding install button.');
+            console.log('PWA was installed successfully!');
         });
-        // --- End PWA Installation Prompt Logic ---
 
-
-        // Initial theme color update on mount
-        updateThemeColorMeta();
-
-        // Observe changes to the 'data-theme' attribute for dynamic updates
-        if (browser) {
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-                        updateThemeColorMeta();
-                    }
-                });
-            });
-            observer.observe(document.documentElement, { attributes: true });
-            return () => {
-                observer.disconnect();
-            };
+        // Optional: Check if the app is already running in standalone mode (installed) on load
+        // This provides a fallback to hide the button if it's already installed and
+        // the 'beforeinstallprompt' didn't fire due to installation status.
+        // `window.matchMedia('(display-mode: standalone)').matches` is for modern browsers.
+        // `(navigator as any).standalone` is for older iOS Safari.
+        if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
+            console.log('App is already running in standalone mode (installed). Hiding install button.');
+            showInstallButton = false;
         }
     });
-    
+
+    /**
+     * Handles the click event for the custom install button.
+     * Triggers the PWA installation prompt if available.
+     */
+    async function handleInstallClick() {
+        if (deferredPrompt) {
+            // Show the browser's PWA installation prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt (accept or dismiss)
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            // Log the user's decision for debugging/analytics
+            console.log(`User response to the install prompt: ${outcome}`);
+            
+            // The prompt has been used, so clear the reference
+            deferredPrompt = null;
+            // Hide the button after the prompt has been presented, regardless of outcome
+            showInstallButton = false;
+        }
+    }
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
@@ -121,7 +75,20 @@
                 </a>
             </h1>
         </div>
-        <div class="flex-none">
+        <div class="flex-none flex items-center gap-2">
+            <!-- PWA Install Button - only displayed if showInstallButton is true -->
+            {#if showInstallButton}
+            <button
+                id="installButton"
+                class="btn btn-primary btn-sm"
+                on:click={handleInstallClick}
+                aria-label="Install the application"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Install App
+            </button>
+            {/if}
+
             <nav aria-label="Theme Selection">
                 <ThemeSwitcher currentPath={data.url.pathname} />
             </nav>
