@@ -57,3 +57,28 @@ pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Resul
         Err(AppError::HttpError(StatusCode::NOT_FOUND, anyhow::anyhow!("Todo with id {} not found for update.", todo.id)))
     }
 }
+
+pub async fn readme_html_handler() -> Result<Html<String>, StatusCode> {
+    let readme_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .ok_or_else(|| {
+            tracing::error!("Could not get parent directory from CARGO_MANIFEST_DIR");
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?
+        .join("README.md");
+
+    tracing::info!("Attempting to read README from: {:?}", readme_path);
+
+    let markdown_input = fs::read_to_string(&readme_path)
+        .map_err(|e| {
+            tracing::error!("Failed to read README.md from {:?}: {:?}", readme_path, e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+
+    let parser = Parser::new(&markdown_input);
+    let mut html_output = String::new();
+    push_html(&mut html_output, parser);
+
+    tracing::info!("Successfully served README.md as HTML.");
+    Ok(Html(html_output))
+}

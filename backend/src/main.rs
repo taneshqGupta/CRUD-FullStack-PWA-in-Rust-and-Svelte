@@ -36,7 +36,6 @@ async fn main() -> Result<(), AppError> {
     let cors = CorsLayer::new()
     .allow_origin([
         "https://rust-svelte.vercel.app".parse().unwrap(),
-        "http://localhost:5173".parse().unwrap(),
     ])
     .allow_methods([
         Method::GET,
