@@ -10,9 +10,9 @@ export default defineConfig({
         sveltekit(),
         SvelteKitPWA({
             manifest: {
-                name: 'Your Task Manager',
-                short_name: 'TaskManager',
-                description: 'A simple yet powerful task manager',
+                name: 'Tasks',
+                short_name: 'Tasks',
+                description: ' This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.',
                 theme_color: '#34d399', // Your chosen theme color
                 display: 'standalone', // Recommended for a PWA experience
                 start_url: '/',      // Where the PWA should start when launched
