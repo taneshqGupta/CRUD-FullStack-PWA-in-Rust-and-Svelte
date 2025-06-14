@@ -2,7 +2,7 @@
 <!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
-	import type { Todo } from './Todo';
+	import type { Todo } from './../types.ts';
     import type { PageData } from './$types';
 	import { DeleteSvg, LeafSvg, NullSvg, PlusSvg, TodoSvg } from '$lib/components/icons';
 
