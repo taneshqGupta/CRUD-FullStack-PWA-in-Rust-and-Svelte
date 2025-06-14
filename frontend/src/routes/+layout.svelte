@@ -2,8 +2,112 @@
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+    import { onMount } from 'svelte';
+	import { browser, dev } from '$app/environment';
     
     export let data;
+
+        // --- PWA Installation Prompt Variables ---
+        let deferredPrompt: Event | null = null; // Stores the beforeinstallprompt event
+    let showInstallButton = false; // Controls visibility of the custom install button
+    // --- End PWA Installation Prompt Variables ---
+
+    // Function to update the theme-color meta tag (keeping this as per your last request)
+    function updateThemeColorMeta() {
+        if (!browser) return;
+
+        const htmlElement = document.documentElement;
+        const themeColor = getComputedStyle(htmlElement).getPropertyValue('--p').trim();
+
+        let themeMetaTag = document.querySelector('meta[name="theme-color"]');
+
+        if (!themeMetaTag) {
+            themeMetaTag = document.createElement('meta');
+            themeMetaTag.setAttribute('name', 'theme-color');
+            document.head.appendChild(themeMetaTag);
+        }
+
+        if (themeColor) {
+            themeMetaTag.setAttribute('content', themeColor);
+            console.log('PWA Theme Color updated to:', themeColor);
+        } else {
+            themeMetaTag.setAttribute('content', '#2a303c'); // Fallback
+            console.warn('PWA Theme Color: Could not read --p. Falling back to default.');
+        }
+    }
+
+    // Function to handle the custom install button click
+    async function handleInstallClick() {
+        if (deferredPrompt) {
+            // Show the browser's native install prompt
+            // This method is provided by the beforeinstallprompt event
+            (deferredPrompt as any).prompt();
+
+            // Wait for the user to respond to the prompt
+            const { outcome } = await (deferredPrompt as any).userChoice;
+            console.log(`User response to install prompt: ${outcome}`);
+
+            // Hide the install button regardless of user choice
+            // The PWA can only be installed once per user session from this prompt
+            showInstallButton = false;
+            deferredPrompt = null; // Clear the stored event
+        }
+    }
+
+    onMount(async () => {
+        // PWA Service Worker Registration
+        if (browser && !dev) {
+            const { registerSW } = await import('virtual:pwa-register');
+            registerSW({
+                immediate: true,
+                onNeedRefresh() {
+                    console.log('PWA: New content available! Please refresh to update.');
+                },
+                onOfflineReady() {
+                    console.log('PWA: App is now ready for offline use!');
+                }
+            });
+        }
+
+        // --- PWA Installation Prompt Logic ---
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the default mini-infobar from appearing
+            e.preventDefault();
+            // Store the event so it can be triggered later
+            deferredPrompt = e;
+            // Show your custom install button
+            showInstallButton = true;
+            console.log('PWA: beforeinstallprompt event fired. Showing install button.');
+        });
+
+        // Listen for the 'appinstalled' event to hide the button if the user installs it directly
+        window.addEventListener('appinstalled', () => {
+            showInstallButton = false;
+            deferredPrompt = null;
+            console.log('PWA: App installed event fired. Hiding install button.');
+        });
+        // --- End PWA Installation Prompt Logic ---
+
+
+        // Initial theme color update on mount
+        updateThemeColorMeta();
+
+        // Observe changes to the 'data-theme' attribute for dynamic updates
+        if (browser) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                        updateThemeColorMeta();
+                    }
+                });
+            });
+            observer.observe(document.documentElement, { attributes: true });
+            return () => {
+                observer.disconnect();
+            };
+        }
+    });
     
 </script>
 

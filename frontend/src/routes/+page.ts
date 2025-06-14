@@ -4,6 +4,6 @@ import type { Todo } from './Todo';
 
 export const load: PageLoad = async ({ fetch, params }) => {
     return {
-        todos: (await fetch(`${PUBLIC_BACKEND_URL}`).then((data) => data.json())) as Todo[]
+        todos: (await fetch(`${PUBLIC_BACKEND_URL}`).then((data: { json: () => any; }) => data.json())) as Todo[]
     };
 };

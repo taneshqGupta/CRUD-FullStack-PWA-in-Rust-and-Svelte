@@ -1,9 +1,9 @@
 <!-- svelte-ignore a11y_missing_attribute -->
 <!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
-	import { PUBLIC_BACKEND_URL } from "$env/static/public";
+	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import type { Todo } from './Todo';
-    import type { PageData } from "./$types";
+    import type { PageData } from './$types';
 
     export let data: PageData;
     let todos: Todo[] = data.todos;
