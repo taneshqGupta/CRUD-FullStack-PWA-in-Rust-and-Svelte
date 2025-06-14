@@ -1,3 +1,8 @@
 export { default as GithubSvg } from './GithubSVG.svelte';
 export { default as SquirrelSvg } from './SquirrelSVG.svelte';
 export { default as TasksSvg } from './TasksSVG.svelte';
+export { default as PlusSvg } from './PlusSVG.svelte';
+export { default as LeafSvg } from './LeafSVG.svelte';
+export { default as TodoSvg } from './TodoSVG.svelte';
+export { default as DeleteSvg } from './DeleteSVG.svelte';
+export { default as NullSvg } from './NullSVG.svelte';

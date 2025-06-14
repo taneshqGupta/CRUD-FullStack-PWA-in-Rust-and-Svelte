@@ -4,10 +4,11 @@
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import type { Todo } from './Todo';
     import type { PageData } from './$types';
+	import { DeleteSvg, LeafSvg, NullSvg, PlusSvg, TodoSvg } from '$lib/components/icons';
 
     export let data: PageData;
     let todos: Todo[] = data.todos;
-    let newTodoDescription: string = ''; // State to hold the new task description
+    let newTodoDescription: string = ''; 
   
     async function deleteTodo(id: number) {
         try {
@@ -89,7 +90,7 @@
 	<div>
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4" aria-label="Enter a New Task">
 			<legend class="fieldset-legend">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                <PlusSvg />
                 New Task
             </legend>
 			<form on:submit|preventDefault={handleCreateTodo}>
@@ -104,7 +105,7 @@
 				/>
 			</form>
 			<p class="label text-xs opacity-70 mt-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf-icon lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                <LeafSvg />
                 Press enter to log your task
             </p>
 		</fieldset>
@@ -115,7 +116,7 @@
         
         <li class="p-4 pb-2 text-xs opacity-60 tracking-wide" aria-label="your tasks">
             <div class="flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-todo-icon lucide-list-todo"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
+                <TodoSvg />
                 Your Tasks
             </div>
         </li>
@@ -137,15 +138,14 @@
                     aria-label="delete"
                     on:click={() => deleteTodo(todo.id)}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                    <!-- Delete -->
+                    <DeleteSvg />
                 </button>
             </li>
         {/each}
 
         {#if !todos || todos.length === 0}
             <li class="list-row p-4 text-center text-sm opacity-60" aria-label="No Tasks">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-slash-icon lucide-circle-slash"><circle cx="12" cy="12" r="10"/><line x1="9" x2="15" y1="15" y2="9"/></svg>    
+                <NullSvg />
                 No tasks added yet.
             </li>
         {/if}
