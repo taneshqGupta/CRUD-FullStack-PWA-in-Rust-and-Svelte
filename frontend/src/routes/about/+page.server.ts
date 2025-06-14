@@ -8,7 +8,7 @@ export async function load() {
         const svelteKitAppRoot = process.cwd();
         console.log('SvelteKit App Root (process.cwd()):', svelteKitAppRoot); // <--- ADD THIS LINE
 
-        const readmePath = join(svelteKitAppRoot, '..', 'README.md');
+        const readmePath = join(svelteKitAppRoot, 'README.md');
         console.log('Calculated README Path:', readmePath); // <--- ADD THIS LINE
 
         const markdownContent = readFileSync(readmePath, 'utf8');
