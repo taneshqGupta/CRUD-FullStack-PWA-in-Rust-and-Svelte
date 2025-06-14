@@ -34,7 +34,7 @@
     <div class="divider divider-accent my-0" aria-hidden="true"></div>
     
     <footer class="footer p-4 bg-neutral text-neutral-content justify-between items-center">
-        <div class="footer-start text-sm"> <div class="flex flex-col gap-1"> <strong>Task Manager</strong>
+        <div class="footer-start text-sm"> <div class="flex flex-col gap-1"> 
                 <span>This is a starter CRUD template for Rust and SvelteKit</span>
                 <span>Creation: 2025</span>
                 <span>By: Taneshq Gupta (CSE Undergrad @ IIT-Mandi)</span>
