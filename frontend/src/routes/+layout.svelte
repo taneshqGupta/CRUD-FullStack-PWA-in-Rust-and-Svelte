@@ -2,64 +2,41 @@
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-    import { onMount } from 'svelte'; // Import onMount for client-side logic
+    import { onMount } from 'svelte'; 
     
     export let data;
 
-    // Variables to manage the PWA installation prompt
-    let deferredPrompt: any = null; // Stores the 'beforeinstallprompt' event
-    let showInstallButton = false; // Controls the visibility of the install button
+    let deferredPrompt: any = null;
+    let showInstallButton = false; 
 
-    // onMount runs only on the client-side after the component is mounted
     onMount(() => {
-        // Event listener for when the browser is ready to prompt for PWA installation
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the default mini-infobar or browser prompt from appearing
             e.preventDefault();
-            // Stash the event so it can be triggered later by the user's action
             deferredPrompt = e;
-            // Set the flag to true to display the install button in the UI
             showInstallButton = true;
             console.log('beforeinstallprompt event fired. Install button is now visible.');
         });
 
-        // Event listener for when the PWA has been successfully installed
         window.addEventListener('appinstalled', () => {
-            // Hide the install button as the app is already installed
             showInstallButton = false;
-            // Clear the deferred prompt reference
             deferredPrompt = null;
             console.log('PWA was installed successfully!');
         });
 
-        // Optional: Check if the app is already running in standalone mode (installed) on load
-        // This provides a fallback to hide the button if it's already installed and
-        // the 'beforeinstallprompt' didn't fire due to installation status.
-        // `window.matchMedia('(display-mode: standalone)').matches` is for modern browsers.
-        // `(navigator as any).standalone` is for older iOS Safari.
         if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
             console.log('App is already running in standalone mode (installed). Hiding install button.');
             showInstallButton = false;
         }
     });
 
-    /**
-     * Handles the click event for the custom install button.
-     * Triggers the PWA installation prompt if available.
-     */
     async function handleInstallClick() {
         if (deferredPrompt) {
-            // Show the browser's PWA installation prompt
             deferredPrompt.prompt();
-            // Wait for the user to respond to the prompt (accept or dismiss)
             const { outcome } = await deferredPrompt.userChoice;
             
-            // Log the user's decision for debugging/analytics
             console.log(`User response to the install prompt: ${outcome}`);
             
-            // The prompt has been used, so clear the reference
             deferredPrompt = null;
-            // Hide the button after the prompt has been presented, regardless of outcome
             showInstallButton = false;
         }
     }
@@ -76,7 +53,6 @@
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
-            <!-- PWA Install Button - only displayed if showInstallButton is true -->
             {#if showInstallButton}
             <button
                 id="installButton"
