@@ -3,13 +3,13 @@
 </script>
   
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-center mb-8">About This Template</h1>
+    <h1 class="text-3xl font-bold text-center mb-8">About This Template</h1>
   
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="card bg-base-200 shadow-xl p-6 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up">
             <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Overview</h2>
+                <h2 class="card-title text-2xl font-bold mb-4">Overview</h2>
                 <p>This is a starter CRUD template for Rust and SvelteKit.</p>
                 <p class="mt-2"><strong>Creation:</strong> 2025</p>
                 <p><strong>By:</strong> Taneshq Gupta (CSE Undergrad @ IIT-Mandi)</p>
@@ -19,7 +19,7 @@
         <div class="card bg-base-200 shadow-xl p-6 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up" data-aos-delay="150">
             <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Key Features</h2>
+                <h2 class="card-title text-2xl font-bold mb-4">Key Features</h2>
                 <ul class="list-disc list-inside ml-4 space-y-2">
                     <li>Easily installable as a <strong>PWA (Progressive Web-Application)</strong>.</li>
                     <li><strong>Dynamic + Persistent Theme-Switching</strong> with a multi-theme setup.</li>
@@ -30,10 +30,10 @@
         <div class="card bg-base-200 shadow-xl p-6 md:col-span-2 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up" data-aos-delay="300">
             <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Tech Stack</h2>
+                <h2 class="card-title text-2xl font-bold mb-4">Tech Stack</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                     <div class="stat">
-                        <div class="stat-figure text-secondary">
+                        <div class="stat-figure">
                             <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
 
                             <g>
