@@ -31,7 +31,7 @@
              data-aos="fade-up" data-aos-delay="300">
             <div class="card-body">
                 <h2 class="card-title text-2xl font-bold mb-4">Tech Stack</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4"> 
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:grid-cols-3"> 
                     <div class="stat">
                         <div class="stat-figure">
                             <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
