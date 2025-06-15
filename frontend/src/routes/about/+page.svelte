@@ -6,7 +6,7 @@
     <h1 class="text-3xl font-bold text-center mb-8">About This Template</h1>
   
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="card bg-base-200 shadow-xl p-6 transition-all duration-500 ease-in-out transform"
+        <div class="card bg-base-200 shadow-xl p-4 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up">
             <div class="card-body">
                 <h2 class="card-title text-2xl font-bold mb-4">Overview</h2>
@@ -16,7 +16,7 @@
             </div>
         </div>
   
-        <div class="card bg-base-200 shadow-xl p-6 transition-all duration-500 ease-in-out transform"
+        <div class="card bg-base-200 shadow-xl p-4 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up" data-aos-delay="150">
             <div class="card-body">
                 <h2 class="card-title text-2xl font-bold mb-4">Key Features</h2>
@@ -27,7 +27,7 @@
             </div>
         </div>
   
-        <div class="card bg-base-200 shadow-xl p-6 md:col-span-2 transition-all duration-500 ease-in-out transform"
+        <div class="card bg-base-200 shadow-xl p-4 md:col-span-2 transition-all duration-500 ease-in-out transform"
              data-aos="fade-up" data-aos-delay="300">
             <div class="card-body">
                 <h2 class="card-title text-2xl font-bold mb-4">Tech Stack</h2>
