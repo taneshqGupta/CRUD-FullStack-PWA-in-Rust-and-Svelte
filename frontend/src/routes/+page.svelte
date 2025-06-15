@@ -122,7 +122,7 @@
         </li>
         
         {#each todos as todo (todo.id)} 
-            <li class="list-row flex items-start p-4" aria-label="list of your tasks">
+            <li class="list-row flex items-start p-4 justify-between" aria-label="list of your tasks">
                 <input
                     class="checkbox checkbox-sm" 
                     type="checkbox" 
@@ -132,7 +132,7 @@
                 />
                 <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
                 <button 
-                    class="btn btn-ghost btn-sm text-error" 
+                    class="btn btn-ghost btn-sm text-error flex items-center justify-center" 
                     aria-label="delete"
                     on:click={() => deleteTodo(todo.id)}
                 >
