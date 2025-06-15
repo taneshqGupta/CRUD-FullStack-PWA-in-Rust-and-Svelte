@@ -123,7 +123,7 @@
         
         {#each todos as todo (todo.id)} 
             <li class="list-row flex items-start p-4 justify-between" aria-label="list of your tasks">
-                <div class="flex items-start">
+                <div class="flex items-start m-3">
                     <input
                         class="checkbox checkboxs-sm mr-2"
                         type="checkbox" 
