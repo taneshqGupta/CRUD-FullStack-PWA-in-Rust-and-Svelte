@@ -33,8 +33,8 @@
     <header class="navbar bg-base-100 z-10 border border-base-300">
         <div class="flex-1">
             <h1>
-                <a href="https://rust-svelte.vercel.app/" 
-                    class="btn btn-ghost font-bold text-xl" aria-label="Go to Task Manager homepage"
+                <a href="https://rust-svelte.vercel.app" 
+                   class="btn btn-ghost font-bold text-xl" aria-label="Go to Task Manager homepage"
                 >
                     <TasksSvg />
                     Tasks
