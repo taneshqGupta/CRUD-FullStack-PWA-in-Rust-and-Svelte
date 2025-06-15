@@ -34,7 +34,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                     <div class="stat">
                         <div class="stat-figure text-secondary">
-                            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" stroke-miterlimit="2" stroke-linejoin="round" fill-rule="evenodd" clip-rule="evenodd">
+                            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 100">
 
                             <g>
                             <title>Layer 1</title>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="stat">
                         <div class="stat-figure text-secondary">
-                            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+                            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 100">
 
                             <g>
                             <title>Layer 1</title>
