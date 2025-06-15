@@ -122,17 +122,15 @@
         </li>
         
         {#each todos as todo (todo.id)} 
-            <li class="list-row flex items-center justify-between p-4" aria-label="list of your tasks">
-                <div class="flex items-start gap-2" aria-label="checkbox">
-                    <input 
-                        class="checkbox checkbox-sm" 
-                        type="checkbox" 
-                        aria-label="checkbox"
-                        bind:checked={todo.done} 
-                        on:change={() => updateTodo(todo)}
-                    />
-                    <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
-                </div>
+            <li class="list-row flex items-start justify-between p-4" aria-label="list of your tasks">
+                <input
+                    class="checkbox checkbox-sm" 
+                    type="checkbox" 
+                    aria-label="checkbox"
+                    bind:checked={todo.done} 
+                    on:change={() => updateTodo(todo)}
+                />
+                <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
                 <button 
                     class="btn btn-ghost btn-sm text-error" 
                     aria-label="delete"
