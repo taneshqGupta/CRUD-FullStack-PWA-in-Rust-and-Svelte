@@ -45,7 +45,7 @@
                             </svg>
                         </div>
                         <div class="stat-title">Backend</div>
-                        <div class="stat-value text-2xl">Rust (Axum)</div>
+                        <div class="stat-value text-2xl">Rust<br>(Axum)</div>
                     </div>
                     <div class="stat">
                         <div class="stat-figure text-secondary">
