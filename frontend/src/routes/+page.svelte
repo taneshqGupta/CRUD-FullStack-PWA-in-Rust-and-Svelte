@@ -47,7 +47,7 @@
 <div class="w-full p-4">
 	<div>
 		<fieldset
-			class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4"
+			class="fieldset bg-base-150 border-base-300 rounded-md w-full border p-4"
 			aria-label="Enter a New Task"
 		>
 			<legend class="fieldset-legend">
@@ -65,7 +65,7 @@
 					bind:value={newTodoDescription}
 				/>
 			</form>
-			<p class="label text-xs mt-2 font-semibold opacity-90">
+			<p class="label text-xs mt-2 font-semibold">
 				<LeafSvg />
 				Press enter to log your task
 			</p>
