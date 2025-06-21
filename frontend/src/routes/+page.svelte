@@ -103,7 +103,7 @@
 				</div>
 				<div class="flex items-center">
 					<button
-						class="btn btn-ghost btn-sm text-error flex items-center justify-center"
+						class="btn btn-soft btn-primary btn-sm text-error flex items-center justify-center"
 						aria-label="delete"
 						on:click={() => handleDeleteTodo(todo.id)}
 					>
