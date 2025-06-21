@@ -73,7 +73,7 @@
 	</div>
 
 	<ul class="list bg-base-100 rounded-box" aria-label="tasks.">
-		<li class="p-4 pb-2 text-xs opacity-60 tracking-wide" aria-label="your tasks">
+		<li class="p-4 pb-2 text-xs tracking-wide" aria-label="your tasks">
 			<div class="flex items-center gap-1">
 				<TodoSvg />
 				Your Tasks
