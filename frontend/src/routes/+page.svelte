@@ -92,7 +92,7 @@
 					/>
 					<span
 						class="{todo.done ? 'line-through opacity-70' : ''} 
-                                w-full p-2 border border-base-300 rounded-md bg-base-100
+                                w-full p-1 border border-base-300 rounded-md bg-base-100
                                 focus:outline-none focus:ring-1 focus:ring-primary"
 						aria-label="description of tasks."
 						contenteditable="true"
