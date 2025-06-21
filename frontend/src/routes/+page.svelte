@@ -98,16 +98,10 @@
 						contenteditable="true"
 						bind:textContent={todo.descript}
                         spellcheck="false"
+                        on:blur={() => handleUpdateTodo(todo)}
 					></span>
 				</div>
 				<div class="flex items-center">
-					<button
-						class="btn btn-ghost btn-sm"
-						aria-label="update"
-						on:click={() => handleUpdateTodo(todo)}
-					>
-						Update
-					</button>
 					<button
 						class="btn btn-ghost btn-sm text-error flex items-center justify-center"
 						aria-label="delete"
