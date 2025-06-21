@@ -84,7 +84,7 @@
 			<li class="list-row flex items-start p-4 justify-between" aria-label="list of your tasks">
 				<div class="flex items-start m-2 flex-grow">
 					<input
-						class="checkbox checkbox-sm mr-2"
+						class="checkbox checkbox-sm checkbox-neutral mr-2"
 						type="checkbox"
 						aria-label="checkbox"
 						bind:checked={todo.done}
