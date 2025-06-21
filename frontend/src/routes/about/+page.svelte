@@ -43,7 +43,7 @@
 					<div class="stat">
 						<div class="stat-figure"><RustSvg /></div>
 						<div class="stat-title">Backend</div>
-						<div class="stat-value text-2xl">Rust<br />(Axum)</div>
+						<div class="stat-value text-2xl">Rust</div>
 					</div>
 					<div class="stat">
 						<div class="stat-figure text-secondary"><SvelteKitSvg /></div>
