@@ -96,6 +96,7 @@
 						aria-label="description of tasks."
 						contenteditable="true"
 						bind:textContent={todo.descript}
+                        spellcheck="false"
 					></span>
 				</div>
 				<div class="flex items-center">
