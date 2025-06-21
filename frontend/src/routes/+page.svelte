@@ -91,7 +91,9 @@
 						on:change={() => handleUpdateTodo(todo)}
 					/>
 					<span
-						class="{todo.done ? 'line-through opacity-70' : ''} w-full"
+						class="{todo.done ? 'line-through opacity-70' : ''} 
+                                w-full p-2 border border-base-300 rounded-md bg-base-100
+                                focus:outline-none focus:ring-1 focus:ring-primary my-2"
 						aria-label="description of tasks."
 						contenteditable="true"
 						bind:textContent={todo.descript}
