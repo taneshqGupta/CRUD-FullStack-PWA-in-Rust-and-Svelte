@@ -65,7 +65,7 @@
 					bind:value={newTodoDescription}
 				/>
 			</form>
-			<p class="label text-xs mt-2 font-semibold">
+			<p class="label text-xs mt-2 font-semibold opacity-90">
 				<LeafSvg />
 				Press enter to log your task
 			</p>
