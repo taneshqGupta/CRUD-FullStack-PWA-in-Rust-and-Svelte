@@ -82,23 +82,37 @@
         
         {#each todos as todo (todo.id)} 
             <li class="list-row flex items-start p-4 justify-between" aria-label="list of your tasks">
-                <div class="flex items-start m-2">
+                <div class="flex items-start m-2 flex-grow">
                     <input
-                        class="checkbox checkboxs-sm mr-2"
+                        class="checkbox checkbox-sm mr-2"
                         type="checkbox" 
                         aria-label="checkbox"
                         bind:checked={todo.done} 
                         on:change={() => handleUpdateTodo(todo)}
                     />
-                    <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
+                    <span 
+                        class="{todo.done ? 'line-through opacity-70' : ''} w-full" 
+                        aria-label="description of tasks."
+                        contenteditable="true"
+                        bind:textContent={todo.descript}
+                    ></span>
                 </div>
-                <button 
-                    class="btn btn-ghost btn-sm text-error flex items-center justify-center" 
-                    aria-label="delete"
-                    on:click={() => handleDeleteTodo(todo.id)}
-                >
-                    <DeleteSvg />
-                </button>
+                <div class="flex items-center">
+                    <button 
+                        class="btn btn-ghost btn-sm" 
+                        aria-label="update"
+                        on:click={() => handleUpdateTodo(todo)}
+                    >
+                        Update
+                    </button>
+                    <button 
+                        class="btn btn-ghost btn-sm text-error flex items-center justify-center" 
+                        aria-label="delete"
+                        on:click={() => handleDeleteTodo(todo.id)}
+                    >
+                        <DeleteSvg />
+                    </button>
+                </div>
             </li>
         {/each}
 
