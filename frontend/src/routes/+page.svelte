@@ -1,51 +1,27 @@
 <!-- svelte-ignore a11y_missing_attribute -->
 <!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
-	import type { Todo } from './../types.ts';
-    import type { PageData } from './$types';
+	import type { Todo } from '$lib/types';
 	import { DeleteSvg, LeafSvg, NullSvg, PlusSvg, TodoSvg } from '$lib/components/icons';
+	import { createTodo, updateTodo, deleteTodo } from '$lib/api';
 
-    export let data: PageData;
-    let todos: Todo[] = data.todos;
-    let newTodoDescription: string = ''; 
+	export let data: { todos: Todo[] };
+	let todos: Todo[] = data.todos;
+	let newTodoDescription: string = ''; 
   
-    async function deleteTodo(id: number) {
+    async function handleDeleteTodo(id: number) {
         try {
-            const response = await fetch(`${PUBLIC_BACKEND_URL}delete/${id}`, { 
-                method: "POST",
-				credentials: "include"
-            });
-            
-            if (response.ok) {
-                todos = todos.filter((todo) => todo.id !== id);
-            } else {
-                const errorData = await response.json();
-                console.error('Failed to delete todo:', errorData.message || response.statusText);
-            }
+            await deleteTodo(id);
+            todos = todos.filter((todo) => todo.id !== id);
         } catch (error) {
             console.error('Error deleting todo:', error);
         }
     }
   
-    async function updateTodo(todoToUpdate: Todo) {
+    async function handleUpdateTodo(todoToUpdate: Todo) {
         try {
-            const response = await fetch(`${PUBLIC_BACKEND_URL}update`, {
-                method: "POST",
-				credentials: "include", 
-                headers: {
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify(todoToUpdate) 
-            });
-
-            if (response.ok) {
-                const updatedTodoFromServer: Todo = await response.json(); 
-                todos = todos.map(t => t.id === updatedTodoFromServer.id ? updatedTodoFromServer : t);
-            } else {
-                const errorData = await response.json();
-                console.error('Failed to update todo:', errorData.message || response.statusText);
-            }
+            const updatedTodo = await updateTodo(todoToUpdate);
+            todos = todos.map(t => t.id === updatedTodo.id ? updatedTodo : t);
         } catch (error) {
             console.error('Error updating todo:', error);
         }
@@ -59,26 +35,9 @@
         }
 
         try {
-            const formData = new URLSearchParams();
-            formData.append('descript', descript);
-
-            const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
-                method: "POST",
-				credentials: "include",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded' 
-                },
-                body: formData.toString() 
-            });
-
-            if (response.ok) {
-                const newTodo: Todo = await response.json();
-                todos = [...todos, newTodo]; 
-                newTodoDescription = ''; 
-            } else {
-                const errorData = await response.json();
-                console.error('Failed to create todo:', errorData.message || response.statusText);
-            }
+            const newTodo = await createTodo(descript);
+            todos = [...todos, newTodo]; 
+            newTodoDescription = ''; 
         } catch (error) {
             console.error('Error creating todo:', error);
         }
@@ -129,14 +88,14 @@
                         type="checkbox" 
                         aria-label="checkbox"
                         bind:checked={todo.done} 
-                        on:change={() => updateTodo(todo)}
+                        on:change={() => handleUpdateTodo(todo)}
                     />
                     <span class="{todo.done ? 'line-through opacity-70' : ''}" aria-label="description of tasks.">{todo.descript}</span>
                 </div>
                 <button 
                     class="btn btn-ghost btn-sm text-error flex items-center justify-center" 
                     aria-label="delete"
-                    on:click={() => deleteTodo(todo.id)}
+                    on:click={() => handleDeleteTodo(todo.id)}
                 >
                     <DeleteSvg />
                 </button>
