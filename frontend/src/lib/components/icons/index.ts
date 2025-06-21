@@ -9,3 +9,6 @@ export { default as NullSvg } from './NullSVG.svelte';
 export { default as DownloadSvg } from './DownloadSVG.svelte';
 export { default as ThemeSvg } from './ThemeSVG.svelte';
 export { default as DropdownSvg } from './DropdownSVG.svelte';
+export { default as RustSvg } from './RustSVG.svelte';
+export { default as SvelteKitSvg } from './SvelteSVG.svelte';
+export { default as PostgresSvg } from './PostgresSVG.svelte';
