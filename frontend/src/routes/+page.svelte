@@ -92,8 +92,7 @@
 					/>
 					<span
 						class="{todo.done ? 'line-through opacity-70' : ''} 
-                                w-full rounded-md bg-base-100
-                                focus:outline-none focus:ring-1 focus:ring-primary"
+                                w-full rounded-md bg-base-100"
 						aria-label="description of tasks."
 						contenteditable="true"
 						bind:textContent={todo.descript}
