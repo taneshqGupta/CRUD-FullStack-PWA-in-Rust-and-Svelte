@@ -4,3 +4,4 @@ backend/.sqlx/* linguist-vendored
 backend/.idea/* linguist-vendored
 backend/target/* linguist-vendored
 backend/migrations/* linguist-vendored
+frontend/src/lib/components/icons/* linguist vendored
