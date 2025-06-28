@@ -50,8 +50,6 @@
         <slot />
     </main>
     
-    <div class="divider divider-accent my-0" aria-hidden="true"></div>
-    
     <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">
     <aside class="grid-flow-col items-center">
         <SquirrelSvg />
