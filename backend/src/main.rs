@@ -52,10 +52,10 @@ async fn main() -> Result<(), AppError> {
 
 
     let app = Router::new()
-        .route("/", get(list))
-        .route("/create", post(create))
-        .route("/delete/{id}", post(delete))
-        .route("/update", post(update))
+        .route("/rust-svelte-tasks", get(list))
+        .route("/rust-svelte-tasks/create", post(create))
+        .route("/rust-svelte-tasks/delete/{id}", post(delete))
+        .route("/rust-svelte-tasks/update", post(update))
         .with_state(pool)
         .layer(cors);
 
