@@ -35,7 +35,7 @@ async fn main() -> Result<(), AppError> {
 
     let cors = CorsLayer::new()
     .allow_origin([
-        std::env::var("FRONTEND_URL").parse().unwrap(),
+        std::env::var("FRONTEND_URL").unwrap().parse().unwrap(),
     ])
     .allow_methods([
         Method::GET,
