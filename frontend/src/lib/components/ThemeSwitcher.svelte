@@ -82,7 +82,6 @@
                         valentine
                     </button>
                 </li>
-            {/each}
         </form>
     </ul>
 </div>
