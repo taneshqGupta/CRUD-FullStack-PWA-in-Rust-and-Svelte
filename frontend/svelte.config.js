@@ -6,9 +6,6 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		paths: {
-            base: process.env.NODE_ENV === 'production' ? '/rust-svelte-tasks' : '', // Set base path for production
-        },
 	}
 };
 
