@@ -5,11 +5,7 @@
     export let currentPath: string; 
 
     const themes = [
-        'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave',
-        'retro', 'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua',
-        'lofi', 'pastel', 'fantasy', 'wireframe', 'black', 'luxury', 'dracula',
-        'cmyk', 'autumn', 'business', 'acid', 'lemonade', 'night', 'coffee', 'winter',
-        'dim', 'nord', 'sunset', 'caramellatte', 'abyss', 'silk'
+        'retro', 'valentine', 'forest', 'lemonade', 'dim'
     ];
     
     let dropdownOpen = false;
@@ -41,14 +37,49 @@
         class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto absolute right-0 top-full mt-2 z-50"
     >
         <form method="POST" use:enhance={submitUpdateTheme}>
-            {#each themes as theme}
                 <li>
                     <button
                         class="btn btn-sm btn-ghost w-full justify-start normal-case"
-                        formaction="/?/setTheme&theme={theme}&redirectTo={currentPath}"
-                        aria-label="{theme}"
+                        formaction="/?/setTheme&theme=lemonade&redirectTo={currentPath}"
+                        aria-label="lemonade"
                     >
-                        {theme}
+                        light
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="btn btn-sm btn-ghost w-full justify-start normal-case"
+                        formaction="/?/setTheme&theme=forest&redirectTo={currentPath}"
+                        aria-label="forest"
+                    >
+                        dark
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="btn btn-sm btn-ghost w-full justify-start normal-case"
+                        formaction="/?/setTheme&theme=dim&redirectTo={currentPath}"
+                        aria-label="dim"
+                    >
+                        dim
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="btn btn-sm btn-ghost w-full justify-start normal-case"
+                        formaction="/?/setTheme&theme=retro&redirectTo={currentPath}"
+                        aria-label="retro"
+                    >
+                        retro
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="btn btn-sm btn-ghost w-full justify-start normal-case"
+                        formaction="/?/setTheme&theme=valentine&redirectTo={currentPath}"
+                        aria-label="valentine"
+                    >
+                        valentine
                     </button>
                 </li>
             {/each}
