@@ -9,9 +9,9 @@ export const actions: Actions = {
         if (theme) {
             cookies.set('theme', theme, { 
                 path: '/',
-                maxAge: 60 * 60 * 24 * 365, // 1 year in seconds
-                httpOnly: false, // Allow client-side access if needed
-                sameSite: 'lax' // More restrictive for better security
+                maxAge: 60 * 60 * 24 * 365, 
+                httpOnly: false, 
+                sameSite: 'lax' 
             });
         }
 

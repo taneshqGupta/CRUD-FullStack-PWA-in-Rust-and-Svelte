@@ -45,7 +45,7 @@
 					formaction="/?/setTheme&theme=lemonade&redirectTo={currentPath}"
 					aria-label="lemonade"
 				>
-					light
+					Light
 				</button>
 			</li>
 			<li>
@@ -54,7 +54,7 @@
 					formaction="/?/setTheme&theme=forest&redirectTo={currentPath}"
 					aria-label="forest"
 				>
-					dark
+					Dark
 				</button>
 			</li>
 			<li>
@@ -63,7 +63,7 @@
 					formaction="/?/setTheme&theme=dim&redirectTo={currentPath}"
 					aria-label="dim"
 				>
-					dim
+					Dim
 				</button>
 			</li>
 			<li>
@@ -72,7 +72,7 @@
 					formaction="/?/setTheme&theme=retro&redirectTo={currentPath}"
 					aria-label="retro"
 				>
-					retro
+					Retro
 				</button>
 			</li>
 			<li>
@@ -81,7 +81,7 @@
 					formaction="/?/setTheme&theme=valentine&redirectTo={currentPath}"
 					aria-label="valentine"
 				>
-					valentine
+					Valentine
 				</button>
 			</li>
 		</form>
