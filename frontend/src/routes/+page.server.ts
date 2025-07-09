@@ -11,8 +11,7 @@ export const actions: Actions = {
                 path: '/',
                 maxAge: 60 * 60 * 24 * 365, // 1 year in seconds
                 httpOnly: false, // Allow client-side access if needed
-                secure: true, // Only send over HTTPS
-                sameSite: 'strict' // More restrictive for better security
+                sameSite: 'lax' // More restrictive for better security
             });
         }
 
