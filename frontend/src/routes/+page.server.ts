@@ -7,7 +7,13 @@ export const actions: Actions = {
         const redirectTo = url.searchParams.get('redirectTo') || '/';
 
         if (theme) {
-            cookies.set('theme', theme, { path: '/' });
+            cookies.set('theme', theme, { 
+                path: '/',
+                maxAge: 60 * 60 * 24 * 365, // 1 year in seconds
+                httpOnly: false, // Allow client-side access if needed
+                secure: true, // Only send over HTTPS
+                sameSite: 'strict' // More restrictive for better security
+            });
         }
 
         throw redirect(303, redirectTo);
