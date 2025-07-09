@@ -36,7 +36,7 @@
 	</div>
 	<ul
 		tabindex="0"
-		class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto absolute right-0 top-full mt-2 z-50"
+		class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-25 max-h-96 overflow-y-auto absolute right-0 top-full mt-2 z-50"
 	>
 		<form method="POST" use:enhance={submitUpdateTheme}>
 			<li>
