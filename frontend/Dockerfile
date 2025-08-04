@@ -2,6 +2,10 @@
 # https://hub.docker.com/_/node
 FROM node:lts-alpine
 
+# Accept build-time environment variables
+ARG PUBLIC_BACKEND_URL
+ENV PUBLIC_BACKEND_URL=$PUBLIC_BACKEND_URL
+
 # Create and change to the app directory.
 WORKDIR /app
 
