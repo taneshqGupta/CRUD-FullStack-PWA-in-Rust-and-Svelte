@@ -8,6 +8,13 @@
   ###### Easily installable as a PWA (Progressive Web-Application). 
   ###### Dynamic + Persistent ThemeSwitching with multi-theme setup. 
 
+##### Themes:
+ ###### - Light
+ ###### - Dark
+ ###### - Dim
+ ###### - Retro
+ ###### - Valentine
+
 ##### Tech Stack:
   ###### Backend: Rust(Axum)
   ###### Frontend: Sveltekit
