@@ -1,5 +1,5 @@
 ### Tasks 
-#### This is a starter CRUD template for Rust and SvelteKit
+#### This is a starter CRUD Web-App with Rustlang as Backend and SvelteKit as Frontend
 #### Visit Now on [rust-svelte-tasks.taneshq.iitmandi.in.net](https://rust-svelte-tasks.taneshq.iitmandi.in.net)
 ###### Creation: 2025
 ###### By: Taneshq Gupta (CSE Undergrad @ IIT-Mandi)
