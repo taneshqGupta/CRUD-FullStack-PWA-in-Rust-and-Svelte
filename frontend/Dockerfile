@@ -21,5 +21,5 @@ COPY . ./
 # Build the app.
 RUN npm run build
 
-# Serve the app
-CMD ["npm", "run", "start"]
+# Serve the app using preview script
+CMD ["npm", "run", "preview"]
