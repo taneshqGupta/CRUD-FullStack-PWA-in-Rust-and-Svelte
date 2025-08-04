@@ -36,6 +36,7 @@ async fn main() -> Result<(), AppError> {
     let cors = CorsLayer::new()
     .allow_origin([
         "https://tasks.taneshq.iitmandi.in.net".parse().unwrap(),
+        "https://rustbackend.up.railway.app".parse().unwrap(),
     ])
     .allow_methods([
         Method::GET,
