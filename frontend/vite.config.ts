@@ -92,6 +92,12 @@ export default defineConfig({
     ],
     preview: {
         port: process.env.PORT ? parseInt(process.env.PORT) : 4173,
-        host: true // Allow external connections
+        host: true, // Allow external connections
+        allowedHosts: [
+            'tasks.taneshq.iitmandi.in.net',
+            '.railway.app', // Allow all Railway subdomains
+            'localhost',
+            '127.0.0.1'
+        ]
     }
 });
