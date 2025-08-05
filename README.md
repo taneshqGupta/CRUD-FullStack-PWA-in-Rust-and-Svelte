@@ -9,7 +9,6 @@
   ###### Easily installable as a PWA (Progressive Web-Application). 
   ###### Dynamic + Persistent ThemeSwitching with multi-theme setup. 
 
-![About Page](Screenshots/about-img.png)
 
 ##### Themes:
  ###### - Light
@@ -31,6 +30,8 @@
  ###### - Valentine
  
  ![Valentine Theme](Screenshots/valentine-img.png)
+
+![About Page](Screenshots/about-img.png)
 
 ##### Tech Stack:
   ###### Backend: Rust(Axum)
