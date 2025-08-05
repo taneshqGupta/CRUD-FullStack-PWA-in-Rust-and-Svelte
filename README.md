@@ -1,5 +1,5 @@
 ### Tasks 
-#### This is a starter [CRUD Web-App](https://rust-svelte-tasks.taneshq.iitmandi.in.net) with Rustlang as Backend and SvelteKit as Frontend [Taneshq Gupta (CSE Undergrad @ IIT-Mandi) [2025]]
+#### This is a starter [CRUD Web-App](https://rust-svelte-tasks.taneshq.iitmandi.in.net) with Rustlang as Backend and SvelteKit as Frontend [Taneshq Gupta (CSE Undergrad @ IIT-Mandi) 2025]
 
 ##### Features:
   ###### Easily installable as a PWA (Progressive Web-Application). 
