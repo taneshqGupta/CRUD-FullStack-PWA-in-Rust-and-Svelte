@@ -1,5 +1,4 @@
-### Tasks 
-#### [CRUD Web-App](https://rust-svelte-tasks.taneshq.iitmandi.in.net) [Taneshq Gupta (CSE Undergrad @ IIT-Mandi) 2025]
+### Tasks [CRUD Web-App](https://rust-svelte-tasks.taneshq.iitmandi.in.net) [Taneshq Gupta (CSE Undergrad @ IIT-Mandi) 2025] 
 
 ##### Themes:
  ###### 1. Light
