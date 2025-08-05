@@ -2,8 +2,6 @@
 #### This is a starter CRUD Web-App with Rustlang as Backend and SvelteKit as Frontend
 #### Visit Now on [rust-svelte-tasks.taneshq.iitmandi.in.net](https://rust-svelte-tasks.taneshq.iitmandi.in.net)
 
-![Valentine Theme](Screenshots/valentine-img.png)
-
 ###### Creation: 2025
 ###### By: Taneshq Gupta (CSE Undergrad @ IIT-Mandi)
 
