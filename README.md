@@ -2,23 +2,23 @@
 #### This is a starter [CRUD Web-App](https://rust-svelte-tasks.taneshq.iitmandi.in.net) with Rustlang as Backend and SvelteKit as Frontend [Taneshq Gupta (CSE Undergrad @ IIT-Mandi) 2025]
 
 ##### Themes:
- ###### - Light
+ ###### 1. Light
  
  ![Light Theme](Screenshots/light-img.png)
  
- ###### - Dark
+ ###### 2. Dark
  
  ![Dark Theme](Screenshots/dark-img.png)
  
- ###### - Dim
+ ###### 3. Dim
  
  ![Dim Theme](Screenshots/dim-img.png)
  
- ###### - Retro
+ ###### 4. Retro
  
  ![Retro Theme](Screenshots/retro-img.png)
  
- ###### - Valentine
+ ###### 5. Valentine
  
  ![Valentine Theme](Screenshots/valentine-img.png)
 
