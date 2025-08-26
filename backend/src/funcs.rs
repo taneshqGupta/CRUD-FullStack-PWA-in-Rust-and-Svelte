@@ -2,7 +2,7 @@ use crate::error;
 use error::AppError;
 use crate::structs;
 use structs::{Todo, NewTodo, DeleteResponse};
-use axum::{extract::{Path, State}, Form, Json};
+use axum::{extract::{Path, State}, Json};
 use http::StatusCode;
 use sqlx::PgPool;
 
@@ -15,7 +15,7 @@ pub async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppErro
     Ok(Json(todos))
 }
 
-pub async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> { 
+pub async fn create(State(pool): State<PgPool>, Json(new_todo): Json<NewTodo>) -> Result<Json<Todo>, AppError> { 
     let created_todo = sqlx::query_as!(
         Todo,
         "INSERT INTO todos (descript, done, category) VALUES ($1, $2, $3) RETURNING id, descript, done, category", 
