@@ -8,7 +8,7 @@ use sqlx::PgPool;
 
 
 pub async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppError> { 
-    let todos = sqlx::query_as!(Todo, "SELECT id, descript, done FROM todos ORDER BY id")
+    let todos = sqlx::query_as!(Todo, "SELECT id, descript, done, category FROM todos ORDER BY id")
         .fetch_all(&pool)
         .await?;
 
@@ -18,9 +18,10 @@ pub async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppErro
 pub async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> { 
     let created_todo = sqlx::query_as!(
         Todo,
-        "INSERT INTO todos (descript, done) VALUES ($1, $2) RETURNING id, descript, done", 
+        "INSERT INTO todos (descript, done, category) VALUES ($1, $2, $3) RETURNING id, descript, done, category", 
         new_todo.descript,
-        false 
+        false,
+        new_todo.category
     )
     .fetch_one(&pool) 
     .await?;
@@ -43,9 +44,10 @@ pub async fn delete(State(pool): State<PgPool>, Path(id): Path<i32>) -> Result<J
 
 pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> { 
     let result = sqlx::query!(
-        "UPDATE todos SET descript = $1, done = $2 WHERE id = $3", 
+        "UPDATE todos SET descript = $1, done = $2, category = $3 WHERE id = $4", 
         todo.descript,
         todo.done,
+        todo.category,
         todo.id
     )
     .execute(&pool)

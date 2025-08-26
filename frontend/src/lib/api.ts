@@ -1,9 +1,10 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { Todo } from '$lib/types';
 
-export async function createTodo(descript: string): Promise<Todo> {
+export async function createTodo(descript: string, category: string): Promise<Todo> {
     const formData = new URLSearchParams();
     formData.append('descript', descript);
+    formData.append('category', category);
 
     const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
         method: "POST",
