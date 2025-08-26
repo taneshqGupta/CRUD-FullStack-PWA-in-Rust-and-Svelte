@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id, descript, done, category FROM todos ORDER BY id",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "descript",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "done",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 3,
+        "name": "category",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "769dd1c705a7716e5a9e2477b7e765cc3cfc4524e0f53bf5783ea0cbdadbfff7"
+}
