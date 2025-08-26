@@ -10,3 +10,6 @@ target/
 # Env files
 .env
 
+# sqlx
+!.sqlx
+
