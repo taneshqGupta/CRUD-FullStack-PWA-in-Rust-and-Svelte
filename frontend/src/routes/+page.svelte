@@ -135,7 +135,6 @@
 		{/if}
 	</ul>
 </div>
-</script>
 
 <div class="w-full p-4">
 	<div>
