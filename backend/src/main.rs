@@ -1,57 +1,44 @@
-mod telemetry;
+mod auth;
+mod error;
 mod funcs;
 mod structs;
-mod error;
-mod auth;
-use error::AppError;
-use funcs::{list, create, update, delete, };
-use auth::{register, login, logout, check_auth};
-use std::net::SocketAddr;
+mod telemetry;
+use auth::{check_auth, login, logout, register};
 use axum::{
-    routing::{get, post},
-    Router
+    Router,
+    routing::{delete, get, post},
 };
-use sqlx::PgPool; 
+use error::AppError;
+use funcs::{create, delete as delete_todo, list, update};
+use http::{HeaderName, Method};
+use sqlx::PgPool;
+use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tower_http::cors::CorsLayer;
-use http::{HeaderName, Method}; 
-use tower_sessions::{MemoryStore, SessionManagerLayer}; 
+use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
-
     telemetry::init_telemetry();
 
-    let url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| {
-            "http://0.0.0.0:8000".to_string()
-        });
+    let url = std::env::var("DATABASE_URL").unwrap_or_else(|_| "http://0.0.0.0:8000".to_string());
 
     tracing::info!("Attempting to connect to database using URL: {:?}", url);
-    let pool = PgPool::connect(&url)
-        .await
-        .map_err(|e| {
-            tracing::error!("Failed to connect to database: {:?}", e);
-            e
-        })?;
-    tracing::info!("Successfully connected to database."); 
+    let pool = PgPool::connect(&url).await.map_err(|e| {
+        tracing::error!("Failed to connect to database: {:?}", e);
+        e
+    })?;
+    tracing::info!("Successfully connected to database.");
 
     let cors = CorsLayer::new()
-    .allow_origin([
-        std::env::var("FRONTEND_URL").unwrap().parse().unwrap(),
-    ])
-    .allow_methods([
-        Method::GET,
-        Method::POST,
-        Method::DELETE,
-    ])
-    .allow_headers([
-        HeaderName::from_static("content-type"),
-        HeaderName::from_static("authorization"),
-        HeaderName::from_static("accept"),
-
-    ])
-    .allow_credentials(true);
+        .allow_origin([std::env::var("FRONTEND_URL").unwrap().parse().unwrap()])
+        .allow_methods([Method::GET, Method::POST, Method::DELETE])
+        .allow_headers([
+            HeaderName::from_static("content-type"),
+            HeaderName::from_static("authorization"),
+            HeaderName::from_static("accept"),
+        ])
+        .allow_credentials(true);
 
     // Set up session store
     let session_store = MemoryStore::default();
@@ -62,7 +49,7 @@ async fn main() -> Result<(), AppError> {
     let app = Router::new()
         .route("/", get(list))
         .route("/create", post(create))
-        .route("/delete/{id}", post(delete))
+        .route("/delete/:id", delete(delete_todo))
         .route("/update", post(update))
         .route("/auth/register", post(register))
         .route("/auth/login", post(login))
@@ -76,7 +63,7 @@ async fn main() -> Result<(), AppError> {
         .unwrap_or_else(|_| "8000".to_string())
         .parse::<u16>()?;
 
-    let address = SocketAddr::from(([0,0,0,0], port));
+    let address = SocketAddr::from(([0, 0, 0, 0], port));
 
     let listener = TcpListener::bind(&address).await?;
     tracing::debug!("listening on {}", listener.local_addr()?);
