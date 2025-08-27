@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'request' ORDER BY id",
+  "query": "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) \n         VALUES ($1, $2, $3, $4, $5, $6) \n         RETURNING id, description, completed, category, user_id, post_type, pin_code",
   "describe": {
     "columns": [
       {
@@ -41,7 +41,12 @@
     ],
     "parameters": {
       "Left": [
-        "Int4"
+        "Text",
+        "Bool",
+        "Varchar",
+        "Int4",
+        "Varchar",
+        "Varchar"
       ]
     },
     "nullable": [
@@ -54,5 +59,5 @@
       true
     ]
   },
-  "hash": "e700dcb02bc4f2f4bf6e5f6786cd613e04fae53b7b848c6198ddca0291ec16dd"
+  "hash": "57f2ef3ccd98323d8440385da54e6cde8a899cbe671cf8585f0069b471e2e735"
 }

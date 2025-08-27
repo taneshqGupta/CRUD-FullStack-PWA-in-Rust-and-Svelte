@@ -11,7 +11,10 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 ORDER BY id DESC",
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         WHERE p.user_id = $1 ORDER BY p.id DESC",
         user_id
     )
     .fetch_all(&pool)
@@ -31,6 +34,7 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
                 _ => PostType::Request, // Default to request for unknown types
             },
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -41,7 +45,10 @@ pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         WHERE p.user_id = $1 AND p.post_type = 'offer' ORDER BY p.id",
         user_id
     )
     .fetch_all(&pool)
@@ -57,6 +64,7 @@ pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result
             user_id: row.user_id,
             post_type: PostType::Offer,
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -67,7 +75,10 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'request' ORDER BY id",
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         WHERE p.user_id = $1 AND p.post_type = 'request' ORDER BY p.id",
         user_id
     )
     .fetch_all(&pool)
@@ -83,6 +94,7 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
             user_id: row.user_id,
             post_type: PostType::Request,
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -94,7 +106,10 @@ pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) 
     let _user_id = require_auth(session).await?; // Just verify auth, but show all posts
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts ORDER BY id DESC"
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         ORDER BY p.id DESC"
     )
     .fetch_all(&pool)
     .await?;
@@ -113,6 +128,7 @@ pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) 
                 _ => PostType::Request,
             },
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -123,7 +139,10 @@ pub async fn list_community_offers(State(pool): State<PgPool>, session: Session)
     let _user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE post_type = 'offer' ORDER BY id DESC"
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         WHERE p.post_type = 'offer' ORDER BY p.id DESC"
     )
     .fetch_all(&pool)
     .await?;
@@ -138,6 +157,7 @@ pub async fn list_community_offers(State(pool): State<PgPool>, session: Session)
             user_id: row.user_id,
             post_type: PostType::Offer,
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -148,7 +168,10 @@ pub async fn list_community_requests(State(pool): State<PgPool>, session: Sessio
     let _user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE post_type = 'request' ORDER BY id DESC"
+        "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+         FROM posts p 
+         LEFT JOIN users u ON p.user_id = u.id 
+         WHERE p.post_type = 'request' ORDER BY p.id DESC"
     )
     .fetch_all(&pool)
     .await?;
@@ -163,6 +186,7 @@ pub async fn list_community_requests(State(pool): State<PgPool>, session: Sessio
             user_id: row.user_id,
             post_type: PostType::Request,
             pin_code: row.pin_code,
+            user_name: row.user_name,
         })
         .collect();
 
@@ -174,7 +198,9 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
     let post_type_str = new_post.post_type.to_string();
     
     let row = sqlx::query!(
-        "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, description, completed, category, user_id, post_type, pin_code", 
+        "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) 
+         VALUES ($1, $2, $3, $4, $5, $6) 
+         RETURNING id, description, completed, category, user_id, post_type, pin_code", 
         new_post.description,
         false,
         new_post.category,
@@ -185,6 +211,13 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
     .fetch_one(&pool) 
     .await?;
 
+    // Get the user's name for the response
+    let user_name = sqlx::query!("SELECT name FROM users WHERE id = $1", user_id)
+        .fetch_one(&pool)
+        .await
+        .map(|u| u.name)
+        .unwrap_or(None);
+
     let created_post = Post {
         id: row.id,
         description: row.description,
@@ -193,6 +226,7 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
         user_id: row.user_id,
         post_type: new_post.post_type,
         pin_code: row.pin_code,
+        user_name,
     };
 
     Ok(Json(created_post))

@@ -25,6 +25,7 @@ pub struct Post {
     pub user_id: i32,
     pub post_type: PostType,
     pub pin_code: Option<String>,
+    pub user_name: Option<String>, // Name of the person who posted this
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -49,6 +50,7 @@ pub struct User {
     pub password_hash: String,
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub pin_code: Option<String>,
+    pub name: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

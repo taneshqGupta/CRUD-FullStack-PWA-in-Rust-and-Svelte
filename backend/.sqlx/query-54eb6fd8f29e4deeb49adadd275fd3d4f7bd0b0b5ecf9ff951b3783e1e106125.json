@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
+  "query": "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.post_type = 'offer' ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -37,12 +37,15 @@
         "ordinal": 6,
         "name": "pin_code",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "user_name",
+        "type_info": "Varchar"
       }
     ],
     "parameters": {
-      "Left": [
-        "Int4"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
@@ -51,8 +54,9 @@
       false,
       false,
       false,
+      true,
       true
     ]
   },
-  "hash": "dbe04be01debdc2f0c4137a99a9b3942d7f239ebe3044864af2bdcdf237cd4ad"
+  "hash": "54eb6fd8f29e4deeb49adadd275fd3d4f7bd0b0b5ecf9ff951b3783e1e106125"
 }

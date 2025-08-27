@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, description, completed, category, user_id, post_type, pin_code",
+  "query": "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -37,17 +37,15 @@
         "ordinal": 6,
         "name": "pin_code",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "user_name",
+        "type_info": "Varchar"
       }
     ],
     "parameters": {
-      "Left": [
-        "Text",
-        "Bool",
-        "Varchar",
-        "Int4",
-        "Varchar",
-        "Varchar"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
@@ -56,8 +54,9 @@
       false,
       false,
       false,
+      true,
       true
     ]
   },
-  "hash": "5d5db6c638ba5211b13514e06a29dd50dffc02c2abe66c41b4abbca3b9863dae"
+  "hash": "c320c14aab4c244ae3058b0693465f07a5b152de3be574348b4f5edd6ee01483"
 }
