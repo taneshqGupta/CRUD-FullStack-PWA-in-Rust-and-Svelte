@@ -42,7 +42,8 @@ async fn main() -> Result<(), AppError> {
     ])
     .allow_methods([
         Method::GET,
-        Method::POST
+        Method::POST,
+        Method::DELETE,
     ])
     .allow_headers([
         HeaderName::from_static("content-type"),
