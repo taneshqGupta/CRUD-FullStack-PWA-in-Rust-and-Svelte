@@ -1,16 +1,18 @@
 mod auth;
 mod error;
 mod funcs;
+mod partitioned_cookies;
 mod structs;
 mod telemetry;
 use auth::{check_auth, login, logout, register};
 use axum::{
-    Router,
+    Router, middleware,
     routing::{delete, get, post},
 };
 use error::AppError;
 use funcs::{create, delete as delete_todo, list, update};
 use http::{HeaderName, Method};
+use partitioned_cookies::add_partitioned_attribute;
 use sqlx::PgPool;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
@@ -57,6 +59,7 @@ async fn main() -> Result<(), AppError> {
         .route("/auth/check", get(check_auth))
         .with_state(pool)
         .layer(session_layer)
+        .layer(middleware::from_fn(add_partitioned_attribute))
         .layer(cors);
 
     let port = std::env::var("PORT")

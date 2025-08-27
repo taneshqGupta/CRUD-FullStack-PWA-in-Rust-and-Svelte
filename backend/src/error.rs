@@ -20,7 +20,11 @@ impl IntoResponse for AppError {
             }
             AppError::Internal(err) => {
                 // For general internal errors, default to 500
-                (StatusCode::INTERNAL_SERVER_ERROR, format!("Internal Server Error: {}", err)).into_response()
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    format!("Internal Server Error: {}", err),
+                )
+                    .into_response()
             }
         }
     }
