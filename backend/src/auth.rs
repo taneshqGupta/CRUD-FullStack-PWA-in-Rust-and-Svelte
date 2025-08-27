@@ -29,6 +29,15 @@ pub async fn register(
         }));
     }
 
+    // Validate name (basic validation)
+    if new_user.name.trim().is_empty() {
+        return Ok(Json(AuthResponse {
+            success: false,
+            message: "Name is required".to_string(),
+            user_id: None,
+        }));
+    }
+
     // Check if user already exists
     let existing_user = sqlx::query!("SELECT id FROM users WHERE email = $1", new_user.email)
         .fetch_optional(&pool)
@@ -52,9 +61,10 @@ pub async fn register(
 
     // Insert new user
     let user = sqlx::query!(
-        "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id",
+        "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id",
         new_user.email,
-        password_hash
+        password_hash,
+        new_user.name.trim()
     )
     .fetch_one(&pool)
     .await?;
