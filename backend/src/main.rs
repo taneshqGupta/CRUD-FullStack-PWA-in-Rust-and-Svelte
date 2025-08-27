@@ -10,7 +10,7 @@ use axum::{
     routing::{delete, get, post},
 };
 use error::AppError;
-use posts::{create_post, delete_post, list_posts, update_post};
+use posts::{create_post, delete_post, list_posts, update_post, list_offers, list_requests};
 use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
 use sqlx::PgPool;
@@ -52,6 +52,8 @@ async fn main() -> Result<(), AppError> {
         // Post routes for skill-sharing platform
         .route("/", get(list_posts))  // Keep root path for backward compatibility
         .route("/posts", get(list_posts))
+        .route("/posts/offers", get(list_offers))     // Skills people can offer
+        .route("/posts/requests", get(list_requests)) // Help people need
         .route("/create", post(create_post))  // Backward compatibility
         .route("/posts/create", post(create_post))
         .route("/delete/{id}", delete(delete_post))  // Backward compatibility

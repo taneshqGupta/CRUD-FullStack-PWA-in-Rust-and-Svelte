@@ -36,6 +36,56 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
     Ok(Json(posts))
 }
 
+pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
+    let user_id = require_auth(session).await?;
+    
+    let rows = sqlx::query!(
+        "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
+        user_id
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let posts: Vec<Post> = rows
+        .into_iter()
+        .map(|row| Post {
+            id: row.id,
+            description: row.description,
+            completed: row.completed,
+            category: row.category,
+            user_id: row.user_id,
+            post_type: PostType::Offer,
+        })
+        .collect();
+
+    Ok(Json(posts))
+}
+
+pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
+    let user_id = require_auth(session).await?;
+    
+    let rows = sqlx::query!(
+        "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 AND post_type = 'request' ORDER BY id",
+        user_id
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let posts: Vec<Post> = rows
+        .into_iter()
+        .map(|row| Post {
+            id: row.id,
+            description: row.description,
+            completed: row.completed,
+            category: row.category,
+            user_id: row.user_id,
+            post_type: PostType::Request,
+        })
+        .collect();
+
+    Ok(Json(posts))
+}
+
 pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_post): Form<NewPost>) -> Result<Json<Post>, AppError> {
     let user_id = require_auth(session).await?;
     let post_type_str = new_post.post_type.to_string();
