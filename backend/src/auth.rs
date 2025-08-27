@@ -29,13 +29,15 @@ pub async fn register(
         }));
     }
 
-    // Validate name (basic validation)
-    if new_user.name.trim().is_empty() {
-        return Ok(Json(AuthResponse {
-            success: false,
-            message: "Name is required".to_string(),
-            user_id: None,
-        }));
+    // Validate name (optional but if provided, should not be empty)
+    if let Some(ref name) = new_user.name {
+        if name.trim().is_empty() {
+            return Ok(Json(AuthResponse {
+                success: false,
+                message: "Name cannot be empty".to_string(),
+                user_id: None,
+            }));
+        }
     }
 
     // Check if user already exists
@@ -59,12 +61,12 @@ pub async fn register(
         )
     })?;
 
-    // Insert new user
+        // Insert new user
     let user = sqlx::query!(
         "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id",
         new_user.email,
         password_hash,
-        new_user.name.trim()
+        new_user.name
     )
     .fetch_one(&pool)
     .await?;

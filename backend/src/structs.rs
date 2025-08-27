@@ -57,7 +57,7 @@ pub struct User {
 pub struct NewUser {
     pub email: String,
     pub password: String,
-    pub name: String,
+    pub name: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
