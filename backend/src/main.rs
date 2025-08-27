@@ -55,8 +55,8 @@ async fn main() -> Result<(), AppError> {
     // Set up session store
     let session_store = MemoryStore::default();
     let session_layer = SessionManagerLayer::new(session_store)
-        .with_secure(false) // Set to true in production with HTTPS
-        .with_same_site(tower_sessions::cookie::SameSite::Lax);
+        .with_secure(true) // Set to true in production with HTTPS
+        .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
         .route("/", get(list))
