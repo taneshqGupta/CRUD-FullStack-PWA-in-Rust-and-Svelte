@@ -49,7 +49,7 @@ async fn main() -> Result<(), AppError> {
     let app = Router::new()
         .route("/", get(list))
         .route("/create", post(create))
-        .route("/delete/:id", delete(delete_todo))
+        .route("/delete/{id}", delete(delete_todo))
         .route("/update", post(update))
         .route("/auth/register", post(register))
         .route("/auth/login", post(login))
