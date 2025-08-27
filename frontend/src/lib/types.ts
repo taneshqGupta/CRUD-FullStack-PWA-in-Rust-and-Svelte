@@ -1,3 +1,24 @@
+export type PostType = 'offer' | 'request';
+
+export interface Post {
+    id: number;
+    description: string;
+    completed: boolean;
+    category: string;
+    user_id: number;
+    post_type: PostType;
+    pin_code?: string;
+    user_name?: string;
+}
+
+export interface NewPost {
+    description: string;
+    category: string;
+    post_type: PostType;
+    pin_code?: string;
+}
+
+// Keep Todo for backward compatibility during transition
 export interface Todo {
     id: number;
     descript: string;
@@ -6,9 +27,10 @@ export interface Todo {
     user_id: number;
 }
 
-export interface User {
-    id: number;
+export interface NewUser {
     email: string;
+    password: string;
+    name?: string;
 }
 
 export interface AuthResponse {

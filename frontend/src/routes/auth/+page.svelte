@@ -9,6 +9,7 @@
 	let isLogin = true;
 	let email = '';
 	let password = '';
+	let name = '';
 	let loading = false;
 	let error = '';
 	let success = '';
@@ -21,6 +22,11 @@
 	async function handleSubmit() {
 		if (!email || !password) {
 			error = 'Please fill in all fields';
+			return;
+		}
+
+		if (!isLogin && !name) {
+			error = 'Please enter your name';
 			return;
 		}
 
@@ -44,7 +50,7 @@
 					error = response.message;
 				}
 			} else {
-				const response = await register(email, password);
+				const response = await register(email, password, name);
 				if (response.success && response.user_id) {
 					success = 'Registration successful! Redirecting...';
 					setAuthenticated(response.user_id);
@@ -64,6 +70,7 @@
 		isLogin = !isLogin;
 		error = '';
 		success = '';
+		name = ''; // Clear name when switching modes
 	}
 </script>
 
@@ -86,6 +93,23 @@
 			</div>
 
 			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+				{#if !isLogin}
+					<div class="form-control">
+						<label class="label" for="name">
+							<span class="label-text">Name</span>
+						</label>
+						<input
+							id="name"
+							type="text"
+							placeholder="Enter your name"
+							class="input input-bordered w-full"
+							bind:value={name}
+							disabled={loading}
+							required
+						/>
+					</div>
+				{/if}
+
 				<div class="form-control">
 					<label class="label" for="email">
 						<span class="label-text">Email</span>
