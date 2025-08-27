@@ -1,6 +1,24 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Post {
+    pub id: i32,
+    pub description: String,
+    pub completed: bool,
+    pub category: String,
+    pub user_id: i32,
+    pub post_type: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct NewPost {
+    pub description: String,
+    pub category: String,
+    pub post_type: String,
+}
+
+// Keep Todo structs for backward compatibility during transition
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Todo {
     pub id: i32,
     pub descript: String,

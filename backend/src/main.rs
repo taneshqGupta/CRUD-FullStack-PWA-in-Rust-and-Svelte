@@ -2,6 +2,7 @@ mod auth;
 mod error;
 mod funcs;
 mod partitioned_cookies;
+mod posts;
 mod structs;
 mod telemetry;
 use auth::{check_auth, login, logout, register};
@@ -11,6 +12,7 @@ use axum::{
 };
 use error::AppError;
 use funcs::{create, delete as delete_todo, list, update};
+use posts::{create_post, delete_post, list_posts, update_post};
 use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
 use sqlx::PgPool;
@@ -49,10 +51,17 @@ async fn main() -> Result<(), AppError> {
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
+        // Legacy todo routes for backward compatibility
         .route("/", get(list))
         .route("/create", post(create))
         .route("/delete/{id}", delete(delete_todo))
         .route("/update", post(update))
+        // New post routes for skill-sharing platform
+        .route("/posts", get(list_posts))
+        .route("/posts/create", post(create_post))
+        .route("/posts/delete/{id}", delete(delete_post))
+        .route("/posts/update", post(update_post))
+        // Auth routes
         .route("/auth/register", post(register))
         .route("/auth/login", post(login))
         .route("/auth/logout", post(logout))
