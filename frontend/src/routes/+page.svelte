@@ -66,6 +66,7 @@
 					aria-label="What needs to be done?"
 					autocomplete="off"
 					bind:value={newTodoDescription}
+					on:keydown={(e) => e.key === 'Enter' && handleCreateTodo()}
 				/>
 				<input
 					class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
@@ -75,6 +76,7 @@
 					aria-label="Category for the new task"
 					autocomplete="off"
 					bind:value={newTodoCategory}
+					on:keydown={(e) => e.key === 'Enter' && handleCreateTodo()}
 				/>
 			</form>
 			<p class="label text-xs mt-2 font-semibold textarea-primary">
