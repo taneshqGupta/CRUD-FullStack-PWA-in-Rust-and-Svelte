@@ -6,6 +6,9 @@ export async function createTodo(descript: string, category: string): Promise<To
     formData.append('descript', descript);
     formData.append('category', category);
 
+    console.log('Creating todo with:', { descript, category });
+    console.log('Form data:', formData.toString());
+
     const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
         method: "POST",
         credentials: "include",
@@ -15,11 +18,18 @@ export async function createTodo(descript: string, category: string): Promise<To
         body: formData.toString()
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response ok:', response.ok);
+
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to create todo: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`Failed to create todo: ${response.status} ${response.statusText} - ${errorText}`);
     }
-    return response.json();
+    
+    const result = await response.json();
+    console.log('Created todo:', result);
+    return result;
 }
 
 export async function updateTodo(todoToUpdate: Todo): Promise<Todo> {

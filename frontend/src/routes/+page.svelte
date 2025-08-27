@@ -30,7 +30,7 @@
 
 	async function handleCreateTodo() {
 		const descript = newTodoDescription.trim();
-		const category = newTodoCategory.trim();
+		const category = newTodoCategory.trim() || 'default';
 		if (!descript) {
 			console.warn('New task description cannot be empty.');
 			return;
