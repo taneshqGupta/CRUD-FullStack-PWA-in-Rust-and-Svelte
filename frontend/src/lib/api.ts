@@ -9,7 +9,7 @@ export async function createTodo(descript: string, category: string): Promise<To
     console.log('Creating todo with:', { descript, category });
     console.log('Form data:', formData.toString());
 
-    const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}/create`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -90,7 +90,8 @@ export async function login(email: string, password: string): Promise<AuthRespon
     });
 
     if (!response.ok) {
-        throw new Error(`Login failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Login failed: ${response.statusText}`);
     }
     return response.json();
 }
@@ -110,7 +111,8 @@ export async function register(email: string, password: string): Promise<AuthRes
     });
 
     if (!response.ok) {
-        throw new Error(`Registration failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Registration failed: ${response.statusText}`);
     }
     return response.json();
 }
@@ -122,7 +124,8 @@ export async function logout(): Promise<AuthResponse> {
     });
 
     if (!response.ok) {
-        throw new Error(`Logout failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Logout failed: ${response.statusText}`);
     }
     return response.json();
 }
@@ -134,7 +137,8 @@ export async function checkAuth(): Promise<AuthResponse> {
     });
 
     if (!response.ok) {
-        throw new Error(`Auth check failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Auth check failed: ${response.statusText}`);
     }
     return response.json();
 }

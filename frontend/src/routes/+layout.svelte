@@ -61,14 +61,13 @@
             <InstallAppButton />
 
             <nav aria-label="Theme Selection">
-                <ThemeSwitcher currentPath={data.url.pathname} />
+                <ThemeSwitcher currentPath={data?.url?.pathname || $page.url.pathname} />
             </nav>
         </div>
     </header>
     
     <main class="flex-grow p-4" id="main-content">
         <slot />
-    </main>
     </main>
     
     <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">

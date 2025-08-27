@@ -8,7 +8,6 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	export let data: { todos: Todo[] };
 	let todos: Todo[] = [];
 	let newTodoDescription: string = '';
 	let newTodoCategory: string = '';
@@ -186,100 +185,8 @@
 							</li>
 						{/if}
 					</ul>
-				</div>
-			</fieldset>
+				</fieldset>
+			</div>
 		{/if}
 	</div>
 {/if}
-
-<div class="w-full p-4">
-	<div>
-		<fieldset
-			class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4"
-			aria-label="Enter a New Task"
-		>
-			<legend class="fieldset-legend">
-				<PlusSvg />
-				New Task
-			</legend>
-			<form on:submit|preventDefault={handleCreateTodo}>
-				<input
-					class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-					name="descript"
-					type="text"
-					placeholder="What needs to be done?"
-					aria-label="What needs to be done?"
-					autocomplete="off"
-					bind:value={newTodoDescription}
-					on:keydown={(e) => e.key === 'Enter' && handleCreateTodo()}
-				/>
-				<input
-					class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-					name="category"
-					type="text"
-					placeholder="Category (optional)"
-					aria-label="Category for the new task"
-					autocomplete="off"
-					bind:value={newTodoCategory}
-					on:keydown={(e) => e.key === 'Enter' && handleCreateTodo()}
-				/>
-			</form>
-			<p class="label text-xs mt-2 font-semibold textarea-primary">
-				<LeafSvg />
-				Press enter to log your task
-			</p>
-		</fieldset>
-	</div>
-
-	<ul class="list bg-base-100 rounded-box" aria-label="tasks.">
-		<li class="p-4 pb-2 text-xs tracking-wide" aria-label="your tasks">
-			<div class="flex items-center gap-1">
-				<TodoSvg />
-				Your Tasks
-			</div>
-		</li>
-
-		{#each todos as todo (todo.id)}
-			<li class="list-row flex items-start p-4 justify-between" aria-label="list of your tasks">
-				<div class="flex items-start m-2 flex-grow">
-					<input
-						class="checkbox checkbox-sm checkbox-primary mr-2 border-2"
-						type="checkbox"
-						aria-label="checkbox"
-						bind:checked={todo.done}
-						on:change={() => handleUpdateTodo(todo)}
-					/>
-					<div>
-						<span
-							class="{todo.done ? 'line-through opacity-70' : ''} 
-                                w-full rounded-md bg-base-100
-                                focus:outline-none"
-							aria-label="description of tasks."
-							contenteditable="true"
-							bind:textContent={todo.descript}
-							spellcheck="false"
-							on:blur={() => handleUpdateTodo(todo)}
-						></span>
-						<span class="text-xs opacity-50">{todo.category}</span>
-					</div>
-				</div>
-				<button
-					class="btn btn-ghost btn-sm"
-					on:click={() => handleDeleteTodo(todo.id)}
-					aria-label="delete task"
-				>
-					<DeleteSvg />
-				</button>
-			</li>
-		{/each}
-
-		{#if todos.length === 0}
-			<li class="p-4 text-center" aria-label="no tasks">
-				<div class="flex items-center justify-center gap-2">
-					<NullSvg />
-					You have no tasks
-				</div>
-			</li>
-		{/if}
-	</ul>
-</div>
