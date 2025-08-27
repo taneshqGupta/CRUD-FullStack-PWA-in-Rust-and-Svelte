@@ -10,7 +10,8 @@ use axum::{
     routing::{delete, get, post},
 };
 use error::AppError;
-use posts::{create_post, delete_post, list_posts, update_post, list_offers, list_requests};
+use posts::{create_post, delete_post, list_posts, update_post, list_offers, list_requests, 
+           list_community_posts, list_community_offers, list_community_requests};
 use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
 use sqlx::PgPool;
@@ -49,11 +50,16 @@ async fn main() -> Result<(), AppError> {
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
-        // Post routes for skill-sharing platform
+        // Personal post routes
         .route("/", get(list_posts))  // Keep root path for backward compatibility
         .route("/posts", get(list_posts))
-        .route("/posts/offers", get(list_offers))     // Skills people can offer
-        .route("/posts/requests", get(list_requests)) // Help people need
+        .route("/posts/offers", get(list_offers))     // Skills I can offer
+        .route("/posts/requests", get(list_requests)) // Help I need
+        // Community post routes - see everyone's posts
+        .route("/community", get(list_community_posts))           // All community posts
+        .route("/community/offers", get(list_community_offers))   // All skills available
+        .route("/community/requests", get(list_community_requests)) // All help needed
+        // Post management
         .route("/create", post(create_post))  // Backward compatibility
         .route("/posts/create", post(create_post))
         .route("/delete/{id}", delete(delete_post))  // Backward compatibility

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
+  "query": "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
   "describe": {
     "columns": [
       {
@@ -32,6 +32,11 @@
         "ordinal": 5,
         "name": "post_type",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "pin_code",
+        "type_info": "Varchar"
       }
     ],
     "parameters": {
@@ -45,8 +50,9 @@
       false,
       false,
       false,
-      false
+      false,
+      true
     ]
   },
-  "hash": "8101a8e3732458ed499a078aa99c38854c89f7063764b2069d3047b8d0d96853"
+  "hash": "dbe04be01debdc2f0c4137a99a9b3942d7f239ebe3044864af2bdcdf237cd4ad"
 }

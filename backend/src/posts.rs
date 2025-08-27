@@ -11,7 +11,7 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 ORDER BY id",
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 ORDER BY id DESC",
         user_id
     )
     .fetch_all(&pool)
@@ -30,6 +30,7 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
                 "request" => PostType::Request,
                 _ => PostType::Request, // Default to request for unknown types
             },
+            pin_code: row.pin_code,
         })
         .collect();
 
@@ -40,7 +41,7 @@ pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'offer' ORDER BY id",
         user_id
     )
     .fetch_all(&pool)
@@ -55,6 +56,7 @@ pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result
             category: row.category,
             user_id: row.user_id,
             post_type: PostType::Offer,
+            pin_code: row.pin_code,
         })
         .collect();
 
@@ -65,7 +67,7 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
     let user_id = require_auth(session).await?;
     
     let rows = sqlx::query!(
-        "SELECT id, description, completed, category, user_id, post_type FROM posts WHERE user_id = $1 AND post_type = 'request' ORDER BY id",
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE user_id = $1 AND post_type = 'request' ORDER BY id",
         user_id
     )
     .fetch_all(&pool)
@@ -80,6 +82,87 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
             category: row.category,
             user_id: row.user_id,
             post_type: PostType::Request,
+            pin_code: row.pin_code,
+        })
+        .collect();
+
+    Ok(Json(posts))
+}
+
+// Community endpoints - see posts from all users
+pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
+    let _user_id = require_auth(session).await?; // Just verify auth, but show all posts
+    
+    let rows = sqlx::query!(
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts ORDER BY id DESC"
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let posts: Vec<Post> = rows
+        .into_iter()
+        .map(|row| Post {
+            id: row.id,
+            description: row.description,
+            completed: row.completed,
+            category: row.category,
+            user_id: row.user_id,
+            post_type: match row.post_type.as_str() {
+                "offer" => PostType::Offer,
+                "request" => PostType::Request,
+                _ => PostType::Request,
+            },
+            pin_code: row.pin_code,
+        })
+        .collect();
+
+    Ok(Json(posts))
+}
+
+pub async fn list_community_offers(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
+    let _user_id = require_auth(session).await?;
+    
+    let rows = sqlx::query!(
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE post_type = 'offer' ORDER BY id DESC"
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let posts: Vec<Post> = rows
+        .into_iter()
+        .map(|row| Post {
+            id: row.id,
+            description: row.description,
+            completed: row.completed,
+            category: row.category,
+            user_id: row.user_id,
+            post_type: PostType::Offer,
+            pin_code: row.pin_code,
+        })
+        .collect();
+
+    Ok(Json(posts))
+}
+
+pub async fn list_community_requests(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
+    let _user_id = require_auth(session).await?;
+    
+    let rows = sqlx::query!(
+        "SELECT id, description, completed, category, user_id, post_type, pin_code FROM posts WHERE post_type = 'request' ORDER BY id DESC"
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let posts: Vec<Post> = rows
+        .into_iter()
+        .map(|row| Post {
+            id: row.id,
+            description: row.description,
+            completed: row.completed,
+            category: row.category,
+            user_id: row.user_id,
+            post_type: PostType::Request,
+            pin_code: row.pin_code,
         })
         .collect();
 
@@ -91,12 +174,13 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
     let post_type_str = new_post.post_type.to_string();
     
     let row = sqlx::query!(
-        "INSERT INTO posts (description, completed, category, user_id, post_type) VALUES ($1, $2, $3, $4, $5) RETURNING id, description, completed, category, user_id, post_type", 
+        "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, description, completed, category, user_id, post_type, pin_code", 
         new_post.description,
         false,
         new_post.category,
         user_id,
-        post_type_str
+        post_type_str,
+        new_post.pin_code
     )
     .fetch_one(&pool) 
     .await?;
@@ -108,6 +192,7 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
         category: row.category,
         user_id: row.user_id,
         post_type: new_post.post_type,
+        pin_code: row.pin_code,
     };
 
     Ok(Json(created_post))
@@ -133,11 +218,12 @@ pub async fn update_post(State(pool): State<PgPool>, session: Session, Json(post
     let post_type_str = post.post_type.to_string();
     
     let result = sqlx::query!(
-        "UPDATE posts SET description = $1, completed = $2, category = $3, post_type = $4 WHERE id = $5 AND user_id = $6", 
+        "UPDATE posts SET description = $1, completed = $2, category = $3, post_type = $4, pin_code = $5 WHERE id = $6 AND user_id = $7", 
         post.description,
         post.completed,
         post.category,
         post_type_str,
+        post.pin_code,
         post.id,
         user_id
     )
