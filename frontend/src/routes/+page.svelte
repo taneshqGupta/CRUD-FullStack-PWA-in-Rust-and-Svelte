@@ -111,6 +111,7 @@
 							contenteditable="true"
 							bind:textContent={todo.descript}
 							spellcheck="false"
+							on:blur={() => handleUpdateTodo(todo)}
 						></span>
 						<span class="text-xs opacity-50">{todo.category}</span>
 					</div>
