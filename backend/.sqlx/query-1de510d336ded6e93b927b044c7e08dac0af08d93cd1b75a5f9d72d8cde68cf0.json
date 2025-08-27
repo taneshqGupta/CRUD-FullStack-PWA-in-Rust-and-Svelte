@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, descript, done, category, user_id FROM todos WHERE user_id = $1 ORDER BY id",
+  "query": "INSERT INTO posts (description, completed, category, user_id, post_type) VALUES ($1, $2, $3, $4, $5) RETURNING id, description, completed, category, user_id, post_type",
   "describe": {
     "columns": [
       {
@@ -10,12 +10,12 @@
       },
       {
         "ordinal": 1,
-        "name": "descript",
+        "name": "description",
         "type_info": "Text"
       },
       {
         "ordinal": 2,
-        "name": "done",
+        "name": "completed",
         "type_info": "Bool"
       },
       {
@@ -27,11 +27,20 @@
         "ordinal": 4,
         "name": "user_id",
         "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "post_type",
+        "type_info": "Varchar"
       }
     ],
     "parameters": {
       "Left": [
-        "Int4"
+        "Text",
+        "Bool",
+        "Varchar",
+        "Int4",
+        "Varchar"
       ]
     },
     "nullable": [
@@ -39,8 +48,9 @@
       false,
       false,
       false,
+      false,
       false
     ]
   },
-  "hash": "5c86b47d38946d28519cde3c1cc8bc19648b012ed2d588693c48a4a704afc8f7"
+  "hash": "1de510d336ded6e93b927b044c7e08dac0af08d93cd1b75a5f9d72d8cde68cf0"
 }

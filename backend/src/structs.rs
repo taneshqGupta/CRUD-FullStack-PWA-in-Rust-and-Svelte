@@ -17,22 +17,6 @@ pub struct NewPost {
     pub post_type: String,
 }
 
-// Keep Todo structs for backward compatibility during transition
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Todo {
-    pub id: i32,
-    pub descript: String,
-    pub done: bool,
-    pub category: String,
-    pub user_id: i32,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct NewTodo {
-    pub descript: String,
-    pub category: String,
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DeleteResponse {
     pub success: bool,

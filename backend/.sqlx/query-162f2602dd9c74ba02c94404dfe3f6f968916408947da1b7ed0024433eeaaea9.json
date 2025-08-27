@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "UPDATE todos SET descript = $1, done = $2, category = $3 WHERE id = $4 AND user_id = $5",
+  "query": "UPDATE posts SET description = $1, completed = $2, category = $3, post_type = $4 WHERE id = $5 AND user_id = $6",
   "describe": {
     "columns": [],
     "parameters": {
@@ -8,11 +8,12 @@
         "Text",
         "Bool",
         "Varchar",
+        "Varchar",
         "Int4",
         "Int4"
       ]
     },
     "nullable": []
   },
-  "hash": "cc2e97081581de7cbe28ad82919bf72384d1c0227f2282ed9da86e59e69528c6"
+  "hash": "162f2602dd9c74ba02c94404dfe3f6f968916408947da1b7ed0024433eeaaea9"
 }

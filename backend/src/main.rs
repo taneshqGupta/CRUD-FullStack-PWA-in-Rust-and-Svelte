@@ -1,6 +1,5 @@
 mod auth;
 mod error;
-mod funcs;
 mod partitioned_cookies;
 mod posts;
 mod structs;
@@ -11,7 +10,6 @@ use axum::{
     routing::{delete, get, post},
 };
 use error::AppError;
-use funcs::{create, delete as delete_todo, list, update};
 use posts::{create_post, delete_post, list_posts, update_post};
 use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
@@ -51,15 +49,14 @@ async fn main() -> Result<(), AppError> {
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
-        // Legacy todo routes for backward compatibility
-        .route("/", get(list))
-        .route("/create", post(create))
-        .route("/delete/{id}", delete(delete_todo))
-        .route("/update", post(update))
-        // New post routes for skill-sharing platform
+        // Post routes for skill-sharing platform
+        .route("/", get(list_posts))  // Keep root path for backward compatibility
         .route("/posts", get(list_posts))
+        .route("/create", post(create_post))  // Backward compatibility
         .route("/posts/create", post(create_post))
+        .route("/delete/{id}", delete(delete_post))  // Backward compatibility
         .route("/posts/delete/{id}", delete(delete_post))
+        .route("/update", post(update_post))  // Backward compatibility
         .route("/posts/update", post(update_post))
         // Auth routes
         .route("/auth/register", post(register))
