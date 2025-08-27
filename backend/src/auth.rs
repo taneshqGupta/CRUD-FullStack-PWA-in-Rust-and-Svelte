@@ -79,7 +79,7 @@ pub async fn login(
         .await?;
 
     match user {
-        Some(user_record) => {
+        Option::Some(user_record) => {
             // Verify password
             let is_valid = verify(login_request.password.as_bytes(), &user_record.password_hash)
                 .map_err(|_| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, anyhow::anyhow!("Failed to verify password")))?;
@@ -104,7 +104,7 @@ pub async fn login(
                 }))
             }
         }
-        None => Ok(Json(AuthResponse {
+        Option::None => Ok(Json(AuthResponse {
             success: false,
             message: "Invalid credentials".to_string(),
             user_id: None,
