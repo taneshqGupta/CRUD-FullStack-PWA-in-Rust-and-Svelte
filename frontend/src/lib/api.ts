@@ -33,32 +33,35 @@ export async function createTodo(descript: string, category: string): Promise<To
 }
 
 export async function updateTodo(todoToUpdate: Todo): Promise<Todo> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}update`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(todoToUpdate)
-    });
+	const response = await fetch(`${PUBLIC_BACKEND_URL}update`, {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(todoToUpdate)
+	});
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to update todo: ${response.statusText}`);
-    }
-    return response.json();
+	if (!response.ok) {
+		const errorText = await response.text();
+		console.error('Update error response:', errorText);
+		throw new Error(`Failed to update todo: ${response.status} ${response.statusText} - ${errorText}`);
+	}
+	return response.json();
 }
 
 export async function deleteTodo(id: number): Promise<void> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}delete/${id}`, {
-        method: "POST",
-        credentials: "include"
-    });
+	const response = await fetch(`${PUBLIC_BACKEND_URL}delete/${id}`, {
+		method: 'POST',
+		credentials: 'include'
+	});
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to delete todo: ${response.statusText}`);
-    }
+	if (!response.ok) {
+		const errorText = await response.text();
+		console.error('Delete error response:', errorText);
+		throw new Error(`Failed to delete todo: ${response.status} ${response.statusText} - ${errorText}`);
+	}
+	// No need to parse JSON for a successful delete
 }
 
 export async function getTodos(): Promise<Todo[]> {
