@@ -9,7 +9,7 @@ export async function createTodo(descript: string, category: string): Promise<To
     console.log('Creating todo with:', { descript, category });
     console.log('Form data:', formData.toString());
 
-    const response = await fetch(`${PUBLIC_BACKEND_URL}/create`, {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
         method: "POST",
         credentials: "include",
         headers: {
