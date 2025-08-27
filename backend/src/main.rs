@@ -2,8 +2,10 @@ mod telemetry;
 mod funcs;
 mod structs;
 mod error;
+mod auth;
 use error::AppError;
 use funcs::{list, create, update, delete, };
+use auth::{register, login, logout, check_auth};
 use std::net::SocketAddr;
 use axum::{
     routing::{get, post},
@@ -13,6 +15,7 @@ use sqlx::PgPool;
 use tokio::net::TcpListener;
 use tower_http::cors::CorsLayer;
 use http::{HeaderName, Method}; 
+use tower_sessions::{MemoryStore, SessionManagerLayer}; 
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
@@ -49,14 +52,23 @@ async fn main() -> Result<(), AppError> {
     ])
     .allow_credentials(true);
 
-
+    // Set up session store
+    let session_store = MemoryStore::default();
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_secure(false) // Set to true in production with HTTPS
+        .with_same_site(tower_sessions::cookie::SameSite::Lax);
 
     let app = Router::new()
         .route("/", get(list))
         .route("/create", post(create))
         .route("/delete/{id}", post(delete))
         .route("/update", post(update))
+        .route("/auth/register", post(register))
+        .route("/auth/login", post(login))
+        .route("/auth/logout", post(logout))
+        .route("/auth/check", get(check_auth))
         .with_state(pool)
+        .layer(session_layer)
         .layer(cors);
 
     let port = std::env::var("PORT")

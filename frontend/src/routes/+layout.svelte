@@ -4,6 +4,8 @@
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
     import InstallAppButton from '$lib/components/InstallAppButton.svelte'; 
 	import { GithubSvg, SquirrelSvg, TasksSvg } from '$lib/components/icons';
+    import { authStore, initAuth, logout } from '$lib/auth';
+    import { page } from '$app/stores';
     
     import AOS from 'aos';
     import 'aos/dist/aos.css';
@@ -22,7 +24,16 @@
             mirror: false, 
             anchorPlacement: 'top-bottom', 
         });
+
+        // Initialize auth state
+        initAuth();
     });
+
+    async function handleLogout() {
+        await logout();
+    }
+
+    $: isAuthPage = $page.url.pathname === '/auth';
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
@@ -38,6 +49,15 @@
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
+            {#if !isAuthPage && $authStore.isAuthenticated}
+                <button 
+                    class="btn btn-ghost btn-sm"
+                    on:click={handleLogout}
+                >
+                    Logout
+                </button>
+            {/if}
+            
             <InstallAppButton />
 
             <nav aria-label="Theme Selection">
@@ -48,6 +68,7 @@
     
     <main class="flex-grow p-4" id="main-content">
         <slot />
+    </main>
     </main>
     
     <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">

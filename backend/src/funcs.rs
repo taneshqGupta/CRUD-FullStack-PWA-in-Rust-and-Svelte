@@ -2,26 +2,37 @@ use crate::error;
 use error::AppError;
 use crate::structs;
 use structs::{Todo, NewTodo, DeleteResponse};
+use crate::auth::require_auth;
 use axum::{extract::{Path, State}, Form, Json};
 use http::StatusCode;
 use sqlx::PgPool;
+use tower_sessions::Session;
 
 
-pub async fn list(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, AppError> { 
-    let todos = sqlx::query_as!(Todo, "SELECT id, descript, done, category FROM todos ORDER BY id")
-        .fetch_all(&pool)
-        .await?;
+pub async fn list(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Todo>>, AppError> {
+    let user_id = require_auth(session).await?;
+    
+    let todos = sqlx::query_as!(
+        Todo, 
+        "SELECT id, descript, done, category, user_id FROM todos WHERE user_id = $1 ORDER BY id",
+        user_id
+    )
+    .fetch_all(&pool)
+    .await?;
 
     Ok(Json(todos))
 }
 
-pub async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> { 
+pub async fn create(State(pool): State<PgPool>, session: Session, Form(new_todo): Form<NewTodo>) -> Result<Json<Todo>, AppError> {
+    let user_id = require_auth(session).await?;
+    
     let created_todo = sqlx::query_as!(
         Todo,
-        "INSERT INTO todos (descript, done, category) VALUES ($1, $2, $3) RETURNING id, descript, done, category", 
+        "INSERT INTO todos (descript, done, category, user_id) VALUES ($1, $2, $3, $4) RETURNING id, descript, done, category, user_id", 
         new_todo.descript,
         false,
-        new_todo.category
+        new_todo.category,
+        user_id
     )
     .fetch_one(&pool) 
     .await?;
@@ -29,8 +40,10 @@ pub async fn create(State(pool): State<PgPool>, Form(new_todo): Form<NewTodo>) -
     Ok(Json(created_todo))
 }
 
-pub async fn delete(State(pool): State<PgPool>, Path(id): Path<i32>) -> Result<Json<DeleteResponse>, AppError> { 
-    let result = sqlx::query!("DELETE FROM todos WHERE id = $1", id) 
+pub async fn delete(State(pool): State<PgPool>, session: Session, Path(id): Path<i32>) -> Result<Json<DeleteResponse>, AppError> {
+    let user_id = require_auth(session).await?;
+    
+    let result = sqlx::query!("DELETE FROM todos WHERE id = $1 AND user_id = $2", id, user_id) 
         .execute(&pool)
         .await?;
 
@@ -42,13 +55,16 @@ pub async fn delete(State(pool): State<PgPool>, Path(id): Path<i32>) -> Result<J
     }
 }
 
-pub async fn update(State(pool): State<PgPool>, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> { 
+pub async fn update(State(pool): State<PgPool>, session: Session, Json(todo): Json<Todo>) -> Result<Json<Todo>, AppError> {
+    let user_id = require_auth(session).await?;
+    
     let result = sqlx::query!(
-        "UPDATE todos SET descript = $1, done = $2, category = $3 WHERE id = $4", 
+        "UPDATE todos SET descript = $1, done = $2, category = $3 WHERE id = $4 AND user_id = $5", 
         todo.descript,
         todo.done,
         todo.category,
-        todo.id
+        todo.id,
+        user_id
     )
     .execute(&pool)
     .await?;

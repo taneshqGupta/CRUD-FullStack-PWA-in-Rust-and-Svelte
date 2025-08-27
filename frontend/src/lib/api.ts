@@ -1,5 +1,5 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import type { Todo } from '$lib/types';
+import type { Todo, AuthResponse, LoginRequest } from '$lib/types';
 
 export async function createTodo(descript: string, category: string): Promise<Todo> {
     const formData = new URLSearchParams();
@@ -59,4 +59,82 @@ export async function deleteTodo(id: number): Promise<void> {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `Failed to delete todo: ${response.statusText}`);
     }
+}
+
+export async function getTodos(): Promise<Todo[]> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to fetch todos: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+// Auth API functions
+export async function login(email: string, password: string): Promise<AuthResponse> {
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+    });
+
+    if (!response.ok) {
+        throw new Error(`Login failed: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function register(email: string, password: string): Promise<AuthResponse> {
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/register`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+    });
+
+    if (!response.ok) {
+        throw new Error(`Registration failed: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function logout(): Promise<AuthResponse> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/logout`, {
+        method: "POST",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        throw new Error(`Logout failed: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function checkAuth(): Promise<AuthResponse> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/check`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        throw new Error(`Auth check failed: ${response.statusText}`);
+    }
+    return response.json();
 }

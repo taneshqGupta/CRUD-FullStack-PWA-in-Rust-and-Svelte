@@ -4,14 +4,19 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = { version = "0.8.4", features = ["form"] }
+axum = { version = "0.7.5", features = ["form"] }
 http = "1.0"
 serde_json = "1.0"
 serde = { version = "1.0.219", features = ["derive"] }
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "tls-rustls", "postgres"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio", "tls-rustls", "postgres", "chrono"] }
 tokio = { version = "1.45.1", features = ["full"] }
-tower-http = { version = "0.6.6", features = ["cors"] }
+tower-http = { version = "0.5.2", features = ["cors"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 anyhow = "1.0"
 pulldown-cmark = "0.13.0"
+bcrypt = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+tower-sessions = "0.12"
+tower-sessions-memory-store = "0.12"
+uuid = { version = "1.0", features = ["v4", "serde"] }

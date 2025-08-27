@@ -5,6 +5,8 @@ export const load: LayoutServerLoad = async ({ cookies, url }) => {
 
     return {
         theme,
-        url: { pathname: url.pathname } 
+        url: { pathname: url.pathname },
+        authenticated: false, // Will be handled by client-side checks
+        user_id: null
     };
 };

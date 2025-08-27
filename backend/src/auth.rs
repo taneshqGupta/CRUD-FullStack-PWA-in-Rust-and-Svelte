@@ -1,0 +1,152 @@
+use crate::error::AppError;
+use crate::structs::{NewUser, LoginRequest, AuthResponse};
+use axum::{extract::State, Form, Json};
+use tower_sessions::Session;
+use bcrypt::{hash, verify, DEFAULT_COST};
+use http::StatusCode;
+use sqlx::PgPool;
+
+pub async fn register(
+    State(pool): State<PgPool>,
+    session: Session,
+    Form(new_user): Form<NewUser>,
+) -> Result<Json<AuthResponse>, AppError> {
+    // Validate email format (basic validation)
+    if !new_user.email.contains('@') || new_user.email.is_empty() {
+        return Ok(Json(AuthResponse {
+            success: false,
+            message: "Invalid email format".to_string(),
+            user_id: None,
+        }));
+    }
+
+    // Validate password length
+    if new_user.password.len() < 6 {
+        return Ok(Json(AuthResponse {
+            success: false,
+            message: "Password must be at least 6 characters long".to_string(),
+            user_id: None,
+        }));
+    }
+
+    // Check if user already exists
+    let existing_user = sqlx::query!("SELECT id FROM users WHERE email = $1", new_user.email)
+        .fetch_optional(&pool)
+        .await?;
+
+    if existing_user.is_some() {
+        return Ok(Json(AuthResponse {
+            success: false,
+            message: "Email already registered".to_string(),
+            user_id: None,
+        }));
+    }
+
+    // Hash the password
+    let password_hash = hash(new_user.password.as_bytes(), DEFAULT_COST)
+        .map_err(|_| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, anyhow::anyhow!("Failed to hash password")))?;
+
+    // Insert new user
+    let user = sqlx::query!(
+        "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id",
+        new_user.email,
+        password_hash
+    )
+    .fetch_one(&pool)
+    .await?;
+
+    // Set session
+    session
+        .insert("user_id", user.id)
+        .await
+        .map_err(|_| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, anyhow::anyhow!("Failed to set session")))?;
+
+    Ok(Json(AuthResponse {
+        success: true,
+        message: "Registration successful".to_string(),
+        user_id: Some(user.id),
+    }))
+}
+
+pub async fn login(
+    State(pool): State<PgPool>,
+    session: Session,
+    Form(login_request): Form<LoginRequest>,
+) -> Result<Json<AuthResponse>, AppError> {
+    // Find user by email
+    let user = sqlx::query!("SELECT id, password_hash FROM users WHERE email = $1", login_request.email)
+        .fetch_optional(&pool)
+        .await?;
+
+    match user {
+        Some(user_record) => {
+            // Verify password
+            let is_valid = verify(login_request.password.as_bytes(), &user_record.password_hash)
+                .map_err(|_| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, anyhow::anyhow!("Failed to verify password")))?;
+
+            if is_valid {
+                // Set session
+                session
+                    .insert("user_id", user_record.id)
+                    .await
+                    .map_err(|_| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, anyhow::anyhow!("Failed to set session")))?;
+
+                Ok(Json(AuthResponse {
+                    success: true,
+                    message: "Login successful".to_string(),
+                    user_id: Some(user_record.id),
+                }))
+            } else {
+                Ok(Json(AuthResponse {
+                    success: false,
+                    message: "Invalid credentials".to_string(),
+                    user_id: None,
+                }))
+            }
+        }
+        None => Ok(Json(AuthResponse {
+            success: false,
+            message: "Invalid credentials".to_string(),
+            user_id: None,
+        }))
+    }
+}
+
+pub async fn logout(session: Session) -> Result<Json<AuthResponse>, AppError> {
+    session.flush().await.map_err(|_| AppError::HttpError(
+        StatusCode::INTERNAL_SERVER_ERROR, 
+        anyhow::anyhow!("Failed to clear session")
+    ))?;
+    
+    Ok(Json(AuthResponse {
+        success: true,
+        message: "Logged out successfully".to_string(),
+        user_id: None,
+    }))
+}
+
+pub async fn check_auth(session: Session) -> Result<Json<AuthResponse>, AppError> {
+    match session.get::<i32>("user_id").await {
+        Ok(Some(user_id)) => Ok(Json(AuthResponse {
+            success: true,
+            message: "Authenticated".to_string(),
+            user_id: Some(user_id),
+        })),
+        _ => Ok(Json(AuthResponse {
+            success: false,
+            message: "Not authenticated".to_string(),
+            user_id: None,
+        })),
+    }
+}
+
+// Middleware to check if user is authenticated
+pub async fn require_auth(session: Session) -> Result<i32, AppError> {
+    match session.get::<i32>("user_id").await {
+        Ok(Some(user_id)) => Ok(user_id),
+        _ => Err(AppError::HttpError(
+            StatusCode::UNAUTHORIZED,
+            anyhow::anyhow!("Authentication required")
+        )),
+    }
+}
