@@ -198,7 +198,12 @@
 							aria-label="Post description"
 							autocomplete="off"
 							bind:value={newPostDescription}
-							on:keydown={(e) => e.key === 'Enter' && e.shiftKey === false && handleCreatePost()}
+							on:keydown={(e) => {
+								if (e.key === 'Enter' && !e.shiftKey) {
+									e.preventDefault();
+									handleCreatePost();
+								}
+							}}
 						/>
 						<input
 							class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
@@ -208,6 +213,12 @@
 							aria-label="Category for the post"
 							autocomplete="off"
 							bind:value={newPostCategory}
+							on:keydown={(e) => {
+								if (e.key === 'Enter' && !e.shiftKey) {
+									e.preventDefault();
+									handleCreatePost();
+								}
+							}}
 						/>
 						<input
 							class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
@@ -217,6 +228,12 @@
 							aria-label="Pin code for location"
 							autocomplete="off"
 							bind:value={newPinCode}
+							on:keydown={(e) => {
+								if (e.key === 'Enter' && !e.shiftKey) {
+									e.preventDefault();
+									handleCreatePost();
+								}
+							}}
 						/>
 					</form>
 					<p class="label text-xs mt-2 font-semibold textarea-primary">
