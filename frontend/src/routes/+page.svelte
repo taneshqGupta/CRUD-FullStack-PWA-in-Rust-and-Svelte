@@ -1,5 +1,3 @@
-<!-- svelte-ignore a11y_missing_attribute -->
-<!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
 	import type { Post, PostType } from '$lib/types';
 	import { DeleteSvg, LeafSvg, NullSvg, PlusSvg, TodoSvg } from '$lib/components/icons';
