@@ -11,7 +11,6 @@ pub async fn register(
     session: Session,
     Form(new_user): Form<NewUser>,
 ) -> Result<Json<AuthResponse>, AppError> {
-    // Validate email format (basic validation)
     if !new_user.email.contains('@') || new_user.email.is_empty() {
         return Ok(Json(AuthResponse {
             success: false,
@@ -20,7 +19,6 @@ pub async fn register(
         }));
     }
 
-    // Validate password length
     if new_user.password.len() < 6 {
         return Ok(Json(AuthResponse {
             success: false,
@@ -29,7 +27,6 @@ pub async fn register(
         }));
     }
 
-    // Validate name (optional but if provided, should not be empty)
     if let Some(ref name) = new_user.name {
         if name.trim().is_empty() {
             return Ok(Json(AuthResponse {
@@ -40,7 +37,6 @@ pub async fn register(
         }
     }
 
-    // Check if user already exists
     let existing_user = sqlx::query!("SELECT id FROM users WHERE email = $1", new_user.email)
         .fetch_optional(&pool)
         .await?;
@@ -53,7 +49,6 @@ pub async fn register(
         }));
     }
 
-    // Hash the password
     let password_hash = hash(new_user.password.as_bytes(), DEFAULT_COST).map_err(|_| {
         AppError::HttpError(
             StatusCode::INTERNAL_SERVER_ERROR,
@@ -61,7 +56,6 @@ pub async fn register(
         )
     })?;
 
-        // Insert new user
     let user = sqlx::query!(
         "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id",
         new_user.email,
@@ -71,7 +65,6 @@ pub async fn register(
     .fetch_one(&pool)
     .await?;
 
-    // Set session
     session.insert("user_id", user.id).await.map_err(|_| {
         AppError::HttpError(
             StatusCode::INTERNAL_SERVER_ERROR,
@@ -91,7 +84,6 @@ pub async fn login(
     session: Session,
     Form(login_request): Form<LoginRequest>,
 ) -> Result<Json<AuthResponse>, AppError> {
-    // Find user by email
     let user = sqlx::query!(
         "SELECT id, password_hash FROM users WHERE email = $1",
         login_request.email
@@ -101,7 +93,6 @@ pub async fn login(
 
     match user {
         Option::Some(user_record) => {
-            // Verify password
             let is_valid = verify(
                 login_request.password.as_bytes(),
                 &user_record.password_hash,
@@ -114,7 +105,6 @@ pub async fn login(
             })?;
 
             if is_valid {
-                // Set session
                 session
                     .insert("user_id", user_record.id)
                     .await
@@ -176,7 +166,6 @@ pub async fn check_auth(session: Session) -> Result<Json<AuthResponse>, AppError
     }
 }
 
-// Middleware to check if user is authenticated
 pub async fn require_auth(session: Session) -> Result<i32, AppError> {
     match session.get::<i32>("user_id").await {
         Ok(Some(user_id)) => Ok(user_id),

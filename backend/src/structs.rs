@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum PostType {
-    Offer,   // "I can help with this skill"
-    Request, // "I need help with this"
+    Offer,   
+    Request, 
 }
 
 impl std::fmt::Display for PostType {
@@ -25,7 +25,7 @@ pub struct Post {
     pub user_id: i32,
     pub post_type: PostType,
     pub pin_code: Option<String>,
-    pub user_name: Option<String>, // Name of the person who posted this
+    pub user_name: Option<String>, 
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

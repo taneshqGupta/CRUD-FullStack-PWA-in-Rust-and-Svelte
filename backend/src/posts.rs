@@ -31,7 +31,7 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
             post_type: match row.post_type.as_str() {
                 "offer" => PostType::Offer,
                 "request" => PostType::Request,
-                _ => PostType::Request, // Default to request for unknown types
+                _ => PostType::Request, 
             },
             pin_code: row.pin_code,
             user_name: row.user_name,
@@ -101,9 +101,8 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
     Ok(Json(posts))
 }
 
-// Community endpoints - see posts from all users
 pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let _user_id = require_auth(session).await?; // Just verify auth, but show all posts
+    let _user_id = require_auth(session).await?; 
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -211,7 +210,6 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
     .fetch_one(&pool) 
     .await?;
 
-    // Get the user's name for the response
     let user_name = sqlx::query!("SELECT name FROM users WHERE id = $1", user_id)
         .fetch_one(&pool)
         .await
