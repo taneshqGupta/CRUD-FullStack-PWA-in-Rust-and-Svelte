@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getUserProfile, getPosts } from '$lib/api';
-    import { authStore } from '$lib/auth';
+    import { authStore, logout } from '$lib/auth';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import type { Post } from '$lib/types';
@@ -35,6 +35,11 @@
         } finally {
             loading = false;
         }
+    }
+
+    async function handleLogout() {
+        await logout();
+        goto('/login');
     }
 
     $: offerCount = userPosts.filter(post => post.post_type === 'offer').length;
@@ -130,6 +135,12 @@
                     <a href="/" class="btn btn-ghost">
                         🗺️ View Community Map
                     </a>
+                    <button 
+                        class="btn btn-error btn-outline"
+                        on:click={handleLogout}
+                    >
+                        🚪 Logout
+                    </button>
                 </div>
 
                 <!-- User's Posts -->

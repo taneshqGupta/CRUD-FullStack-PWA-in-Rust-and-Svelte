@@ -38,12 +38,6 @@
                 <a href="/profile" class="btn btn-ghost btn-sm">
                     👤 Profile
                 </a>
-                <button 
-                    class="btn btn-ghost btn-sm"
-                    on:click={handleLogout}
-                >
-                    Logout
-                </button>
             {/if}
             
             <InstallAppButton />
