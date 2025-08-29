@@ -134,7 +134,7 @@
 <div class="bg-base-200 flex items-center justify-center">
     <div class="w-full max-w-6xl px-4 flex justify-center">
         <div class="flex flex-col lg:flex-row-reverse gap-8">
-			<div class="card shrink-0 w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
+			<div class="card w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
 				<div class="card-body">
 					<div class="text-center mb-6">
 						<h2 class="card-title text-2xl font-bold text-base-content justify-center">
