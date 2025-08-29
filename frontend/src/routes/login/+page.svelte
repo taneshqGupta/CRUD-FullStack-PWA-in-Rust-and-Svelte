@@ -134,43 +134,6 @@
 <div class="bg-base-200 flex items-center justify-center">
     <div class="w-full max-w-6xl px-4 flex justify-center">
         <div class="flex flex-col lg:flex-row-reverse gap-8">
-            <div class="text-center lg:text-left lg:w-1/2">
-				<div class="mb-8">
-					<h1 class="text-5xl font-bold text-primary mb-4">
-						SkillSwap
-					</h1>
-					<p class="text-xl text-base-content/80 mb-6">
-						Your neighborhood skills community - connect with neighbors, share expertise, and build stronger communities through skill exchange.
-					</p>
-					
-					{#if communityStats.total > 0}
-						<div class="stats stats-vertical lg:stats-horizontal shadow bg-base-100 mb-6">
-							<div class="stat">
-								<div class="stat-figure text-primary">
-									💡
-								</div>
-								<div class="stat-title">Available Skills</div>
-								<div class="stat-value text-primary">{communityStats.offers}</div>
-							</div>
-							<div class="stat">
-								<div class="stat-figure text-secondary">
-									🙋
-								</div>
-								<div class="stat-title">Help Requests</div>
-								<div class="stat-value text-secondary">{communityStats.requests}</div>
-							</div>
-						</div>
-					{/if}
-
-					<div class="flex flex-wrap gap-2 justify-center lg:justify-start">
-						<div class="badge badge-primary badge-lg">Share Skills</div>
-						<div class="badge badge-secondary badge-lg">Ask for Help</div>
-						<div class="badge badge-accent badge-lg">Local Community</div>
-						<div class="badge badge-info badge-lg">Interactive Map</div>
-					</div>
-				</div>
-			</div>
-
 			<div class="card shrink-0 w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
 				<div class="card-body">
 					<div class="text-center mb-6">
