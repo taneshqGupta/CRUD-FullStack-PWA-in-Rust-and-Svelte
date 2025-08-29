@@ -175,10 +175,10 @@
 				<div class="card-body">
 					<div class="text-center mb-6">
 						<h2 class="card-title text-2xl font-bold text-base-content justify-center">
-							Welcome to Skill-Swap: Learn, Teach, Socialise		
+							Welcome to Skill-Swap		
 						</h2>
 						<p class="text-base-content/70 text-sm">
-							{isLogin ? 'Sign in to discover local skills' : 'Start sharing and learning skills'}
+							Learn, Teach, Socialise
 						</p>
 					</div>
 					
