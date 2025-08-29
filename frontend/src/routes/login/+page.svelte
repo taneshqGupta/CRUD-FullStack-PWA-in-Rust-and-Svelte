@@ -163,26 +163,19 @@
 					{/if}
 
 					<div class="flex flex-wrap gap-2 justify-center lg:justify-start">
-						<div class="badge badge-primary badge-lg">🔧 Share Skills</div>
-						<div class="badge badge-secondary badge-lg">🙋 Ask for Help</div>
-						<div class="badge badge-accent badge-lg">📍 Local Community</div>
-						<div class="badge badge-info badge-lg">🗺️ Interactive Map</div>
+						<div class="badge badge-primary badge-lg">Share Skills</div>
+						<div class="badge badge-secondary badge-lg">Ask for Help</div>
+						<div class="badge badge-accent badge-lg">Local Community</div>
+						<div class="badge badge-info badge-lg">Interactive Map</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- Login Form Section -->
 			<div class="card shrink-0 w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
 				<div class="card-body">
-					<!-- Header -->
 					<div class="text-center mb-6">
-						<div class="avatar placeholder mb-4">
-							<div class="bg-primary text-primary-content rounded-full w-16">
-								<span class="text-2xl">🤝</span>
-							</div>
-						</div>
 						<h2 class="card-title text-2xl font-bold text-base-content justify-center">
-							{isLogin ? 'Welcome Back!' : 'Join Our Community'}
+							Welcome to Skill-Swap: Learn, Teach, Socialise		
 						</h2>
 						<p class="text-base-content/70 text-sm">
 							{isLogin ? 'Sign in to discover local skills' : 'Start sharing and learning skills'}
