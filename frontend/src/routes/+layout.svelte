@@ -44,7 +44,7 @@
                    class="btn btn-ghost font-bold text-xl" aria-label="Go to Skill Share homepage"
                 >
                     <TasksSvg />
-                    SkillShare
+                    Skill-Swap: Learn, Teach, Socialise
                 </a>
             </h1>
         </div>
