@@ -1,9 +1,6 @@
-<!-- svelte-ignore a11y_missing_attribute -->
-<!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
 	import { login, register, getCommunityPosts } from '$lib/api';
 	import { goto } from '$app/navigation';
-	import { TasksSvg } from '$lib/components/icons';
 	import { setAuthenticated, authStore } from '$lib/auth';
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
@@ -92,116 +89,170 @@
 </script>
 
 <svelte:head>
-	<title>{isLogin ? 'Login' : 'Register'} - Tasks</title>
+	<title>{isLogin ? 'Sign In' : 'Sign Up'} - SkillSwap</title>
+	<meta name="description" content="Join SkillSwap to discover and share skills in your neighborhood" />
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center bg-base-100 p-4">
-	<div class="card w-full max-w-md bg-base-200 shadow-xl">
-		<div class="card-body">
-			<div class="text-center mb-6">
-				<h1 class="flex items-center justify-center gap-2 text-2xl font-bold mb-2">
-					<TasksSvg />
-					SkillSwap
+<div class="hero min-h-screen bg-base-200">
+	<div class="hero-content flex-col lg:flex-row-reverse max-w-6xl">
+		<!-- Hero Text Section -->
+		<div class="text-center lg:text-left lg:w-1/2">
+			<div class="mb-8">
+				<h1 class="text-5xl font-bold text-primary mb-4">
+					🤝 SkillSwap
 				</h1>
-				<h2 class="text-xl">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-				<p class="text-sm opacity-70">
-					{isLogin ? 'Sign in to your account' : 'Join the skill-sharing community'}
+				<p class="text-xl text-base-content/80 mb-6">
+					Your neighborhood skills community - connect with neighbors, share expertise, and build stronger communities through skill exchange.
 				</p>
 				
-				<!-- Community Stats Preview -->
 				{#if communityStats.total > 0}
-					<div class="stats stats-horizontal bg-base-300 shadow mt-4 text-xs">
-						<div class="stat py-2 px-3">
-							<div class="stat-value text-sm">{communityStats.offers}</div>
-							<div class="stat-desc">💡 Skills</div>
+					<div class="stats stats-vertical lg:stats-horizontal shadow bg-base-100 mb-6">
+						<div class="stat">
+							<div class="stat-figure text-primary">
+								💡
+							</div>
+							<div class="stat-title">Available Skills</div>
+							<div class="stat-value text-primary">{communityStats.offers}</div>
 						</div>
-						<div class="stat py-2 px-3">
-							<div class="stat-value text-sm">{communityStats.requests}</div>
-							<div class="stat-desc">🙋 Requests</div>
+						<div class="stat">
+							<div class="stat-figure text-secondary">
+								🙋
+							</div>
+							<div class="stat-title">Help Requests</div>
+							<div class="stat-value text-secondary">{communityStats.requests}</div>
 						</div>
 					</div>
 				{/if}
-			</div>
 
-			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
-				{#if !isLogin}
+				<div class="flex flex-wrap gap-2 justify-center lg:justify-start">
+					<div class="badge badge-primary badge-lg">🔧 Share Skills</div>
+					<div class="badge badge-secondary badge-lg">🙋 Ask for Help</div>
+					<div class="badge badge-accent badge-lg">📍 Local Community</div>
+					<div class="badge badge-info badge-lg">🗺️ Interactive Map</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Login Form Section -->
+		<div class="card shrink-0 w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
+			<div class="card-body">
+				<!-- Header -->
+				<div class="text-center mb-6">
+					<div class="avatar placeholder mb-4">
+						<div class="bg-primary text-primary-content rounded-full w-16">
+							<span class="text-2xl">🤝</span>
+						</div>
+					</div>
+					<h2 class="card-title text-2xl font-bold text-base-content justify-center">
+						{isLogin ? 'Welcome Back!' : 'Join Our Community'}
+					</h2>
+					<p class="text-base-content/70 text-sm">
+						{isLogin ? 'Sign in to discover local skills' : 'Start sharing and learning skills'}
+					</p>
+				</div>
+				
+				<!-- Form -->
+				<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+					{#if !isLogin}
 					<div class="form-control">
 						<label class="label" for="name">
-							<span class="label-text">Name</span>
+							<span class="label-text">Full Name</span>
 						</label>
 						<input
 							id="name"
+							name="name"
 							type="text"
-							placeholder="Enter your name"
 							class="input input-bordered w-full"
+							placeholder="Enter your full name"
 							bind:value={name}
 							disabled={loading}
 							required
 						/>
-					</div>
-					
+					</div>						<div class="form-control">
+							<label class="label" for="pinCode">
+								<span class="label-text">Pin Code (Optional)</span>
+							</label>
+							<input
+								id="pinCode"
+								name="pinCode"
+								type="text"
+								class="input input-bordered w-full"
+								placeholder="e.g., 110001"
+								bind:value={pinCode}
+								pattern="[0-9]{6}"
+								disabled={loading}
+								title="Enter a valid 6-digit pin code"
+							/>
+							<div class="text-xs text-base-content/60 mt-1">
+								This will be your default location for posts
+							</div>
+						</div>
+					{/if}
+
 					<div class="form-control">
-						<label class="label" for="pinCode">
-							<span class="label-text">Pin Code (Default for your posts)</span>
+						<label class="label" for="email">
+							<span class="label-text">Email Address</span>
 						</label>
 						<input
-							id="pinCode"
-							type="text"
-							placeholder="Enter your pin code (e.g., 110001)"
+							id="email"
+							name="email"
+							type="email"
 							class="input input-bordered w-full"
-							bind:value={pinCode}
+							placeholder="Enter your email"
+							bind:value={email}
 							disabled={loading}
-							pattern="[0-9]{6}"
-							title="Please enter a valid 6-digit pin code"
+							required
 						/>
 					</div>
-				{/if}
 
-				<div class="form-control">
-					<label class="label" for="email">
-						<span class="label-text">Email</span>
-					</label>
-					<input
-						id="email"
-						type="email"
-						placeholder="Enter your email"
-						class="input input-bordered w-full"
-						bind:value={email}
-						disabled={loading}
-						required
-					/>
-				</div>
-
-				<div class="form-control">
-					<label class="label" for="password">
-						<span class="label-text">Password</span>
-					</label>
-					<input
-						id="password"
-						type="password"
-						placeholder="Enter your password"
-						class="input input-bordered w-full"
-						bind:value={password}
-						disabled={loading}
-						required
-						minlength="6"
-					/>
-				</div>
-
-				{#if error}
-					<div class="alert alert-error">
-						<span>{error}</span>
+					<div class="form-control">
+						<label class="label" for="password">
+							<span class="label-text">Password</span>
+						</label>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							class="input input-bordered w-full"
+							placeholder="Enter your password"
+							bind:value={password}
+							disabled={loading}
+							required
+							minlength="6"
+						/>
+						{#if !isLogin}
+							<div class="text-xs text-base-content/60 mt-1">
+								Minimum 6 characters
+							</div>
+						{/if}
 					</div>
-				{/if}
 
-				{#if success}
-					<div class="alert alert-success">
-						<span>{success}</span>
-					</div>
-				{/if}
+					<!-- Error/Success Messages -->
+					{#if error}
+						<div class="alert alert-error">
+							<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+							<span>{error}</span>
+						</div>
+					{/if}
 
-				<div class="form-control mt-6">
-					<button type="submit" class="btn btn-primary" disabled={loading}>
+					{#if success}
+						<div class="alert alert-success">
+							<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+							<span>{success}</span>
+						</div>
+					{/if}
+
+					<!-- Submit Button -->
+					<button 
+						type="submit" 
+						class="btn btn-primary w-full"
+						class:loading
+						disabled={loading}
+					>
 						{#if loading}
 							<span class="loading loading-spinner loading-sm"></span>
 							{isLogin ? 'Signing In...' : 'Creating Account...'}
@@ -209,22 +260,17 @@
 							{isLogin ? 'Sign In' : 'Create Account'}
 						{/if}
 					</button>
-				</div>
-			</form>
+				</form>
 
-			<div class="divider">OR</div>
-
-			<div class="text-center">
-				<p class="text-sm">
-					{isLogin ? "Don't have an account?" : 'Already have an account?'}
-					<button 
-						class="btn btn-link btn-sm p-0 ml-1" 
-						on:click={toggleMode}
-						disabled={loading}
-					>
-						{isLogin ? 'Sign Up' : 'Sign In'}
-					</button>
-				</p>
+				<!-- Toggle Mode -->
+				<div class="divider">OR</div>
+				<button 
+					class="btn btn-ghost w-full" 
+					on:click={toggleMode}
+					disabled={loading}
+				>
+					{isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Sign In'}
+				</button>
 			</div>
 		</div>
 	</div>
