@@ -73,7 +73,7 @@
     role={editable ? 'button' : 'img'} 
     tabindex={editable ? 0 : -1}
 >
-    <div class="rounded-full overflow-hidden {sizeClasses[size]} {editable ? 'group-hover:blur-[2px] transition-all' : ''}">
+    <div class="rounded-full overflow-hidden {sizeClasses[size]} {editable ? 'group-hover:blur-[1px] transition-all' : ''}">
         {#if profilePicture}
             <img 
                 src={profilePicture} 
