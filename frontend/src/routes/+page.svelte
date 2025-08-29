@@ -239,14 +239,5 @@
 		</div>
 	</div>
 {:else}
-	<!-- Not Authenticated -->
-	<div class="hero min-h-full bg-base-200">
-		<div class="hero-content text-center">
-			<div class="max-w-md">
-				<h1 class="text-5xl font-bold">Welcome to SkillSwap</h1>
-				<p class="py-6">Discover and share skills in your neighborhood with our interactive community map</p>
-				<a href="/login" class="btn btn-primary">Get Started</a>
-			</div>
-		</div>
-	</div>
+	<div></div>
 {/if}
