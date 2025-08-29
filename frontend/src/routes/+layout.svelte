@@ -43,7 +43,6 @@
                 <a href="/" 
                    class="btn btn-ghost font-bold text-xl" aria-label="Go to Skill Share homepage"
                 >
-                    <TasksSvg/>
                     SkillSwap
                 </a>
             </h1>

@@ -57,10 +57,11 @@ pub async fn register(
     })?;
 
     let user = sqlx::query!(
-        "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id",
+        "INSERT INTO users (email, password_hash, name, pin_code) VALUES ($1, $2, $3, $4) RETURNING id",
         new_user.email,
         password_hash,
-        new_user.name
+        new_user.name,
+        new_user.pin_code
     )
     .fetch_one(&pool)
     .await?;

@@ -58,6 +58,7 @@ pub struct NewUser {
     pub email: String,
     pub password: String,
     pub name: Option<String>,
+    pub pin_code: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
