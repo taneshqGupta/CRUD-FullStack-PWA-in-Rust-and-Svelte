@@ -101,10 +101,10 @@
                 
 				<form on:submit|preventDefault={handleCreatePost} class="space-y-6">
 					<!-- Post Type Selection -->
-					<div class="form-control">
-                        <label class="label">
+					<fieldset class="form-control">
+                        <legend class="label">
                             <span class="label-text text-lg font-semibold">What would you like to do?</span>
-						</label>
+						</legend>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<label class="cursor-pointer">
 								<input 
@@ -140,16 +140,17 @@
 								</div>
 							</label>
 						</div>
-					</div>
+					</fieldset>
 
 					<!-- Description -->
 					<div class="form-control">
-						<label class="label">
+						<label for="post-description" class="label">
 							<span class="label-text text-lg font-semibold">
 								{newPostType === 'offer' ? 'What skill can you share?' : 'What do you need help with?'}
 							</span>
 						</label>
 						<textarea
+							id="post-description"
 							class="textarea textarea-bordered textarea-lg h-32"
 							placeholder={newPostType === 'offer' 
 								? 'e.g., I can teach guitar, help with math homework, cook Indian food...' 
@@ -162,25 +163,27 @@
 					<!-- Category and Pin Code -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="form-control">
-							<label class="label">
+							<label for="post-category" class="label">
 								<span class="label-text font-semibold">Category</span>
 							</label>
 							<input
+								id="post-category"
 								class="input input-bordered"
 								type="text"
 								placeholder="e.g., cooking, tech, music, sports"
 								bind:value={newPostCategory}
 							/>
-							<label class="label">
+							<div class="label">
 								<span class="label-text-alt">Helps others find your post</span>
-							</label>
+							</div>
 						</div>
 
 						<div class="form-control">
-							<label class="label">
+							<label for="post-pincode" class="label">
 								<span class="label-text font-semibold">Pin Code</span>
 							</label>
 							<input
+								id="post-pincode"
 								class="input input-bordered"
 								type="text"
 								placeholder={userDefaultPinCode || 'e.g., 110001'}
@@ -188,11 +191,11 @@
 								pattern="[0-9]{6}"
 								title="Please enter a valid 6-digit pin code"
 							/>
-							<label class="label">
+							<div class="label">
 								<span class="label-text-alt">
 									{userDefaultPinCode ? `Default: ${userDefaultPinCode}` : 'For location-based matching'}
 								</span>
-							</label>
+							</div>
 						</div>
 					</div>
 
