@@ -5,6 +5,7 @@
 	import { authStore } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import Map from '$lib/components/Map.svelte';
 
 	let posts: Post[] = [];
 	let communityPosts: Post[] = [];
@@ -319,6 +320,29 @@
 						<span class="loading loading-spinner loading-lg"></span>
 					</div>
 				{:else}
+					<!-- Map Preview for Community Views -->
+					{#if currentView === 'community' || currentView === 'offers' || currentView === 'requests'}
+						<div class="mb-6">
+							<div class="card bg-base-200 shadow-lg">
+								<div class="card-body">
+									<div class="flex justify-between items-center mb-4">
+										<h3 class="card-title">📍 Location View</h3>
+										<a href="/map" class="btn btn-primary btn-sm">View Full Map</a>
+									</div>
+									<Map 
+										posts={communityPosts} 
+										height="250px"
+										center={[20.5937, 78.9629]}
+										zoom={5}
+									/>
+									<p class="text-sm opacity-70 mt-2">
+										Posts with location information are shown on the map. Click "View Full Map" for interactive features.
+									</p>
+								</div>
+							</div>
+						</div>
+					{/if}
+
 					<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4">
 						<legend class="fieldset-legend">
 							<TodoSvg />

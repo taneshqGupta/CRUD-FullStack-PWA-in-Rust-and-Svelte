@@ -41,15 +41,18 @@
         <div class="flex-1">
             <h1>
                 <a href="/" 
-                   class="btn btn-ghost font-bold text-xl" aria-label="Go to Task Manager homepage"
+                   class="btn btn-ghost font-bold text-xl" aria-label="Go to Skill Share homepage"
                 >
                     <TasksSvg />
-                    Tasks
+                    SkillShare
                 </a>
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
             {#if !isAuthPage && $authStore.isAuthenticated}
+                <a href="/map" class="btn btn-primary btn-sm">
+                    🗺️ Community Map
+                </a>
                 <button 
                     class="btn btn-ghost btn-sm"
                     on:click={handleLogout}
