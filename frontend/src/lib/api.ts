@@ -128,12 +128,13 @@ export async function login(email: string, password: string): Promise<AuthRespon
     return response.json();
 }
 
-export async function register(email: string, password: string, name?: string, pinCode?: string): Promise<AuthResponse> {
+export async function register(email: string, password: string, name?: string, pinCode?: string, profilePicture?: string): Promise<AuthResponse> {
     const formData = new URLSearchParams();
     formData.append('email', email);
     formData.append('password', password);
     if (name) formData.append('name', name);
     if (pinCode) formData.append('pin_code', pinCode);
+    if (profilePicture) formData.append('profile_picture', profilePicture);
 
     const response = await fetch(`${PUBLIC_BACKEND_URL}auth/register`, {
         method: "POST",
@@ -184,6 +185,25 @@ export async function getUserProfile(): Promise<any> {
 
     if (!response.ok) {
         throw new Error(`Failed to get profile: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function updateProfilePicture(profilePicture: string): Promise<any> {
+    const formData = new URLSearchParams();
+    formData.append('profile_picture', profilePicture);
+
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/profile/picture`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to update profile picture: ${response.statusText}`);
     }
     return response.json();
 }

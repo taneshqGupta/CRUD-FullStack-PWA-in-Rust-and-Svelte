@@ -31,6 +31,16 @@ export interface NewUser {
     email: string;
     password: string;
     name?: string;
+    pin_code?: string;
+    profile_picture?: string;
+}
+
+export interface UserProfile {
+    id: number;
+    email: string;
+    name?: string;
+    pin_code?: string;
+    profile_picture?: string;
 }
 
 export interface AuthResponse {

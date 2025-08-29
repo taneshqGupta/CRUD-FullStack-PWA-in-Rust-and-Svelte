@@ -4,12 +4,15 @@
 	import { setAuthenticated, authStore } from '$lib/auth';
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
+	import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 
 	let isLogin = true;
 	let email = '';
 	let password = '';
 	let name = '';
 	let pinCode = '';
+	let profilePictureFile: File | null = null;
+	let profilePicturePreview: string | null = null;
 	let loading = false;
 	let error = '';
 	let success = '';
@@ -22,7 +25,7 @@
 			communityStats.total = communityPosts.length;
 			communityStats.offers = communityPosts.filter(p => p.post_type === 'offer').length;
 			communityStats.requests = communityPosts.filter(p => p.post_type === 'request').length;
-		} catch (error) {
+		} catch (err) {
 			console.log('Could not load community stats for preview');
 		}
 	});
@@ -63,7 +66,19 @@
 					error = response.message;
 				}
 			} else {
-				const response = await register(email, password, name, pinCode);
+				// Convert profile picture to base64 if provided
+				let profilePictureData: string | undefined = undefined;
+				if (profilePictureFile) {
+					try {
+						profilePictureData = await fileToBase64(profilePictureFile);
+					} catch (e) {
+						error = 'Failed to process profile picture';
+						loading = false;
+						return;
+					}
+				}
+				
+				const response = await register(email, password, name, pinCode, profilePictureData);
 				if (response.success && response.user_id) {
 					success = 'Registration successful! Redirecting...';
 					setAuthenticated(response.user_id);
@@ -85,6 +100,29 @@
 		success = '';
 		name = ''; // Clear name when switching modes
 		pinCode = ''; // Clear pin code when switching modes
+		profilePictureFile = null; // Clear profile picture when switching modes
+		profilePicturePreview = null;
+	}
+
+	function handleProfilePictureChange(file: File) {
+		profilePictureFile = file;
+		
+		// Create preview URL
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			profilePicturePreview = e.target?.result as string;
+		};
+		reader.readAsDataURL(file);
+	}
+
+	// Convert file to base64 for API
+	function fileToBase64(file: File): Promise<string> {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result as string);
+			reader.onerror = reject;
+			reader.readAsDataURL(file);
+		});
 	}
 </script>
 
@@ -168,7 +206,28 @@
 							disabled={loading}
 							required
 						/>
-					</div>						<div class="form-control">
+					</div>
+
+					<!-- Profile Picture Upload -->
+					<div class="form-control">
+						<div class="label">
+							<span class="label-text">Profile Picture (Optional)</span>
+						</div>
+						<div class="flex flex-col items-center gap-3">
+							<ProfilePicture 
+								profilePicture={profilePicturePreview}
+								{name}
+								size="lg"
+								editable={!loading}
+								onImageChange={handleProfilePictureChange}
+							/>
+							<p class="text-xs text-base-content/60 text-center max-w-xs">
+								Click to upload a profile picture or we'll use a default one
+							</p>
+						</div>
+					</div>
+
+					<div class="form-control">
 							<label class="label" for="pinCode">
 								<span class="label-text">Pin Code (Optional)</span>
 							</label>

@@ -1,14 +1,16 @@
 <script lang="ts">
-    import { getUserProfile, getPosts } from '$lib/api';
+    import { getUserProfile, getPosts, updateProfilePicture } from '$lib/api';
     import { authStore, logout } from '$lib/auth';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import type { Post } from '$lib/types';
+    import ProfilePicture from '$lib/components/ProfilePicture.svelte';
 
     let loading = true;
     let profile: any = null;
     let userPosts: Post[] = [];
     let error = '';
+    let profileUpdateLoading = false;
 
     // Redirect to auth if not authenticated
     $: if (!$authStore.loading && !$authStore.isAuthenticated) {
@@ -42,6 +44,33 @@
         goto('/login');
     }
 
+    async function handleProfilePictureChange(file: File) {
+        try {
+            profileUpdateLoading = true;
+            error = '';
+            
+            // Convert to base64
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    const base64Data = reader.result as string;
+                    await updateProfilePicture(base64Data);
+                    
+                    // Reload profile to get updated picture
+                    await loadProfile();
+                } catch (err) {
+                    error = err instanceof Error ? err.message : 'Failed to update profile picture';
+                } finally {
+                    profileUpdateLoading = false;
+                }
+            };
+            reader.readAsDataURL(file);
+        } catch (err) {
+            error = err instanceof Error ? err.message : 'Failed to process image';
+            profileUpdateLoading = false;
+        }
+    }
+
     $: offerCount = userPosts.filter(post => post.post_type === 'offer').length;
     $: requestCount = userPosts.filter(post => post.post_type === 'request').length;
     $: completedCount = userPosts.filter(post => post.completed).length;
@@ -72,10 +101,19 @@
                 <div class="card bg-base-100 shadow-xl mb-6">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row items-center gap-6">
-                            <div class="avatar placeholder">
-                                <div class="bg-primary text-primary-content rounded-full w-24 h-24">
-                                    <span class="text-3xl">{profile.name ? profile.name.charAt(0).toUpperCase() : '?'}</span>
-                                </div>
+                            <div class="relative">
+                                <ProfilePicture 
+                                    profilePicture={profile.profile_picture}
+                                    name={profile.name || 'User'}
+                                    size="xl"
+                                    editable={!profileUpdateLoading}
+                                    onImageChange={handleProfilePictureChange}
+                                />
+                                {#if profileUpdateLoading}
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                                        <span class="loading loading-spinner loading-md text-white"></span>
+                                    </div>
+                                {/if}
                             </div>
                             
                             <div class="text-center md:text-left">
@@ -84,6 +122,7 @@
                                 {#if profile.pin_code}
                                     <p class="text-base-content/70">📍 Pin Code: {profile.pin_code}</p>
                                 {/if}
+                                <p class="text-xs text-base-content/50 mt-2">Click profile picture to change</p>
                             </div>
                         </div>
                     </div>
