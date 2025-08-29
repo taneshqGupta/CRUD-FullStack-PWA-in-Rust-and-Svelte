@@ -16,7 +16,7 @@
 	let userDefaultPinCode: string = '';
 	let loading = true;
 	let communityLoading = false;
-	let currentView: 'personal' | 'community' | 'offers' | 'requests' = 'community';
+	let showMyPosts = false;
 
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
@@ -30,7 +30,7 @@
 				if (!auth.loading) {
 					if (auth.isAuthenticated) {
 						await loadPosts();
-						await loadCommunityData(); // Load community data by default
+						await loadCommunityData(); // Always load community data since map is main view
 					} else {
 						goto('/login');
 					}
@@ -39,7 +39,7 @@
 			});
 		} else if ($authStore.isAuthenticated) {
 			await loadPosts();
-			await loadCommunityData(); // Load community data by default
+			await loadCommunityData(); // Always load community data since map is main view
 		}
 	});
 
@@ -73,13 +73,7 @@
 	async function loadCommunityData() {
 		try {
 			communityLoading = true;
-			if (currentView === 'community') {
-				communityPosts = await getCommunityPosts();
-			} else if (currentView === 'offers') {
-				communityPosts = await getCommunityOffers();
-			} else if (currentView === 'requests') {
-				communityPosts = await getCommunityRequests();
-			}
+			communityPosts = await getCommunityPosts(); // Always load all community posts
 		} catch (error) {
 			console.error('Error loading community data:', error);
 		} finally {
@@ -127,294 +121,203 @@
 			console.error('Error creating post:', error);
 		}
 	}
-
-	async function switchView(view: 'personal' | 'community' | 'offers' | 'requests') {
-		currentView = view;
-		if (view !== 'personal') {
-			await loadCommunityData();
-		}
-	}
 </script>
 
 {#if $authStore.loading}
-	<div class="flex justify-center items-center min-h-[200px]">
+	<div class="flex justify-center items-center h-screen">
 		<span class="loading loading-spinner loading-lg"></span>
 	</div>
 {:else if $authStore.isAuthenticated}
-	<div class="w-full p-4">
-		<!-- Navigation Tabs -->
-		<div class="tabs tabs-boxed mb-4 bg-base-200">
-			<button 
-				class="tab {currentView === 'personal' ? 'tab-active' : ''}"
-				on:click={() => switchView('personal')}
-			>
-				My Posts
-			</button>
-			<button 
-				class="tab {currentView === 'community' ? 'tab-active' : ''}"
-				on:click={() => switchView('community')}
-			>
-				Community
-			</button>
-			<button 
-				class="tab {currentView === 'offers' ? 'tab-active' : ''}"
-				on:click={() => switchView('offers')}
-			>
-				Skills Offered
-			</button>
-			<button 
-				class="tab {currentView === 'requests' ? 'tab-active' : ''}"
-				on:click={() => switchView('requests')}
-			>
-				Help Needed
-			</button>
-		</div>
-
-		{#if currentView === 'personal'}
-			<!-- Create New Post Form -->
-			<div>
-				<fieldset
-					class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4"
-					aria-label="Create a New Post"
-				>
-					<legend class="fieldset-legend">
-						<PlusSvg />
-						Share a Skill or Request Help
-					</legend>
-					<form on:submit|preventDefault={handleCreatePost}>
-						<!-- Post Type Selection -->
-						<div class="flex gap-4 mb-4">
+	<!-- Full Screen Map Layout -->
+	<div class="h-screen flex relative overflow-hidden">
+		<!-- Main Map Area -->
+		<div class="flex-1 relative">
+			<Map 
+				posts={communityPosts} 
+				height="100vh"
+				center={[20.5937, 78.9629]}
+				zoom={5}
+				userPinCode={userDefaultPinCode}
+			/>
+			
+			<!-- Floating Controls -->
+			<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+				<!-- Filter Controls -->
+				<div class="card bg-base-100/95 backdrop-blur-sm shadow-lg compact">
+					<div class="card-body p-3">
+						<h3 class="font-bold text-sm mb-2">🎯 Filters</h3>
+						<div class="form-control">
 							<label class="label cursor-pointer">
-								<input 
-									type="radio" 
-									name="postType" 
-									value="offer" 
-									bind:group={newPostType}
-									class="radio radio-primary"
-								>
-								<span class="label-text ml-2">💡 I can offer this skill</span>
-							</label>
-							<label class="label cursor-pointer">
-								<input 
-									type="radio" 
-									name="postType" 
-									value="request" 
-									bind:group={newPostType}
-									class="radio radio-secondary"
-								>
-								<span class="label-text ml-2">🙋 I need help with this</span>
+								<span class="label-text text-xs">💡 Skills Offered</span>
+								<input type="checkbox" checked class="checkbox checkbox-primary checkbox-xs" />
 							</label>
 						</div>
-
-						<input
-							class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-							name="description"
-							type="text"
-							placeholder={newPostType === 'offer' ? 'What skill can you share?' : 'What do you need help with?'}
-							aria-label="Post description"
-							autocomplete="off"
-							bind:value={newPostDescription}
-							on:keydown={(e) => {
-								if (e.key === 'Enter' && !e.shiftKey) {
-									e.preventDefault();
-									handleCreatePost();
-								}
-							}}
+						<div class="form-control">
+							<label class="label cursor-pointer">
+								<span class="label-text text-xs">🙋 Help Requests</span>
+								<input type="checkbox" checked class="checkbox checkbox-secondary checkbox-xs" />
+							</label>
+						</div>
+						<input 
+							type="text" 
+							placeholder="Search categories..."
+							class="input input-bordered input-xs mt-2"
 						/>
-						<input
-							class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-							name="category"
-							type="text"
-							placeholder="Category (e.g., cooking, gardening, tech support)"
-							aria-label="Category for the post"
-							autocomplete="off"
-							bind:value={newPostCategory}
-							on:keydown={(e) => {
-								if (e.key === 'Enter' && !e.shiftKey) {
-									e.preventDefault();
-									handleCreatePost();
-								}
-							}}
+						<input 
+							type="text" 
+							placeholder="Pin code filter..."
+							class="input input-bordered input-xs mt-1"
 						/>
-						<input
-							class="w-full p-2 border border-base-300 rounded-md bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary my-2"
-							name="pincode"
-							type="text"
-							placeholder="Your pin code (optional, for local connections)"
-							aria-label="Pin code for location"
-							autocomplete="off"
-							bind:value={newPinCode}
-							on:keydown={(e) => {
-								if (e.key === 'Enter' && !e.shiftKey) {
-									e.preventDefault();
-									handleCreatePost();
-								}
-							}}
-						/>
-					</form>
-					<p class="label text-xs mt-2 font-semibold textarea-primary">
-						<LeafSvg />
-						Press enter to share your {newPostType === 'offer' ? 'skill offer' : 'help request'}
-					</p>
-				</fieldset>
-			</div>
-
-		{#if loading}
-			<div class="flex justify-center items-center min-h-[200px]">
-				<span class="loading loading-spinner loading-lg"></span>
-			</div>
-		{:else}
-			<div class="w-full mt-4">
-				<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4">
-					<legend class="fieldset-legend">
-						<TodoSvg />
-						Your Posts
-					</legend>
-
-					<ul class="space-y-2" role="list" aria-label="Your posts list">
-						{#each posts as post (post.id)}
-							<li class="flex items-center justify-between p-3 bg-base-100 rounded-md border border-base-300">
-								<div class="flex items-center gap-3 flex-1">
-									<input
-										type="checkbox"
-										bind:checked={post.completed}
-										on:change={() => handleUpdatePost(post)}
-										class="checkbox checkbox-primary checkbox-sm"
-										aria-label="Mark post as {post.completed ? 'incomplete' : 'complete'}"
-									/>
-									<div class="flex flex-col flex-1">
-										<div class="flex items-center gap-2 mb-1">
-											<span class="badge badge-sm {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'}">
-												{post.post_type === 'offer' ? '💡 Offering' : '🙋 Requesting'}
-											</span>
-											{#if post.pin_code}
-												<span class="badge badge-outline badge-sm">📍 {post.pin_code}</span>
-											{/if}
-										</div>
-										<span
-											class="text-sm {post.completed ? 'line-through opacity-50' : ''}"
-											contenteditable
-											bind:textContent={post.description}
-											spellcheck="false"
-											on:blur={() => handleUpdatePost(post)}
-										></span>
-										<div class="flex gap-2 mt-1">
-											<span class="text-xs opacity-50">Category: {post.category}</span>
-											{#if post.user_name}
-												<span class="text-xs opacity-50">• By: {post.user_name}</span>
-											{/if}
-										</div>
-									</div>
-								</div>
-								<button
-									class="btn btn-ghost btn-sm"
-									on:click={() => handleDeletePost(post.id)}
-									aria-label="delete post"
-								>
-									<DeleteSvg />
-								</button>
-							</li>
-						{/each}
-
-						{#if posts.length === 0}
-							<li class="p-4 text-center" aria-label="no posts">
-								<div class="flex items-center justify-center gap-2">
-									<NullSvg />
-									You haven't shared any skills or requests yet
-								</div>
-							</li>
-						{/if}
-					</ul>
-				</fieldset>
-			</div>
-		{/if}
-
-		{:else}
-			<!-- Community Views -->
-			<div class="w-full">
-				{#if communityLoading}
-					<div class="flex justify-center items-center min-h-[200px]">
-						<span class="loading loading-spinner loading-lg"></span>
 					</div>
-				{:else}
-					<!-- Map Preview for Community Views -->
-					{#if currentView === 'community' || currentView === 'offers' || currentView === 'requests'}
-						<div class="mb-6">
-							<div class="card bg-base-200 shadow-lg">
-								<div class="card-body">
-									<div class="flex justify-between items-center mb-4">
-										<h3 class="card-title">📍 Location View</h3>
-										<a href="/map" class="btn btn-primary btn-sm">View Full Map</a>
-									</div>
-									<Map 
-										posts={communityPosts} 
-										height="250px"
-										center={[20.5937, 78.9629]}
-										zoom={5}
-										userPinCode={userDefaultPinCode}
-									/>
-									<p class="text-sm opacity-70 mt-2">
-										Posts with location information are shown on the map. Click "View Full Map" for interactive features.
-									</p>
-								</div>
+				</div>
+			</div>
+
+			<!-- Right Side Panel -->
+			<div class="absolute top-4 right-4 bottom-4 w-80 z-10 flex flex-col gap-4">
+				<!-- Quick Post Creation -->
+				<div class="card bg-base-100/95 backdrop-blur-sm shadow-lg">
+					<div class="card-body p-4">
+						<h3 class="card-title text-sm mb-3">
+							<PlusSvg />
+							Quick Share
+						</h3>
+						
+						<div class="form-control mb-2">
+							<div class="flex gap-1">
+								<label class="label cursor-pointer flex-1 bg-base-200 rounded p-2 text-xs {newPostType === 'offer' ? 'bg-primary text-primary-content' : ''}">
+									<input 
+										type="radio" 
+										name="postType" 
+										value="offer" 
+										bind:group={newPostType}
+										class="radio radio-xs hidden"
+									>
+									<span>💡 Offer</span>
+								</label>
+								<label class="label cursor-pointer flex-1 bg-base-200 rounded p-2 text-xs {newPostType === 'request' ? 'bg-secondary text-secondary-content' : ''}">
+									<input 
+										type="radio" 
+										name="postType" 
+										value="request" 
+										bind:group={newPostType}
+										class="radio radio-xs hidden"
+									>
+									<span>🙋 Request</span>
+								</label>
 							</div>
 						</div>
-					{/if}
 
-					<fieldset class="fieldset bg-base-200 border-base-300 rounded-md w-full border p-4">
-						<legend class="fieldset-legend">
-							<TodoSvg />
-							{#if currentView === 'community'}
-								Community Posts
-							{:else if currentView === 'offers'}
-								Skills Available in Your Community
-							{:else if currentView === 'requests'}
-								Neighbors Who Need Help
-							{/if}
-						</legend>
+						<textarea
+							class="textarea textarea-bordered textarea-sm w-full h-16 text-xs"
+							placeholder="What skill can you offer or what help do you need?"
+							bind:value={newPostDescription}
+							required
+						></textarea>
+						
+						<div class="flex gap-2 mt-2">
+							<input
+								class="input input-bordered input-xs flex-1"
+								type="text"
+								placeholder="Category"
+								bind:value={newPostCategory}
+							/>
+							<input
+								class="input input-bordered input-xs w-20"
+								type="text"
+								placeholder={userDefaultPinCode || 'Pin'}
+								bind:value={newPinCode}
+							/>
+						</div>
+						
+						<button 
+							type="button" 
+							class="btn btn-primary btn-sm w-full mt-2"
+							on:click={handleCreatePost}
+						>
+							Share
+						</button>
+					</div>
+				</div>
 
-						<ul class="space-y-3" role="list" aria-label="Community posts list">
-							{#each communityPosts as post (post.id)}
-								<li class="p-4 bg-base-100 rounded-md border border-base-300">
-									<div class="flex flex-col gap-2">
-										<div class="flex items-center gap-2 flex-wrap">
-											<span class="badge {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'}">
-												{post.post_type === 'offer' ? '💡 Offering' : '🙋 Requesting'}
-											</span>
-											{#if post.pin_code}
-												<span class="badge badge-outline">📍 {post.pin_code}</span>
-											{/if}
-											<span class="badge badge-ghost">{post.category}</span>
-											{#if post.completed}
-												<span class="badge badge-success">✅ Completed</span>
-											{/if}
-										</div>
-										<p class="text-sm {post.completed ? 'line-through opacity-50' : ''}">{post.description}</p>
-										{#if post.user_name}
-											<p class="text-xs opacity-70">Shared by: <strong>{post.user_name}</strong></p>
-										{/if}
-									</div>
-								</li>
-							{/each}
+				<!-- Stats Card -->
+				<div class="card bg-base-100/95 backdrop-blur-sm shadow-lg">
+					<div class="card-body p-4">
+						<h3 class="card-title text-sm">📊 Community Stats</h3>
+						<div class="stats stats-vertical text-xs">
+							<div class="stat p-2">
+								<div class="stat-value text-sm">{communityPosts.filter(p => p.post_type === 'offer').length}</div>
+								<div class="stat-desc">💡 Skills Available</div>
+							</div>
+							<div class="stat p-2">
+								<div class="stat-value text-sm">{communityPosts.filter(p => p.post_type === 'request').length}</div>
+								<div class="stat-desc">🙋 Help Needed</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-							{#if communityPosts.length === 0}
-								<li class="p-4 text-center" aria-label="no community posts">
-									<div class="flex items-center justify-center gap-2">
-										<NullSvg />
-										{#if currentView === 'community'}
-											No community posts yet
-										{:else if currentView === 'offers'}
-											No skills being offered in your area yet
-										{:else if currentView === 'requests'}
-											No help requests in your area yet
-										{/if}
-									</div>
-								</li>
-							{/if}
-						</ul>
-					</fieldset>
-				{/if}
+				<!-- My Posts Toggle -->
+				<button 
+					class="btn btn-ghost btn-sm bg-base-100/95 backdrop-blur-sm"
+					on:click={() => showMyPosts = !showMyPosts}
+				>
+					📝 My Posts ({posts.length})
+				</button>
 			</div>
-		{/if}
+
+			<!-- My Posts Overlay -->
+			{#if showMyPosts}
+				<div class="absolute inset-0 bg-black/50 z-20 flex items-center justify-center">
+					<div class="card bg-base-100 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+						<div class="card-body">
+							<div class="flex justify-between items-center mb-4">
+								<h3 class="card-title">📝 My Posts</h3>
+								<button class="btn btn-ghost btn-sm" on:click={() => showMyPosts = false}>✕</button>
+							</div>
+							
+							<div class="space-y-2">
+								{#each posts as post (post.id)}
+									<div class="card bg-base-200 shadow-sm">
+										<div class="card-body p-3">
+											<div class="flex items-start justify-between">
+												<div class="flex-1">
+													<div class="flex items-center gap-2 mb-1">
+														<span class="badge {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-xs">
+															{post.post_type === 'offer' ? '💡' : '🙋'}
+														</span>
+														<span class="badge badge-outline badge-xs">{post.category}</span>
+														{#if post.pin_code}
+															<span class="badge badge-ghost badge-xs">📍 {post.pin_code}</span>
+														{/if}
+													</div>
+													<p class="text-sm">{post.description}</p>
+													{#if post.completed}
+														<p class="text-xs text-success mt-1">✅ Completed</p>
+													{/if}
+												</div>
+												<div class="flex gap-1">
+													<button 
+														class="btn btn-ghost btn-xs" 
+														on:click={() => handleUpdatePost({...post, completed: !post.completed})}
+													>
+														{post.completed ? '↶' : '✓'}
+													</button>
+													<button 
+														class="btn btn-ghost btn-xs text-error" 
+														on:click={() => handleDeletePost(post.id)}
+													>
+														<DeleteSvg />
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								{/each}
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
+		</div>
 	</div>
 {/if}
