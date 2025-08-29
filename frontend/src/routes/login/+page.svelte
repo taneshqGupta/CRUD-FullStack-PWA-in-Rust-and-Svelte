@@ -132,7 +132,7 @@
 </svelte:head>
 
 <div class="bg-base-200 flex items-center justify-center">
-    <div class="w-full max-w-6xl px-4 flex justify-center">
+    <div class="w-full max-w-6xl max-h-6xl px-4 flex justify-center">
         <div class="flex flex-col gap-8">
 			<div class="card w-full max-w-md shadow-2xl bg-base-100">
 				<div class="card-body">
