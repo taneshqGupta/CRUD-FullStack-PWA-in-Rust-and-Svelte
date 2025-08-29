@@ -51,7 +51,7 @@
 					error = response.message;
 				}
 			} else {
-				const response = await register(email, password, name);
+				const response = await register(email, password, name, pinCode);
 				if (response.success && response.user_id) {
 					success = 'Registration successful! Redirecting...';
 					setAuthenticated(response.user_id);
@@ -72,6 +72,7 @@
 		error = '';
 		success = '';
 		name = ''; // Clear name when switching modes
+		pinCode = ''; // Clear pin code when switching modes
 	}
 </script>
 
@@ -107,6 +108,22 @@
 							bind:value={name}
 							disabled={loading}
 							required
+						/>
+					</div>
+					
+					<div class="form-control">
+						<label class="label" for="pinCode">
+							<span class="label-text">Pin Code (Default for your posts)</span>
+						</label>
+						<input
+							id="pinCode"
+							type="text"
+							placeholder="Enter your pin code (e.g., 110001)"
+							class="input input-bordered w-full"
+							bind:value={pinCode}
+							disabled={loading}
+							pattern="[0-9]{6}"
+							title="Please enter a valid 6-digit pin code"
 						/>
 					</div>
 				{/if}

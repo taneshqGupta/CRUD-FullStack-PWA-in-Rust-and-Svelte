@@ -54,6 +54,14 @@ pub struct User {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct UserProfile {
+    pub id: i32,
+    pub email: String,
+    pub name: Option<String>,
+    pub pin_code: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NewUser {
     pub email: String,
     pub password: String,

@@ -6,25 +6,11 @@
 	import { GithubSvg, SquirrelSvg, TasksSvg } from '$lib/components/icons';
     import { authStore, initAuth, logout } from '$lib/auth';
     import { page } from '$app/stores';
-    
-    import AOS from 'aos';
-    import 'aos/dist/aos.css';
-
     import { onMount } from 'svelte';
     
     export let data;
 
     onMount(() => {
-        AOS.init({
-            offset: 120, 
-            delay: 0, 
-            duration: 800, 
-            easing: 'ease', 
-            once: false, 
-            mirror: false, 
-            anchorPlacement: 'top-bottom', 
-        });
-
         // Initialize auth state
         initAuth();
     });
