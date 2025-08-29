@@ -8,6 +8,7 @@
     export let zoom: number = 5;
     export let height: string = '400px';
     export let onLocationSelect: ((lat: number, lng: number, address?: string) => void) | null = null;
+    export let userPinCode: string = ''; // User's default pin code to auto-focus
 
     let mapContainer: HTMLDivElement;
     let map: any = null;
@@ -49,14 +50,30 @@
     });
 
     function initializeMap() {
-        // Create map
-        map = L.map(mapContainer).setView(center, zoom);
+        // Create map with scroll zoom disabled
+        map = L.map(mapContainer, {
+            scrollWheelZoom: false,
+            doubleClickZoom: true,
+            touchZoom: true,
+            boxZoom: true,
+            keyboard: true
+        }).setView(center, zoom);
 
         // Add beautiful OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);
+
+        // Add zoom control
+        L.control.zoom({
+            position: 'topright'
+        }).addTo(map);
+
+        // Focus on user's pin code if provided
+        if (userPinCode) {
+            focusOnUserPinCode();
+        }
 
         // Add click handler for location selection
         if (onLocationSelect) {
@@ -85,6 +102,15 @@
 
         // Add posts as markers
         updateMarkers();
+    }
+
+    async function focusOnUserPinCode() {
+        if (map && userPinCode) {
+            const coordinates = await geocodePinCode(userPinCode);
+            if (coordinates) {
+                map.setView(coordinates, 12);
+            }
+        }
     }
 
     async function getUserLocation() {
@@ -170,33 +196,99 @@
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
-        // Add new markers for posts with pin codes
-        for (const post of posts) {
+        // Group posts by pin code
+        const postsByPinCode: { [pinCode: string]: Post[] } = {};
+        posts.forEach(post => {
             if (post.pin_code) {
-                const coordinates = await geocodePinCode(post.pin_code);
-                if (coordinates) {
-                    const icon = createCustomIcon(post.post_type);
-                    const marker = L.marker(coordinates, { icon })
-                        .bindPopup(`
-                            <div class="p-2">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="badge ${post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-sm">
-                                        ${post.post_type === 'offer' ? '💡 Offering' : '🙋 Requesting'}
-                                    </span>
-                                    <span class="badge badge-outline badge-sm">📍 ${post.pin_code}</span>
-                                </div>
-                                <p class="font-semibold text-sm">${post.description}</p>
-                                <p class="text-xs opacity-70">Category: ${post.category}</p>
-                                ${post.user_name ? `<p class="text-xs opacity-70">By: ${post.user_name}</p>` : ''}
-                                ${post.completed ? '<p class="text-xs text-success">✅ Completed</p>' : ''}
-                            </div>
-                        `)
-                        .addTo(map);
-                    
-                    markers.push(marker);
+                if (!postsByPinCode[post.pin_code]) {
+                    postsByPinCode[post.pin_code] = [];
                 }
+                postsByPinCode[post.pin_code].push(post);
+            }
+        });
+
+        // Create markers for each pin code location
+        for (const [pinCode, postsAtLocation] of Object.entries(postsByPinCode)) {
+            const coordinates = await geocodePinCode(pinCode);
+            if (coordinates) {
+                // Count offers and requests
+                const offerCount = postsAtLocation.filter(p => p.post_type === 'offer').length;
+                const requestCount = postsAtLocation.filter(p => p.post_type === 'request').length;
+                
+                // Create custom icon that shows both counts
+                const icon = createCombinedIcon(offerCount, requestCount);
+                
+                // Create popup content with all posts
+                const popupContent = `
+                    <div class="p-3 max-w-sm">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="badge badge-outline badge-sm">📍 ${pinCode}</span>
+                            <span class="text-xs">${offerCount} offers, ${requestCount} requests</span>
+                        </div>
+                        <div class="space-y-2 max-h-60 overflow-y-auto">
+                            ${postsAtLocation.map(post => `
+                                <div class="border border-base-300 rounded-lg p-2">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="badge ${post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-xs">
+                                            ${post.post_type === 'offer' ? '💡' : '🙋'}
+                                        </span>
+                                        <span class="text-xs font-medium">${post.category}</span>
+                                    </div>
+                                    <p class="text-sm">${post.description}</p>
+                                    ${post.user_name ? `<p class="text-xs opacity-70 mt-1">By: ${post.user_name}</p>` : ''}
+                                    ${post.completed ? '<p class="text-xs text-success mt-1">✅ Completed</p>' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                const marker = L.marker(coordinates, { icon })
+                    .bindPopup(popupContent)
+                    .addTo(map);
+                
+                markers.push(marker);
             }
         }
+    }
+
+    function createCombinedIcon(offerCount: number, requestCount: number) {
+        const size = Math.min(Math.max(20 + (offerCount + requestCount) * 2, 25), 40);
+        
+        return L.divIcon({
+            className: 'combined-marker',
+            html: `
+                <div style="
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    border: 2px solid #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: ${Math.max(10, size * 0.3)}px;
+                    font-weight: bold;
+                    color: white;
+                    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                    background: ${offerCount > requestCount ? 
+                        'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)' : 
+                        requestCount > offerCount ?
+                        'linear-gradient(135deg, #059669 0%, #0d9488 100%)' :
+                        'linear-gradient(135deg, #dc2626 0%, #ea580c 100%)'
+                    };
+                    position: relative;
+                " title="${offerCount} offers, ${requestCount} requests">
+                    <span style="position: absolute; top: -2px; left: 50%; transform: translateX(-50%); font-size: 8px;">
+                        ${offerCount > 0 ? '💡' : ''}${requestCount > 0 ? '🙋' : ''}
+                    </span>
+                    <span style="margin-top: 4px;">${offerCount + requestCount}</span>
+                </div>
+            `,
+            iconSize: [size, size],
+            iconAnchor: [size/2, size/2],
+            popupAnchor: [0, -size/2]
+        });
     }
 
     // Reactive statement to update markers when posts change

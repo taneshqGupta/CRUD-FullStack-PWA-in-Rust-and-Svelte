@@ -167,12 +167,23 @@ export async function logout(): Promise<AuthResponse> {
 export async function checkAuth(): Promise<AuthResponse> {
     const response = await fetch(`${PUBLIC_BACKEND_URL}auth/check`, {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
     });
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Auth check failed: ${response.statusText}`);
+        throw new Error(`Auth check failed: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function getUserProfile(): Promise<any> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/profile`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to get profile: ${response.statusText}`);
     }
     return response.json();
 }

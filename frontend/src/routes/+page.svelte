@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Post, PostType } from '$lib/types';
 	import { DeleteSvg, LeafSvg, NullSvg, PlusSvg, TodoSvg } from '$lib/components/icons';
-	import { createPost, updatePost, deletePost, getPosts, getCommunityPosts, getCommunityOffers, getCommunityRequests } from '$lib/api';
+	import { createPost, updatePost, deletePost, getPosts, getCommunityPosts, getCommunityOffers, getCommunityRequests, getUserProfile } from '$lib/api';
 	import { authStore } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -13,9 +13,10 @@
 	let newPostCategory: string = '';
 	let newPostType: PostType = 'offer';
 	let newPinCode: string = '';
+	let userDefaultPinCode: string = '';
 	let loading = true;
 	let communityLoading = false;
-	let currentView: 'personal' | 'community' | 'offers' | 'requests' = 'personal';
+	let currentView: 'personal' | 'community' | 'offers' | 'requests' = 'community';
 
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
@@ -29,6 +30,7 @@
 				if (!auth.loading) {
 					if (auth.isAuthenticated) {
 						await loadPosts();
+						await loadCommunityData(); // Load community data by default
 					} else {
 						goto('/login');
 					}
@@ -37,6 +39,7 @@
 			});
 		} else if ($authStore.isAuthenticated) {
 			await loadPosts();
+			await loadCommunityData(); // Load community data by default
 		}
 	});
 
@@ -44,6 +47,18 @@
 		try {
 			loading = true;
 			posts = await getPosts();
+			
+			// Load user profile to get default pin code
+			try {
+				const userProfile = await getUserProfile();
+				userDefaultPinCode = userProfile.pin_code || '';
+				// Set default pin code for new posts if not already set
+				if (!newPinCode && userDefaultPinCode) {
+					newPinCode = userDefaultPinCode;
+				}
+			} catch (error) {
+				console.error('Error loading user profile:', error);
+			}
 		} catch (error) {
 			console.error('Error loading posts:', error);
 			// If unauthorized, redirect to auth
@@ -93,7 +108,8 @@
 	async function handleCreatePost() {
 		const description = newPostDescription.trim();
 		const category = newPostCategory.trim() || 'general';
-		const pinCode = newPinCode.trim();
+		// Use provided pin code, or fall back to user's default pin code
+		const pinCode = newPinCode.trim() || userDefaultPinCode;
 		
 		if (!description) {
 			console.warn('Post description cannot be empty.');
@@ -105,7 +121,8 @@
 			posts = [...posts, newPost];
 			newPostDescription = '';
 			newPostCategory = '';
-			newPinCode = '';
+			// Reset pin code to user's default
+			newPinCode = userDefaultPinCode;
 		} catch (error) {
 			console.error('Error creating post:', error);
 		}
@@ -334,6 +351,7 @@
 										height="250px"
 										center={[20.5937, 78.9629]}
 										zoom={5}
+										userPinCode={userDefaultPinCode}
 									/>
 									<p class="text-sm opacity-70 mt-2">
 										Posts with location information are shown on the map. Click "View Full Map" for interactive features.

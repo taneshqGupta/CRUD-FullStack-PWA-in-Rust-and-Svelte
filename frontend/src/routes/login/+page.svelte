@@ -1,10 +1,12 @@
 <!-- svelte-ignore a11y_missing_attribute -->
 <!-- svelte-ignore a11y_consider_explicit_label -->
 <script lang="ts">
-	import { login, register } from '$lib/api';
+	import { login, register, getCommunityPosts } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { TasksSvg } from '$lib/components/icons';
 	import { setAuthenticated, authStore } from '$lib/auth';
+	import { onMount } from 'svelte';
+	import type { Post } from '$lib/types';
 
 	let isLogin = true;
 	let email = '';
@@ -14,6 +16,19 @@
 	let loading = false;
 	let error = '';
 	let success = '';
+	let communityStats = { offers: 0, requests: 0, total: 0 };
+
+	onMount(async () => {
+		// Load community stats for preview
+		try {
+			const communityPosts = await getCommunityPosts();
+			communityStats.total = communityPosts.length;
+			communityStats.offers = communityPosts.filter(p => p.post_type === 'offer').length;
+			communityStats.requests = communityPosts.filter(p => p.post_type === 'request').length;
+		} catch (error) {
+			console.log('Could not load community stats for preview');
+		}
+	});
 
 	// Redirect to home if already authenticated
 	$: if ($authStore.isAuthenticated) {
@@ -86,12 +101,26 @@
 			<div class="text-center mb-6">
 				<h1 class="flex items-center justify-center gap-2 text-2xl font-bold mb-2">
 					<TasksSvg />
-					Tasks
+					SkillSwap
 				</h1>
 				<h2 class="text-xl">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
 				<p class="text-sm opacity-70">
-					{isLogin ? 'Sign in to your account' : 'Sign up to get started'}
+					{isLogin ? 'Sign in to your account' : 'Join the skill-sharing community'}
 				</p>
+				
+				<!-- Community Stats Preview -->
+				{#if communityStats.total > 0}
+					<div class="stats stats-horizontal bg-base-300 shadow mt-4 text-xs">
+						<div class="stat py-2 px-3">
+							<div class="stat-value text-sm">{communityStats.offers}</div>
+							<div class="stat-desc">💡 Skills</div>
+						</div>
+						<div class="stat py-2 px-3">
+							<div class="stat-value text-sm">{communityStats.requests}</div>
+							<div class="stat-desc">🙋 Requests</div>
+						</div>
+					</div>
+				{/if}
 			</div>
 
 			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
