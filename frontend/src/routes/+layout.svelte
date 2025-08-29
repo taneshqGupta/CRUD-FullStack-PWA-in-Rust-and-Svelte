@@ -33,7 +33,7 @@
         await logout();
     }
 
-    $: isAuthPage = $page.url.pathname === '/auth';
+    $: isAuthPage = $page.url.pathname === '/login';
 </script>
 
 <div class="flex flex-col min-h-screen bg-base-100">
