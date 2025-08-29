@@ -22,12 +22,12 @@
     $: isAuthPage = $page.url.pathname === '/login';
 </script>
 
-<div class="flex flex-col min-h-screen bg-base-100">
-    <header class="navbar bg-base-100 z-10 border border-base-300">
+<div class="h-screen flex flex-col overflow-hidden bg-base-100">
+    <header class="flex-none navbar bg-base-100 z-10 border-b border-base-300">
         <div class="flex-1">
             <h1>
                 <a href="/" 
-                   class="btn btn-ghost font-bold text-xl" aria-label="Go to Skill Share homepage"
+                   class="btn btn-ghost font-bold text-xl" aria-label="Go to SkillSwap homepage"
                 >
                     SkillSwap
                 </a>
@@ -35,8 +35,8 @@
         </div>
         <div class="flex-none flex items-center gap-2">
             {#if !isAuthPage && $authStore.isAuthenticated}
-                <a href="/map" class="btn btn-primary btn-sm">
-                    🗺️ Community Map
+                <a href="/create" class="btn btn-primary btn-sm">
+                    ➕ Share Skill
                 </a>
                 <button 
                     class="btn btn-ghost btn-sm"
@@ -54,7 +54,7 @@
         </div>
     </header>
     
-    <main class="flex-grow p-4" id="main-content">
+    <main class="flex-1 overflow-hidden" id="main-content">
         <slot />
     </main>
     
