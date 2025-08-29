@@ -146,13 +146,7 @@
 </svelte:head>
 
 <div class="h-full flex items-center justify-center">
-	<div class="card w-full max-w-md image-full shadow-accent bg-base-100">
-		<figure>
-			<img 
-				src="a.jpg"
-				alt="bg"
-			/>
-		</figure>
+	<div class="card w-full max-w-md shadow-sm bg-base-100">
 		<div class="card-body">
 			<div class="text-center mb-6">
 				<h2
