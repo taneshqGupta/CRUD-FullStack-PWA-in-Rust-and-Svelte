@@ -146,7 +146,7 @@
 </svelte:head>
 
 <div class="h-full flex items-center justify-center">
-	<div class="divider divider-secondary">Hello</div>
+	<div class="divider divider-primary">Hello</div>
 	<div class="card w-full max-w-md shadow-accent bg-base-100">
 		<div class="card-body">
 			<div class="text-center mb-6">
