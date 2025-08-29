@@ -3,18 +3,32 @@
   themes: all;
 }
 
-/* Fix dropdown z-index to appear above map */
+/* Fix dropdown z-index to appear above map and all other elements */
 .dropdown-content {
-    z-index: 9999 !important;
+    z-index: 99999 !important;
 }
 
 /* If using DaisyUI dropdown */
 .dropdown .dropdown-content {
-    z-index: 9999 !important;
+    z-index: 99999 !important;
 }
 
 /* For any theme selector specifically */
 [data-theme] .dropdown-content,
 .theme-controller + .dropdown-content {
-    z-index: 9999 !important;
+    z-index: 99999 !important;
+}
+
+/* Ensure leaflet map doesn't interfere with dropdowns */
+:global(.leaflet-container) {
+    z-index: 1 !important;
+}
+
+:global(.leaflet-control-container) {
+    z-index: 1000 !important;
+}
+
+/* Make sure theme switcher dropdown is always on top */
+:global(.dropdown .dropdown-content) {
+    z-index: 99999 !important;
 }
