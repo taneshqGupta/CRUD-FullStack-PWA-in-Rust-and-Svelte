@@ -23,7 +23,7 @@
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden bg-base-100">
-    <header class="flex-none navbar bg-base-100 z-10 border-b border-base-300">
+    <header class="flex-none navbar bg-base-100 border-b border-base-300 relative" style="z-index: 1000;">
         <div class="flex-1">
             <h1>
                 <a href="/" 
