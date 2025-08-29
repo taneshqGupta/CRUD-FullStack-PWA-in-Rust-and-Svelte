@@ -145,7 +145,7 @@
 	/>
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="h-full flex items-center justify-center">
 	<div class="card w-full max-w-md shadow-2xl bg-base-100">
 		<div class="card-body">
 			<div class="text-center mb-6">
