@@ -71,13 +71,13 @@
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
-	<div class="h-full bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4 overflow-y-auto">
-		<div class="card w-full max-w-2xl bg-white/90 backdrop-blur-sm shadow-2xl border border-white/20">
+	<div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+		<div class="card w-full max-w-2xl bg-base-100 shadow-2xl">
 			<div class="card-body p-8">
                 <!-- Header -->
 				<div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">✨ Share with Community</h1>
-					<p class="text-gray-600">What would you like to offer or request?</p>
+                    <h1 class="text-3xl font-bold text-base-content mb-2">✨ Share with Community</h1>
+					<p class="text-base-content/70">What would you like to offer or request?</p>
 				</div>
                 
 				<!-- Success/Error Messages -->
@@ -114,11 +114,11 @@
 									bind:group={newPostType}
 									class="radio radio-primary hidden"
                                     />
-                                    <div class="card border-2 transition-all duration-200 shadow-lg hover:shadow-xl {newPostType === 'offer' ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-green-300'}">
+                                    <div class="card border-2 transition-all duration-200 hover:shadow-lg {newPostType === 'offer' ? 'border-primary bg-primary/10' : 'border-base-300 hover:border-primary/50'}">
 									<div class="card-body items-center text-center p-6">
                                         <div class="text-4xl mb-2">💡</div>
-										<h3 class="card-title text-green-700 font-bold">Offer a Skill</h3>
-										<p class="text-sm text-gray-600">Share something you're good at</p>
+										<h3 class="card-title text-primary font-bold">Offer a Skill</h3>
+										<p class="text-sm text-base-content/70">Share something you're good at</p>
 									</div>
 								</div>
 							</label>
@@ -131,11 +131,11 @@
 									bind:group={newPostType}
 									class="radio radio-secondary hidden"
 								/>
-								<div class="card border-2 transition-all duration-200 shadow-lg hover:shadow-xl {newPostType === 'request' ? 'border-orange-400 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}">
+								<div class="card border-2 transition-all duration-200 hover:shadow-lg {newPostType === 'request' ? 'border-secondary bg-secondary/10' : 'border-base-300 hover:border-secondary/50'}">
 									<div class="card-body items-center text-center p-6">
 										<div class="text-4xl mb-2">🙋</div>
-										<h3 class="card-title text-orange-700 font-bold">Request Help</h3>
-										<p class="text-sm text-gray-600">Ask for assistance with something</p>
+										<h3 class="card-title text-secondary font-bold">Request Help</h3>
+										<p class="text-sm text-base-content/70">Ask for assistance with something</p>
 									</div>
 								</div>
 							</label>
@@ -151,6 +151,7 @@
 						</label>
 						<textarea
 							id="post-description"
+							name="description"
 							class="textarea textarea-bordered textarea-lg h-32"
 							placeholder={newPostType === 'offer' 
 								? 'e.g., I can teach guitar, help with math homework, cook Indian food...' 
@@ -168,6 +169,7 @@
 							</label>
 							<input
 								id="post-category"
+								name="category"
 								class="input input-bordered"
 								type="text"
 								placeholder="e.g., cooking, tech, music, sports"
@@ -184,6 +186,7 @@
 							</label>
 							<input
 								id="post-pincode"
+								name="pincode"
 								class="input input-bordered"
 								type="text"
 								placeholder={userDefaultPinCode || 'e.g., 110001'}
@@ -204,10 +207,12 @@
 						<button 
 							type="submit" 
 							class="btn btn-primary btn-lg w-full sm:w-auto"
+							class:loading
 							disabled={loading}
 						>
 							{#if loading}
 								<span class="loading loading-spinner loading-sm"></span>
+								Creating...
 							{:else}
 								{newPostType === 'offer' ? '💡 Share Skill' : '🙋 Request Help'}
 							{/if}
