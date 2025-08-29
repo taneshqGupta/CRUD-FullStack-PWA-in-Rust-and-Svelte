@@ -131,7 +131,7 @@
 	<meta name="description" content="Join SkillSwap to discover and share skills in your neighborhood" />
 </svelte:head>
 
-<div class="min-h-screen bg-base-200 flex items-center justify-center">
+<div class="bg-base-200 flex items-center justify-center">
     <div class="w-full max-w-6xl px-4 flex justify-center">
         <div class="flex flex-col lg:flex-row-reverse gap-8">
             <div class="text-center lg:text-left lg:w-1/2">
