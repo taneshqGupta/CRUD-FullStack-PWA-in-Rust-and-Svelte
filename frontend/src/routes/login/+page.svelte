@@ -159,7 +159,6 @@
 				</p>
 			</div>
 
-			<!-- Form -->
 			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
 				{#if !isLogin}
 					<div class="form-control">

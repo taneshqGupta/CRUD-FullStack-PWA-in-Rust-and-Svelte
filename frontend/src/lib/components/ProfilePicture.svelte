@@ -59,13 +59,22 @@
             .toUpperCase()
             .slice(0, 2);
     }
+
+    // Tooltip text
+    $: tooltipText = profilePicture ? 'Change picture' : 'Upload picture';
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<div class="avatar {editable ? 'cursor-pointer' : ''}" on:click={handleImageClick} on:keydown={(e) => e.key === 'Enter' && handleImageClick()} role={editable ? 'button' : 'img'} tabindex={editable ? 0 : -1}>
-    <div class="{sizeClasses[size]} rounded-full {editable ? 'hover:opacity-80 transition-opacity' : ''}">
+<div 
+    class="avatar group {editable ? 'cursor-pointer tooltip tooltip-right' : ''}" 
+    data-tip={editable ? tooltipText : null}
+    on:click={handleImageClick} 
+    on:keydown={(e) => e.key === 'Enter' && handleImageClick()} 
+    role={editable ? 'button' : 'img'} 
+    tabindex={editable ? 0 : -1}
+>
+    <div class="rounded-full overflow-hidden {sizeClasses[size]} {editable ? 'group-hover:blur-[2px] transition-all' : ''}">
         {#if profilePicture}
-            <!-- User uploaded profile picture -->
             <img 
                 src={profilePicture} 
                 alt="{name}'s profile" 
@@ -73,12 +82,10 @@
                 loading="lazy"
             />
         {:else if name}
-            <!-- Fallback with initials -->
             <div class="bg-primary text-primary-content rounded-full w-full h-full flex items-center justify-center font-bold {textSizes[size]}">
                 {getInitials(name)}
             </div>
         {:else}
-            <!-- Default squirrel icon -->
             <div class="bg-base-300 text-base-content rounded-full w-full h-full flex items-center justify-center p-2">
                 <SquirrelSvg />
             </div>
@@ -86,14 +93,6 @@
     </div>
     
     {#if editable}
-        <!-- Upload overlay -->
-        <div class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-            <span class="text-white text-xs font-medium">
-                {profilePicture ? 'Change' : 'Upload'}
-            </span>
-        </div>
-        
-        <!-- Hidden file input -->
         <input
             bind:this={fileInput}
             type="file"
