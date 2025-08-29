@@ -35,8 +35,8 @@
         </div>
         <div class="flex-none flex items-center gap-2">
             {#if !isAuthPage && $authStore.isAuthenticated}
-                <a href="/create" class="btn btn-primary btn-sm">
-                    ➕ Share Skill
+                <a href="/profile" class="btn btn-ghost btn-sm">
+                    👤 Profile
                 </a>
                 <button 
                     class="btn btn-ghost btn-sm"

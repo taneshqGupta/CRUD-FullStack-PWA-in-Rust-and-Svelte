@@ -128,9 +128,14 @@
 						</button>
 					</div>
 					
-					<a href="/create" class="btn btn-primary btn-sm">
-						➕ Share Skill
-					</a>
+					<div class="flex gap-2">
+						<a href="/offer" class="btn btn-primary btn-sm">
+							💡 Offer Skill
+						</a>
+						<a href="/request" class="btn btn-secondary btn-sm">
+							🙋 Request Help
+						</a>
+					</div>
 				</div>
 
 				<!-- Filter Tabs -->
