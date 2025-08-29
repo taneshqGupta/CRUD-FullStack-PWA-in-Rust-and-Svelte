@@ -71,16 +71,16 @@ export async function logout() {
         loading: false
     });
     
-    goto('/auth');
+    goto('/login');
 }
 
-// Redirect to auth page if not authenticated
+// Redirect to login page if not authenticated
 export function requireAuth() {
     if (!browser) return;
     
     authStore.subscribe(state => {
         if (!state.loading && !state.isAuthenticated) {
-            goto('/auth');
+            goto('/login');
         }
     })();
 }

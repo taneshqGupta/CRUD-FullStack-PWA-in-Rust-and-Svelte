@@ -19,7 +19,7 @@
 
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
-		goto('/auth');
+		goto('/login');
 	}
 
 	onMount(async () => {
@@ -30,7 +30,7 @@
 					if (auth.isAuthenticated) {
 						await loadPosts();
 					} else {
-						goto('/auth');
+						goto('/login');
 					}
 					unsubscribe();
 				}
@@ -48,7 +48,7 @@
 			console.error('Error loading posts:', error);
 			// If unauthorized, redirect to auth
 			if (error instanceof Error && error.message.includes('401')) {
-				goto('/auth');
+				goto('/login');
 			}
 		} finally {
 			loading = false;

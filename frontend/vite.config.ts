@@ -10,9 +10,9 @@ export default defineConfig({
         sveltekit(),
         SvelteKitPWA({
             manifest: {
-                name: 'Tasks',
-                short_name: 'Tasks',
-                description: ' This is a starter CRUD template for Rust and SvelteKit with dynamic and persistent theme switching.',
+                name: 'Skill-Swap: Learn, Teach, Socialise',
+                short_name: 'SkillSwap',
+                description: 'Community skill-swap, make friends, socialise and share some skill with your new friends, learn something, teach something.',
                 theme_color: '#2a303c', 
                 display: 'standalone', 
                 start_url: '/',      

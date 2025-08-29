@@ -43,30 +43,22 @@ async fn main() -> Result<(), AppError> {
         ])
         .allow_credentials(true);
 
-    // Set up session store
     let session_store = MemoryStore::default();
     let session_layer = SessionManagerLayer::new(session_store)
-        .with_secure(true) // Set to true in production with HTTPS
+        .with_secure(true) 
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
-        // Personal post routes
-        .route("/", get(list_posts))  // Keep root path for backward compatibility
+        .route("/", get(list_posts))  
         .route("/posts", get(list_posts))
-        .route("/posts/offers", get(list_offers))     // Skills I can offer
-        .route("/posts/requests", get(list_requests)) // Help I need
-        // Community post routes - see everyone's posts
-        .route("/community", get(list_community_posts))           // All community posts
-        .route("/community/offers", get(list_community_offers))   // All skills available
-        .route("/community/requests", get(list_community_requests)) // All help needed
-        // Post management
-        .route("/create", post(create_post))  // Backward compatibility
+        .route("/posts/offers", get(list_offers))     
+        .route("/posts/requests", get(list_requests)) 
+        .route("/community", get(list_community_posts))           
+        .route("/community/offers", get(list_community_offers)) 
+        .route("/community/requests", get(list_community_requests))
         .route("/posts/create", post(create_post))
-        .route("/delete/{id}", delete(delete_post))  // Backward compatibility
         .route("/posts/delete/{id}", delete(delete_post))
-        .route("/update", post(update_post))  // Backward compatibility
         .route("/posts/update", post(update_post))
-        // Auth routes
         .route("/auth/register", post(register))
         .route("/auth/login", post(login))
         .route("/auth/logout", post(logout))
