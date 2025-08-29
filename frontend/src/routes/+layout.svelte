@@ -29,7 +29,7 @@
                 <a href="/" 
                    class="btn btn-ghost font-bold text-xl" aria-label="Go to SkillSwap homepage"
                 >
-                    SkillSwap
+                    Skill-Swap 
                 </a>
             </h1>
         </div>
