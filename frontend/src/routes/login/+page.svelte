@@ -146,192 +146,187 @@
 </svelte:head>
 
 <div class="bg-base-200 flex flex-col items-center justify-center">
-	<div class="w-full h-full max-w-6xl px-4 flex flex-grow justify-center">
-		<div class="card w-full max-w-md shadow-2xl bg-base-100">
-			<div class="card-body">
-				<div class="text-center mb-6">
-					<h2
-						class="card-title text-2xl font-bold text-base-content justify-center"
-					>
-						Welcome to Skill-Swap
-					</h2>
-					<p class="text-base-content/70 text-sm">
-						Learn, Teach, Socialise
-					</p>
+	<div class="card w-full max-w-md shadow-2xl bg-base-100">
+		<div class="card-body">
+			<div class="text-center mb-6">
+				<h2
+					class="card-title text-2xl font-bold text-base-content justify-center"
+				>
+					Welcome to Skill-Swap
+				</h2>
+				<p class="text-base-content/70 text-sm">
+					Learn, Teach, Socialise
+				</p>
+			</div>
+
+			<!-- Form -->
+			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+				{#if !isLogin}
+					<div class="form-control">
+						<label class="label" for="name">
+							<span class="label-text">Full Name</span>
+						</label>
+						<input
+							id="name"
+							name="name"
+							type="text"
+							class="input input-bordered w-full"
+							placeholder="Enter your full name"
+							bind:value={name}
+							disabled={loading}
+							required
+						/>
+					</div>
+
+					<!-- Profile Picture Upload -->
+					<div class="form-control">
+						<div class="label">
+							<span class="label-text"
+								>Profile Picture (Optional)</span
+							>
+						</div>
+						<div class="flex flex-col items-center gap-3">
+							<ProfilePicture
+								profilePicture={profilePicturePreview}
+								{name}
+								size="lg"
+								editable={!loading}
+								onImageChange={handleProfilePictureChange}
+							/>
+							<p
+								class="text-xs text-base-content/60 text-center max-w-xs"
+							>
+								Click to upload a profile picture or we'll use a
+								default one
+							</p>
+						</div>
+					</div>
+
+					<div class="form-control">
+						<label class="label" for="pinCode">
+							<span class="label-text">Pin Code (Optional)</span>
+						</label>
+						<input
+							id="pinCode"
+							name="pinCode"
+							type="text"
+							class="input input-bordered w-full"
+							placeholder="e.g., 110001"
+							bind:value={pinCode}
+							pattern="[0-9]{6}"
+							disabled={loading}
+							title="Enter a valid 6-digit pin code"
+						/>
+						<div class="text-xs text-base-content/60 mt-1">
+							This will be your default location for posts
+						</div>
+					</div>
+				{/if}
+
+				<div class="form-control">
+					<label class="label" for="email">
+						<span class="label-text">Email Address</span>
+					</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						class="input input-bordered w-full"
+						placeholder="Enter your email"
+						bind:value={email}
+						disabled={loading}
+						required
+					/>
 				</div>
 
-				<!-- Form -->
-				<form on:submit|preventDefault={handleSubmit} class="space-y-4">
-					{#if !isLogin}
-						<div class="form-control">
-							<label class="label" for="name">
-								<span class="label-text">Full Name</span>
-							</label>
-							<input
-								id="name"
-								name="name"
-								type="text"
-								class="input input-bordered w-full"
-								placeholder="Enter your full name"
-								bind:value={name}
-								disabled={loading}
-								required
-							/>
-						</div>
-
-						<!-- Profile Picture Upload -->
-						<div class="form-control">
-							<div class="label">
-								<span class="label-text"
-									>Profile Picture (Optional)</span
-								>
-							</div>
-							<div class="flex flex-col items-center gap-3">
-								<ProfilePicture
-									profilePicture={profilePicturePreview}
-									{name}
-									size="lg"
-									editable={!loading}
-									onImageChange={handleProfilePictureChange}
-								/>
-								<p
-									class="text-xs text-base-content/60 text-center max-w-xs"
-								>
-									Click to upload a profile picture or we'll
-									use a default one
-								</p>
-							</div>
-						</div>
-
-						<div class="form-control">
-							<label class="label" for="pinCode">
-								<span class="label-text"
-									>Pin Code (Optional)</span
-								>
-							</label>
-							<input
-								id="pinCode"
-								name="pinCode"
-								type="text"
-								class="input input-bordered w-full"
-								placeholder="e.g., 110001"
-								bind:value={pinCode}
-								pattern="[0-9]{6}"
-								disabled={loading}
-								title="Enter a valid 6-digit pin code"
-							/>
-							<div class="text-xs text-base-content/60 mt-1">
-								This will be your default location for posts
-							</div>
-						</div>
-					{/if}
-
-					<div class="form-control">
-						<label class="label" for="email">
-							<span class="label-text">Email Address</span>
-						</label>
-						<input
-							id="email"
-							name="email"
-							type="email"
-							class="input input-bordered w-full"
-							placeholder="Enter your email"
-							bind:value={email}
-							disabled={loading}
-							required
-						/>
-					</div>
-
-					<div class="form-control">
-						<label class="label" for="password">
-							<span class="label-text">Password</span>
-						</label>
-						<input
-							id="password"
-							name="password"
-							type="password"
-							class="input input-bordered w-full"
-							placeholder="Enter your password"
-							bind:value={password}
-							disabled={loading}
-							required
-							minlength="6"
-						/>
-						{#if !isLogin}
-							<div class="text-xs text-base-content/60 mt-1">
-								Minimum 6 characters
-							</div>
-						{/if}
-					</div>
-
-					<!-- Error/Success Messages -->
-					{#if error}
-						<div class="alert alert-error">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="stroke-current flex-shrink-0 h-6 w-6"
-								fill="none"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
-							<span>{error}</span>
-						</div>
-					{/if}
-
-					{#if success}
-						<div class="alert alert-success">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="stroke-current flex-shrink-0 h-6 w-6"
-								fill="none"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
-							<span>{success}</span>
-						</div>
-					{/if}
-
-					<!-- Submit Button -->
-					<button
-						type="submit"
-						class="btn btn-primary w-full"
-						class:loading
+				<div class="form-control">
+					<label class="label" for="password">
+						<span class="label-text">Password</span>
+					</label>
+					<input
+						id="password"
+						name="password"
+						type="password"
+						class="input input-bordered w-full"
+						placeholder="Enter your password"
+						bind:value={password}
 						disabled={loading}
-					>
-						{#if loading}
-							<span class="loading loading-spinner loading-sm"
-							></span>
-							{isLogin ? "Signing In..." : "Creating Account..."}
-						{:else}
-							{isLogin ? "Sign In" : "Create Account"}
-						{/if}
-					</button>
-				</form>
+						required
+						minlength="6"
+					/>
+					{#if !isLogin}
+						<div class="text-xs text-base-content/60 mt-1">
+							Minimum 6 characters
+						</div>
+					{/if}
+				</div>
 
-				<!-- Toggle Mode -->
-				<div class="divider">OR</div>
+				<!-- Error/Success Messages -->
+				{#if error}
+					<div class="alert alert-error">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="stroke-current flex-shrink-0 h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+						<span>{error}</span>
+					</div>
+				{/if}
+
+				{#if success}
+					<div class="alert alert-success">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="stroke-current flex-shrink-0 h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+						<span>{success}</span>
+					</div>
+				{/if}
+
+				<!-- Submit Button -->
 				<button
-					class="btn btn-ghost w-full"
-					on:click={toggleMode}
+					type="submit"
+					class="btn btn-primary w-full"
+					class:loading
 					disabled={loading}
 				>
-					{isLogin
-						? "Don't have an account? Sign Up"
-						: "Already have an account? Sign In"}
+					{#if loading}
+						<span class="loading loading-spinner loading-sm"></span>
+						{isLogin ? "Signing In..." : "Creating Account..."}
+					{:else}
+						{isLogin ? "Sign In" : "Create Account"}
+					{/if}
 				</button>
-			</div>
+			</form>
+
+			<!-- Toggle Mode -->
+			<div class="divider">OR</div>
+			<button
+				class="btn btn-ghost w-full"
+				on:click={toggleMode}
+				disabled={loading}
+			>
+				{isLogin
+					? "Don't have an account? Sign Up"
+					: "Already have an account? Sign In"}
+			</button>
 		</div>
 	</div>
 </div>
