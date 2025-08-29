@@ -10,6 +10,7 @@
 	let email = '';
 	let password = '';
 	let name = '';
+	let pinCode = '';
 	let loading = false;
 	let error = '';
 	let success = '';

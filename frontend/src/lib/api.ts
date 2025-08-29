@@ -128,11 +128,12 @@ export async function login(email: string, password: string): Promise<AuthRespon
     return response.json();
 }
 
-export async function register(email: string, password: string, name?: string): Promise<AuthResponse> {
+export async function register(email: string, password: string, name?: string, pinCode?: string): Promise<AuthResponse> {
     const formData = new URLSearchParams();
     formData.append('email', email);
     formData.append('password', password);
     if (name) formData.append('name', name);
+    if (pinCode) formData.append('pin_code', pinCode);
 
     const response = await fetch(`${PUBLIC_BACKEND_URL}auth/register`, {
         method: "POST",
