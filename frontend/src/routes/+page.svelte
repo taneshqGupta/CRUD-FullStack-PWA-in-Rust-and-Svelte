@@ -26,7 +26,7 @@
 	// New robust filtering system
 	let textSearch = "";
 	let selectedCategories: Category[] = [];
-	let selectedPostTypes: PostType[] = ['offer', 'request'];
+	let postTypeFilter: 'both' | 'offers' | 'requests' = 'both';
 	let userNameSearch = "";
 	let searchPinCode = "";
 	let userDefaultPinCode = "";
@@ -100,8 +100,9 @@
 	$: filteredPosts = allPosts.filter((post) => {
 		if (!post.pin_code) return false;
 
-		// Filter by post type (offer/request)
-		if (!selectedPostTypes.includes(post.post_type)) return false;
+		// Filter by post type (offer/request/both)
+		if (postTypeFilter === 'offers' && post.post_type !== 'offer') return false;
+		if (postTypeFilter === 'requests' && post.post_type !== 'request') return false;
 
 		// Filter by categories (if any selected)
 		if (selectedCategories.length > 0 && !selectedCategories.includes(post.category)) return false;
@@ -225,36 +226,47 @@
 						</div>
 					</div>
 
-					<!-- Post Type Multi-Select -->
+					<!-- Post Type Select -->
 					<div class="form-control">
 						<div class="label">
 							<span class="label-text text-xs">Post Type</span>
 						</div>
 						<div class="dropdown dropdown-bottom">
 							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
-								Types ({selectedPostTypes.length})
+								{postTypeFilter === 'both' ? 'Both' : postTypeFilter === 'offers' ? 'Offers Only' : 'Requests Only'}
 							</div>
 							<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow">
 								<li>
 									<label class="cursor-pointer flex items-center gap-2">
 										<input 
-											type="checkbox" 
-											class="checkbox checkbox-sm"
-											bind:group={selectedPostTypes}
-											value="offer"
+											type="radio" 
+											class="radio radio-sm"
+											bind:group={postTypeFilter}
+											value="both"
 										/>
-										<span class="text-sm">Offers</span>
+										<span class="text-sm">Both</span>
 									</label>
 								</li>
 								<li>
 									<label class="cursor-pointer flex items-center gap-2">
 										<input 
-											type="checkbox" 
-											class="checkbox checkbox-sm"
-											bind:group={selectedPostTypes}
-											value="request"
+											type="radio" 
+											class="radio radio-sm"
+											bind:group={postTypeFilter}
+											value="offers"
 										/>
-										<span class="text-sm">Requests</span>
+										<span class="text-sm">Offers Only</span>
+									</label>
+								</li>
+								<li>
+									<label class="cursor-pointer flex items-center gap-2">
+										<input 
+											type="radio" 
+											class="radio radio-sm"
+											bind:group={postTypeFilter}
+											value="requests"
+										/>
+										<span class="text-sm">Requests Only</span>
 									</label>
 								</li>
 							</ul>
@@ -284,7 +296,7 @@
 							on:click={() => {
 								textSearch = '';
 								selectedCategories = [];
-								selectedPostTypes = ['offer', 'request'];
+								postTypeFilter = 'both';
 								userNameSearch = '';
 							}}
 						>
