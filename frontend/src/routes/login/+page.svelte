@@ -303,7 +303,6 @@
 				<button
 					type="submit"
 					class="btn btn-primary w-full"
-					class:loading
 					disabled={loading}
 				>
 					{#if loading}
