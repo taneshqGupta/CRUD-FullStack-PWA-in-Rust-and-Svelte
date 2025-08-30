@@ -5,6 +5,7 @@
     import { onMount } from 'svelte';
     import type { Post } from '$lib/types';
     import ProfilePicture from '$lib/components/ProfilePicture.svelte';
+    import { MailSvg, PinSvg, TasksSvg, LogoutSvg } from '$lib/components/icons';
 
     let loading = true;
     let profile: any = null;
@@ -118,9 +119,9 @@
                             
                             <div class="text-center md:text-left">
                                 <h1 class="card-title text-3xl mb-2">{profile.name || 'User'}</h1>
-                                <p class="text-base-content/70 mb-2">{profile.email}</p>
+                                <p class="text-base-content/70 mb-2"><MailSvg /> {profile.email}</p>
                                 {#if profile.pin_code}
-                                    <p class="text-base-content/70">Pin Code: {profile.pin_code}</p>
+                                    <p class="text-base-content/70"><PinSvg /> Pin Code: {profile.pin_code}</p>
                                 {/if}
                                 <p class="text-xs text-base-content/50 mt-2">Click profile picture to change</p>
                             </div>
@@ -166,10 +167,10 @@
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-3 mb-6 justify-center">
                                         <a href="/offer" class="btn btn-info btn-block mb-2">
-                        Offer New Skill
+                        <div class="badge badge-ghost">Offer</div> New Skill
                     </a>
                     <a href="/request" class="btn btn-warning btn-block mb-2">
-                        Request Help
+                        <div class="badge badge-ghost">Request</div> Help
                     </a>
                     <a href="/" class="btn btn-success btn-block mb-2">
                         View Community Map
@@ -178,14 +179,15 @@
                     <div class="divider"></div>
                     
                     <button class="btn btn-error btn-block" on:click={logout}>
-                        Logout
+                        <LogoutSvg /> Logout
+                    </button>
                 </div>
 
                 <!-- User's Posts -->
                 {#if userPosts.length > 0}
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body">
-                            <h2 class="card-title text-2xl mb-4">My Posts</h2>
+                            <h2 class="card-title text-2xl mb-4"><TasksSvg /> My Posts</h2>
                             
                             <div class="grid gap-4">
                                 {#each userPosts as post}
@@ -194,11 +196,11 @@
                                             <div class="flex items-center justify-between mb-2">
                                                 <div class="flex items-center gap-2">
                                                     <span class="badge {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'}">
-                                                        {post.post_type === 'offer' ? 'Offering' : 'Requesting'}
+                                                        <div class="badge badge-ghost">{post.post_type === 'offer' ? 'Offering' : 'Requesting'}</div>
                                                     </span>
                                                     <span class="badge badge-outline">{post.category}</span>
                                                     {#if post.pin_code}
-                                                        <span class="badge badge-ghost text-xs">Pin Code: {post.pin_code}</span>
+                                                        <span class="badge badge-ghost text-xs"><PinSvg /> {post.pin_code}</span>
                                                     {/if}
                                                 </div>
                                                 {#if post.completed}

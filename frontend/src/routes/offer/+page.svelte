@@ -4,6 +4,7 @@
 	import { authStore } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { PinSvg } from '$lib/components/icons';
 
 	let newPostDescription = '';
 	let newPostCategory = '';
@@ -76,7 +77,7 @@
 			<div class="card-body p-8">
                 <!-- Header -->
 				<div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-base-content mb-2">Offer Your Skill</h1>
+                    <h1 class="text-3xl font-bold text-base-content mb-2"><div class="badge badge-ghost">Offer</div> Your Skill</h1>
 					<p class="text-base-content/70">Share something you're good at with your community</p>
 				</div>
                 
@@ -169,7 +170,7 @@
 								<span class="loading loading-spinner loading-sm"></span>
 								Posting...
 							{:else}
-								Share My Skill
+								<div class="badge badge-ghost">Share</div> My Skill
 							{/if}
 						</button>
 						
@@ -186,13 +187,13 @@
 						<div class="card-body p-4">
 							<div class="flex items-center gap-2 mb-2">
 								<span class="badge badge-primary badge-sm">
-									Offering
+									<div class="badge badge-ghost">Offering</div>
 								</span>
 								{#if newPostCategory.trim()}
 									<span class="badge badge-outline badge-sm">{newPostCategory.trim()}</span>
 								{/if}
 								{#if newPinCode.trim() || userDefaultPinCode}
-									<span class="badge badge-ghost badge-sm">Pin Code: {newPinCode.trim() || userDefaultPinCode}</span>
+									<span class="badge badge-ghost badge-sm"><PinSvg /> {newPinCode.trim() || userDefaultPinCode}</span>
 								{/if}
 							</div>
 							<p class="text-sm">{newPostDescription.trim()}</p>

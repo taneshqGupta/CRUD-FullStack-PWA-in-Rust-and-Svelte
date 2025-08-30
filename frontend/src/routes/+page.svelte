@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import { goto } from '$app/navigation';
+	import { SearchSvg, PinSvg, MembersSvg, CrossSvg } from '$lib/components/icons';
 
 	let allPosts: Post[] = [];
 	let loading = true;
@@ -124,15 +125,16 @@
 							class="btn btn-primary join-item btn-sm"
 							on:click={searchByPinCode}
 						>
+							<SearchSvg />
 						</button>
 					</div>
 					
 					<div class="flex gap-2">
 						<a href="/offer" class="btn btn-primary btn-sm">
-							Offer Skill
+							<div class="badge badge-ghost">Offer</div> Skill
 						</a>
 						<a href="/request" class="btn btn-secondary btn-sm">
-							Request Help
+							<div class="badge badge-ghost">Request</div> Help
 						</a>
 					</div>
 				</div>
@@ -149,13 +151,13 @@
 						class="tab tab-sm {viewType === 'offers' ? 'tab-active' : ''}"
 						on:click={() => viewType = 'offers'}
 					>
-						Skills ({offerCount})
+						<div class="badge badge-ghost">Offers</div> ({offerCount})
 					</button>
 					<button 
 						class="tab tab-sm {viewType === 'requests' ? 'tab-active' : ''}"
 						on:click={() => viewType = 'requests'}
 					>
-						Requests ({requestCount})
+						<div class="badge badge-ghost">Requests</div> ({requestCount})
 					</button>
 				</div>
 			</div>
@@ -191,15 +193,15 @@
 							<div class="stats stats-vertical shadow">
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-primary">{offerCount}</div>
-									<div class="stat-desc">Skills Available</div>
+									<div class="stat-desc"><div class="badge badge-ghost">Offers</div> Available</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-secondary">{requestCount}</div>
-									<div class="stat-desc">Help Needed</div>
+									<div class="stat-desc"><div class="badge badge-ghost">Requests</div> Needed</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-accent">{totalUsers}</div>
-									<div class="stat-desc">Members</div>
+									<div class="stat-desc"><MembersSvg /> Members</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-info">{uniqueLocations}</div>
@@ -220,7 +222,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 							</svg>
 							<div>
-								<h3 class="font-bold">Selected Location</h3>
+								<h3 class="font-bold"><PinSvg /> Selected Location</h3>
 								<div class="text-xs">
 									<p>Coordinates: {selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}</p>
 									{#if selectedLocation.address}
@@ -230,7 +232,7 @@
 							</div>
 						</div>
 						<div class="flex-none">
-							<button class="btn btn-sm btn-ghost" on:click={() => selectedLocation = null}></button>
+							<button class="btn btn-sm btn-ghost" on:click={() => selectedLocation = null}><CrossSvg /></button>
 						</div>
 					</div>
 				</div>
