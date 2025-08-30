@@ -175,35 +175,6 @@
 				/>
 			{/if}
 			
-			<!-- Floating Stats Card -->
-			{#if !loading}
-				<div class="absolute top-4 right-4" style="z-index: 500;">
-					<div class="card card-compact bg-base-100/95 backdrop-blur-sm shadow-xl border border-base-300">
-						<div class="card-body">
-							<h3 class="card-title text-sm">Community Stats</h3>
-							<div class="stats stats-vertical shadow">
-								<div class="stat py-2">
-									<div class="stat-value text-sm text-primary">{offerCount}</div>
-									<div class="stat-desc"><div class="badge badge-ghost">Offers</div> Available</div>
-								</div>
-								<div class="stat py-2">
-									<div class="stat-value text-sm text-secondary">{requestCount}</div>
-									<div class="stat-desc"><div class="badge badge-ghost">Requests</div> Needed</div>
-								</div>
-								<div class="stat py-2">
-									<div class="stat-value text-sm text-accent">{totalUsers}</div>
-									<div class="stat-desc"><MembersSvg /> Members</div>
-								</div>
-								<div class="stat py-2">
-									<div class="stat-value text-sm text-info">{uniqueLocations}</div>
-									<div class="stat-desc">� Locations</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			{/if}
-
 			<!-- Floating Location Info -->
 			{#if selectedLocation}
 				<div class="absolute bottom-4 left-4 right-4" style="z-index: 400;">
