@@ -96,24 +96,20 @@
 		}
 	}
 
-	// Robust filtering logic
 	$: filteredPosts = allPosts.filter((post) => {
 		if (!post.pin_code) return false;
 
-		// Filter by post type (offer/request/both)
 		if (postTypeFilter === "offers" && post.post_type !== "offer")
 			return false;
 		if (postTypeFilter === "requests" && post.post_type !== "request")
 			return false;
 
-		// Filter by categories (if any selected)
 		if (
 			selectedCategories.length > 0 &&
 			!selectedCategories.includes(post.category)
 		)
 			return false;
 
-		// Filter by user name search
 		if (
 			userNameSearch.trim() &&
 			post.user_name &&
@@ -121,7 +117,6 @@
 		)
 			return false;
 
-		// Full text search across all fields
 		if (textSearch.trim()) {
 			const searchTerm = textSearch.toLowerCase();
 			const searchableContent = [
@@ -201,11 +196,9 @@
 					</div>
 				</div>
 
-				<!-- New Robust Filtering System -->
 				<div
 					class="flex flex-col lg:flex-row gap-3 items-start lg:items-center"
 				>
-					<!-- Full Text Search -->
 					<div class="form-control">
 						<label class="label" for="text-search">
 							<span class="label-text text-xs"
@@ -220,7 +213,6 @@
 						/>
 					</div>
 
-					<!-- Category Multi-Select -->
 					<div class="form-control">
 						<div class="label">
 							<span class="label-text text-xs">Categories</span>
