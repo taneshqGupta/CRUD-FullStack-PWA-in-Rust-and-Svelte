@@ -165,12 +165,10 @@
 				class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4"
 			>
 				<div class="flex flex-wrap gap-3 items-center">
+					<label class="label" for="text-search">
+						<span class="label-text text-xs">PIN-CODE</span>
+					</label>
 					<div class="join">
-						<label class="label" for="text-search">
-							<span class="label-text text-xs"
-								>PIN-CODE</span
-							>
-						</label>
 						<input
 							class="input input-bordered join-item input-sm"
 							placeholder="Search by Pin Code"
