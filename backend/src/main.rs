@@ -4,7 +4,7 @@ mod partitioned_cookies;
 mod posts;
 mod structs;
 mod telemetry;
-use auth::{check_auth, login, logout, register, get_profile};
+use auth::{check_auth, login, logout, register, get_profile, update_profile_picture};
 use axum::{
     Router, middleware,
     routing::{delete, get, post},
@@ -64,6 +64,7 @@ async fn main() -> Result<(), AppError> {
         .route("/auth/logout", post(logout))
         .route("/auth/check", get(check_auth))
         .route("/auth/profile", get(get_profile))
+        .route("/auth/profile/picture", post(update_profile_picture))
         .with_state(pool)
         .layer(session_layer)
         .layer(middleware::from_fn(add_partitioned_attribute))

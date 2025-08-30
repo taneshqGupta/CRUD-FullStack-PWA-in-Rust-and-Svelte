@@ -1,5 +1,5 @@
 use crate::error::AppError;
-use crate::structs::{AuthResponse, LoginRequest, NewUser, UserProfile};
+use crate::structs::{AuthResponse, LoginRequest, NewUser, UserProfile, ProfilePictureUpdate};
 use axum::{Form, Json, extract::State};
 use bcrypt::{DEFAULT_COST, hash, verify};
 use http::StatusCode;
@@ -181,7 +181,7 @@ pub async fn get_profile(State(pool): State<PgPool>, session: Session) -> Result
     let user_id = require_auth(session).await?;
     
     let user = sqlx::query!(
-        "SELECT id, email, name, pin_code FROM users WHERE id = $1",
+        "SELECT id, email, name, pin_code, profile_picture FROM users WHERE id = $1",
         user_id
     )
     .fetch_one(&pool)
@@ -192,5 +192,30 @@ pub async fn get_profile(State(pool): State<PgPool>, session: Session) -> Result
         email: user.email,
         name: user.name,
         pin_code: user.pin_code,
+        profile_picture: user.profile_picture,
+    }))
+}
+
+pub async fn update_profile_picture(
+    State(pool): State<PgPool>, 
+    session: Session, 
+    Form(update): Form<ProfilePictureUpdate>
+) -> Result<Json<UserProfile>, AppError> {
+    let user_id = require_auth(session).await?;
+    
+    let user = sqlx::query!(
+        "UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING id, email, name, pin_code, profile_picture",
+        update.profile_picture,
+        user_id
+    )
+    .fetch_one(&pool)
+    .await?;
+
+    Ok(Json(UserProfile {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        pin_code: user.pin_code,
+        profile_picture: user.profile_picture,
     }))
 }

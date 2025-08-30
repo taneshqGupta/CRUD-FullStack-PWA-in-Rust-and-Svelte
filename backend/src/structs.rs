@@ -51,6 +51,7 @@ pub struct User {
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub pin_code: Option<String>,
     pub name: Option<String>,
+    pub profile_picture: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -59,6 +60,7 @@ pub struct UserProfile {
     pub email: String,
     pub name: Option<String>,
     pub pin_code: Option<String>,
+    pub profile_picture: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -80,4 +82,9 @@ pub struct AuthResponse {
     pub success: bool,
     pub message: String,
     pub user_id: Option<i32>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ProfilePictureUpdate {
+    pub profile_picture: String,
 }

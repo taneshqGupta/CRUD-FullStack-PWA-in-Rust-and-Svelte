@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT id, email, name, pin_code FROM users WHERE id = $1",
+  "query": "UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING id, email, name, pin_code, profile_picture",
   "describe": {
     "columns": [
       {
@@ -22,10 +22,16 @@
         "ordinal": 3,
         "name": "pin_code",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "profile_picture",
+        "type_info": "Text"
       }
     ],
     "parameters": {
       "Left": [
+        "Text",
         "Int4"
       ]
     },
@@ -33,8 +39,9 @@
       false,
       false,
       true,
+      true,
       true
     ]
   },
-  "hash": "7c058bf21ce7649292a8b559c9d2655ff31503154046ec683120cb3090055311"
+  "hash": "0f59cec6cbb5f774632a62a3abbf5be6f29a937833bc0ddf288a5bf71ab520be"
 }
