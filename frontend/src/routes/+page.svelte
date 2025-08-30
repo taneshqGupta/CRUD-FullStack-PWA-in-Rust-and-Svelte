@@ -120,7 +120,7 @@
 							on:keydown={(e) => e.key === 'Enter' && searchByPinCode()}
 						/>
 						<button 
-							class="btn btn-primary join-item btn-sm"
+							class="btn btn-soft join-item btn-sm"
 							on:click={searchByPinCode}
 						>
 							<SearchSvg />
