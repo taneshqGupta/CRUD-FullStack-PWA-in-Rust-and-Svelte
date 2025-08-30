@@ -114,7 +114,7 @@
 				<div class="flex flex-wrap gap-3 items-center">
 					<div class="join">
 						<input 
-							class="input input-bordered join-item input-sm"
+							class="input input-bordered join-item input-sm w-64"
 							placeholder={userDefaultPinCode ? `Search pin code (default: ${userDefaultPinCode})` : "Search by pin code..."}
 							bind:value={searchPinCode}
 							on:keydown={(e) => e.key === 'Enter' && searchByPinCode()}
