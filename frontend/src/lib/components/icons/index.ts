@@ -13,3 +13,4 @@ export { default as RustSvg } from './RustSVG.svelte';
 export { default as SvelteKitSvg } from './SvelteSVG.svelte';
 export { default as PostgresSvg } from './PostgresSVG.svelte';
 export { default as SearchSvg } from './SearchSVG.svelte';
+export { default as PinSvg } from './PinSVG.svelte';
