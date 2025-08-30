@@ -210,14 +210,21 @@
 			<!-- Coordinates: {selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}
 			Address: {selectedLocation.address} -->
 			{#if selectedLocation}
-				<div class="card bg-base-100 w-96 shadow-xl" style="z-index: 500;">
-					<div class="card-body">
-						<h2 class="card-title">
-							Selected Location ({selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)})
-						</h2>
-						<p>
-							{selectedLocation.address}
-						</p>
+				<div
+					class="absolute bottom-4 left-4 right-4"
+					style="z-index: 400;"
+				>
+					<div class="card bg-base-100 w-96 shadow-xl">
+						<div class="card-body">
+							<h2 class="card-title">
+								Selected Location ({selectedLocation.lat.toFixed(
+									4,
+								)}, {selectedLocation.lng.toFixed(4)})
+							</h2>
+							<p>
+								{selectedLocation.address}
+							</p>
+						</div>
 					</div>
 				</div>
 			{/if}
