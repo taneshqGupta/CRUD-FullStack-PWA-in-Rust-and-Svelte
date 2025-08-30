@@ -54,7 +54,7 @@
                 class="btn btn-ghost font-bold text-xl"
                 aria-label="Go to SkillSwap homepage"
                 >
-                    Skill-Swap
+                    Skill-Swap: Learn, Teach, Socialise
                 </a>
             </h1>
         </div>
