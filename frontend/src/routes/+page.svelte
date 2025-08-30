@@ -171,7 +171,7 @@
 					<div class="join">
 						<input
 							class="input input-bordered join-item input-sm"
-							placeholder="Search by Pin Code"
+							placeholder="Enter 6-digit pin code"
 							bind:value={searchPinCode}
 							on:keydown={(e) =>
 								e.key === "Enter" && searchByPinCode()}
