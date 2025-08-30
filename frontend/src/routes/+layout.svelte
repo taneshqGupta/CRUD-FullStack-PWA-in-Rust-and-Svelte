@@ -69,7 +69,7 @@
             {#if !isAuthPage && $authStore.isAuthenticated}
                 <a
                     href="/profile"
-                    class="btn btn-ghost btn-sm p-1"
+                    class="btn btn-circle btn-sm p-1"
                     aria-label="Go to profile"
                 >
                     <ProfilePicture
