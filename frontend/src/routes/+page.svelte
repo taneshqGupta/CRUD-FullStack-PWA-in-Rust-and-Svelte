@@ -218,7 +218,7 @@
 						<div class="dropdown dropdown-bottom">
 							<div
 								role="button"
-								class="btn btn-outline btn-sm"
+								class="btn btn-soft btn-sm"
 								tabindex="0"
 							>
 								Categories ({selectedCategories.length})
