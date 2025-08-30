@@ -19,3 +19,4 @@ export { default as MembersSvg } from './MembersSVG.svelte';
 export { default as CrossSvg } from './CrossSVG.svelte';
 export { default as LogoutSvg } from './LogoutSVG.svelte';
 export { default as LoginSvg } from './LoginSVG.svelte';
+export { default as PasskeySvg } from './PasskeySVG.svelte';
