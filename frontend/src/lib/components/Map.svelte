@@ -166,7 +166,7 @@
 
     function createCustomIcon(postType: 'offer' | 'request') {
         const color = markerColors[postType];
-        const icon = postType === 'offer' ? '💡' : '🙋';
+        const icon = postType === 'offer' ? '' : '';
         
         return L.divIcon({
             className: 'custom-marker',
@@ -222,7 +222,7 @@
                 const popupContent = `
                     <div class="p-3 max-w-sm">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="badge badge-outline badge-sm">📍 ${pinCode}</span>
+                            <span class="badge badge-outline badge-sm">Pin Code: ${pinCode}</span>
                             <span class="text-xs">${offerCount} offers, ${requestCount} requests</span>
                         </div>
                         <div class="space-y-2 max-h-60 overflow-y-auto">

@@ -124,16 +124,15 @@
 							class="btn btn-primary join-item btn-sm"
 							on:click={searchByPinCode}
 						>
-							🔍
 						</button>
 					</div>
 					
 					<div class="flex gap-2">
 						<a href="/offer" class="btn btn-primary btn-sm">
-							💡 Offer Skill
+							Offer Skill
 						</a>
 						<a href="/request" class="btn btn-secondary btn-sm">
-							🙋 Request Help
+							Request Help
 						</a>
 					</div>
 				</div>
@@ -144,19 +143,19 @@
 						class="tab tab-sm {viewType === 'all' ? 'tab-active' : ''}"
 						on:click={() => viewType = 'all'}
 					>
-						🌍 All ({filteredPosts.length})
+						All ({filteredPosts.length})
 					</button>
 					<button 
 						class="tab tab-sm {viewType === 'offers' ? 'tab-active' : ''}"
 						on:click={() => viewType = 'offers'}
 					>
-						💡 Skills ({offerCount})
+						Skills ({offerCount})
 					</button>
 					<button 
 						class="tab tab-sm {viewType === 'requests' ? 'tab-active' : ''}"
 						on:click={() => viewType = 'requests'}
 					>
-						🙋 Requests ({requestCount})
+						Requests ({requestCount})
 					</button>
 				</div>
 			</div>
@@ -188,19 +187,19 @@
 				<div class="absolute top-4 right-4" style="z-index: 500;">
 					<div class="card card-compact bg-base-100/95 backdrop-blur-sm shadow-xl border border-base-300">
 						<div class="card-body">
-							<h3 class="card-title text-sm">📊 Community Stats</h3>
+							<h3 class="card-title text-sm">Community Stats</h3>
 							<div class="stats stats-vertical shadow">
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-primary">{offerCount}</div>
-									<div class="stat-desc">💡 Skills Available</div>
+									<div class="stat-desc">Skills Available</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-secondary">{requestCount}</div>
-									<div class="stat-desc">🙋 Help Needed</div>
+									<div class="stat-desc">Help Needed</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-accent">{totalUsers}</div>
-									<div class="stat-desc">👥 Members</div>
+									<div class="stat-desc">Members</div>
 								</div>
 								<div class="stat py-2">
 									<div class="stat-value text-sm text-info">{uniqueLocations}</div>
@@ -221,7 +220,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 							</svg>
 							<div>
-								<h3 class="font-bold">📍 Selected Location</h3>
+								<h3 class="font-bold">Selected Location</h3>
 								<div class="text-xs">
 									<p>Coordinates: {selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}</p>
 									{#if selectedLocation.address}
@@ -231,7 +230,7 @@
 							</div>
 						</div>
 						<div class="flex-none">
-							<button class="btn btn-sm btn-ghost" on:click={() => selectedLocation = null}>✕</button>
+							<button class="btn btn-sm btn-ghost" on:click={() => selectedLocation = null}></button>
 						</div>
 					</div>
 				</div>

@@ -118,9 +118,9 @@
                             
                             <div class="text-center md:text-left">
                                 <h1 class="card-title text-3xl mb-2">{profile.name || 'User'}</h1>
-                                <p class="text-base-content/70 mb-2">📧 {profile.email}</p>
+                                <p class="text-base-content/70 mb-2">{profile.email}</p>
                                 {#if profile.pin_code}
-                                    <p class="text-base-content/70">📍 Pin Code: {profile.pin_code}</p>
+                                    <p class="text-base-content/70">Pin Code: {profile.pin_code}</p>
                                 {/if}
                                 <p class="text-xs text-base-content/50 mt-2">Click profile picture to change</p>
                             </div>
@@ -132,7 +132,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     <div class="stat bg-base-100 rounded-box shadow">
                         <div class="stat-figure text-primary">
-                            <div class="text-3xl">📊</div>
+                            <div class="text-3xl"></div>
                         </div>
                         <div class="stat-title">Total Posts</div>
                         <div class="stat-value text-primary">{userPosts.length}</div>
@@ -140,7 +140,7 @@
                     
                     <div class="stat bg-base-100 rounded-box shadow">
                         <div class="stat-figure text-info">
-                            <div class="text-3xl">💡</div>
+                            <div class="text-3xl"></div>
                         </div>
                         <div class="stat-title">Skills Offered</div>
                         <div class="stat-value text-info">{offerCount}</div>
@@ -148,7 +148,7 @@
                     
                     <div class="stat bg-base-100 rounded-box shadow">
                         <div class="stat-figure text-warning">
-                            <div class="text-3xl">🙋</div>
+                            <div class="text-3xl"></div>
                         </div>
                         <div class="stat-title">Help Requested</div>
                         <div class="stat-value text-warning">{requestCount}</div>
@@ -156,7 +156,7 @@
                     
                     <div class="stat bg-base-100 rounded-box shadow">
                         <div class="stat-figure text-success">
-                            <div class="text-3xl">✅</div>
+                            <div class="text-3xl"></div>
                         </div>
                         <div class="stat-title">Completed</div>
                         <div class="stat-value text-success">{completedCount}</div>
@@ -165,28 +165,27 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-3 mb-6 justify-center">
-                    <a href="/offer" class="btn btn-primary">
-                        💡 Offer New Skill
+                                        <a href="/offer" class="btn btn-info btn-block mb-2">
+                        Offer New Skill
                     </a>
-                    <a href="/request" class="btn btn-secondary">
-                        🙋 Request Help
+                    <a href="/request" class="btn btn-warning btn-block mb-2">
+                        Request Help
                     </a>
-                    <a href="/" class="btn btn-ghost">
-                        🗺️ View Community Map
+                    <a href="/" class="btn btn-success btn-block mb-2">
+                        View Community Map
                     </a>
-                    <button 
-                        class="btn btn-error btn-outline"
-                        on:click={handleLogout}
-                    >
-                        🚪 Logout
-                    </button>
+                    
+                    <div class="divider"></div>
+                    
+                    <button class="btn btn-error btn-block" on:click={logout}>
+                        Logout
                 </div>
 
                 <!-- User's Posts -->
                 {#if userPosts.length > 0}
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body">
-                            <h2 class="card-title text-2xl mb-4">📝 My Posts</h2>
+                            <h2 class="card-title text-2xl mb-4">My Posts</h2>
                             
                             <div class="grid gap-4">
                                 {#each userPosts as post}
@@ -195,15 +194,15 @@
                                             <div class="flex items-center justify-between mb-2">
                                                 <div class="flex items-center gap-2">
                                                     <span class="badge {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'}">
-                                                        {post.post_type === 'offer' ? '💡 Offering' : '🙋 Requesting'}
+                                                        {post.post_type === 'offer' ? 'Offering' : 'Requesting'}
                                                     </span>
                                                     <span class="badge badge-outline">{post.category}</span>
                                                     {#if post.pin_code}
-                                                        <span class="badge badge-ghost text-xs">📍 {post.pin_code}</span>
+                                                        <span class="badge badge-ghost text-xs">Pin Code: {post.pin_code}</span>
                                                     {/if}
                                                 </div>
                                                 {#if post.completed}
-                                                    <span class="badge badge-success">✅ Completed</span>
+                                                    <span class="badge badge-success">Completed</span>
                                                 {/if}
                                             </div>
                                             <p class="text-sm">{post.description}</p>
@@ -216,7 +215,7 @@
                 {:else}
                     <div class="card bg-base-100 shadow-xl">
                         <div class="card-body text-center">
-                            <div class="text-6xl mb-4">📝</div>
+                            <div class="text-6xl mb-4"></div>
                             <h3 class="text-xl font-bold mb-2">No Posts Yet</h3>
                             <p class="text-base-content/70 mb-4">Start sharing your skills or requesting help from the community!</p>
                             <div class="flex gap-3 justify-center">
