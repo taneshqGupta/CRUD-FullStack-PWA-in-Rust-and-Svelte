@@ -13,6 +13,9 @@
 		CrossSvg,
 	} from "$lib/components/icons";
 
+	// Add a simple FilterSvg icon or use existing one
+	const FilterSvg = () => `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.121A1 1 0 013 6.414V4z" /></svg>`;
+
 	let allPosts: Post[] = [];
 	let loading = true;
 	let selectedLocation: {
@@ -30,6 +33,7 @@
 	let userNameSearch = "";
 	let searchPinCode = "";
 	let userDefaultPinCode = "";
+	let showMobileFilters = false;
 
 	// Filtered categories for search
 	$: filteredCategories = CATEGORIES.filter((category) =>
@@ -178,254 +182,507 @@
 	</div>
 {:else if $authStore.isAuthenticated}
 	<div class="h-full flex flex-col bg-base-100">
+		<!-- Mobile Header with Filter Toggle -->
 		<div class="flex-none bg-base-100 border-b border-base-100 shadow-sm">
-			<div
-				class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4"
-			>
-				<div class="flex flex-wrap gap-3 items-center">
-					<label class="label" for="text-search">
-						<span class="label-text text-xs">Pin Code Search</span>
-					</label>
-					<div class="join">
-						<input
-							class="input input-bordered join-item input-sm"
-							placeholder="Enter 6-digit pin code"
-							bind:value={searchPinCode}
-							on:keydown={(e) =>
-								e.key === "Enter" && searchByPinCode()}
-						/>
-						<button
-							class="btn btn-soft join-item btn-sm"
-							on:click={searchByPinCode}
-						>
-							<SearchSvg />
-						</button>
+			<!-- Mobile/Tablet Header (hidden on xl screens) -->
+			<div class="xl:hidden p-3">
+				<div class="flex items-center justify-between mb-3">
+					<!-- Pin Code Search and Action Buttons -->
+					<div class="flex items-center gap-2">
+						<div class="join">
+							<input
+								class="input input-bordered join-item input-sm text-xs"
+								placeholder="Pin code"
+								bind:value={searchPinCode}
+								on:keydown={(e) =>
+									e.key === "Enter" && searchByPinCode()}
+							/>
+							<button
+								class="btn btn-soft join-item btn-sm"
+								on:click={searchByPinCode}
+							>
+								<SearchSvg />
+							</button>
+						</div>
 					</div>
-
-					<div class="flex gap-2">
-						<a href="/offer" class="btn btn-soft btn-sm">
-							Offer-Skill
-						</a>
-						<a href="/request" class="btn btn-soft btn-sm">
-							Request-Help
-						</a>
-					</div>
+					
+					<!-- Filter Toggle Button -->
+					<button
+						class="btn btn-soft btn-sm gap-2"
+						on:click={() => showMobileFilters = !showMobileFilters}
+					>
+						{@html FilterSvg()}
+						Filters
+						{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
+							<div class="badge badge-primary badge-xs">{
+								selectedCategories.length + 
+								(textSearch.trim() ? 1 : 0) + 
+								(userNameSearch.trim() ? 1 : 0) + 
+								(postTypeFilter !== "both" ? 1 : 0)
+							}</div>
+						{/if}
+					</button>
 				</div>
 
-				<div
-					class="flex flex-col lg:flex-row gap-3 items-start lg:items-center"
-				>
-					<div class="form-control">
-						<label class="label" for="text-search">
-							<span class="label-text text-xs"
-								>Full Text Search</span
-							>
-						</label>
-						<input
-							id="text-search"
-							class="input input-bordered input-sm w-64"
-							placeholder="Search posts, names, categories..."
-							bind:value={textSearch}
-						/>
-					</div>
+				<!-- Action Buttons -->
+				<div class="flex gap-2 mb-3">
+					<a href="/offer" class="btn btn-soft btn-sm flex-1">
+						Offer-Skill
+					</a>
+					<a href="/request" class="btn btn-soft btn-sm flex-1">
+						Request-Help
+					</a>
+				</div>
 
-					<div class="form-control">
-						<div class="label">
-							<span class="label-text text-xs"
-								>Categories ({selectedCategories.length} selected)</span
-							>
+				<!-- Mobile Filters Panel (collapsible) -->
+				{#if showMobileFilters}
+					<div class="bg-base-200 rounded-lg p-3 space-y-3">
+						<!-- Full Text Search -->
+						<div class="form-control">
+							<label class="label py-1" for="mobile-text-search">
+								<span class="label-text text-xs">Full Text Search</span>
+							</label>
+							<input
+								id="mobile-text-search"
+								class="input input-bordered input-sm"
+								placeholder="Search posts, names, categories..."
+								bind:value={textSearch}
+							/>
 						</div>
-						<div class="dropdown dropdown-bottom">
-							<div
-								role="button"
-								class="btn btn-soft btn-sm"
-								tabindex="0"
-							>
-								Categories {selectedCategories.length > 0
-									? `(${selectedCategories.length})`
-									: ""}
+
+						<!-- Categories -->
+						<div class="form-control">
+							<div class="label py-1">
+								<span class="label-text text-xs">
+									Categories ({selectedCategories.length} selected)
+								</span>
 							</div>
-							<div
-								class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow"
-							>
-								<!-- Search Input -->
-								<div class="form-control mb-2">
-									<input
-										class="input input-bordered input-xs"
-										placeholder="Search categories..."
-										bind:value={categorySearch}
-									/>
+							<div class="dropdown dropdown-top w-full">
+								<div
+									role="button"
+									class="btn btn-soft btn-sm w-full justify-start"
+									tabindex="0"
+								>
+									Categories {selectedCategories.length > 0
+										? `(${selectedCategories.length})`
+										: ""}
 								</div>
-
-								<!-- Selected Categories Display -->
-								{#if selectedCategories.length > 0}
-									<div class="mb-2 p-2 bg-base-200 rounded">
-										<div
-											class="flex items-center justify-between mb-1"
-										>
-											<div class="text-xs font-semibold">
-												Selected:
-											</div>
-											<button
-												class="btn btn-ghost btn-xs"
-												on:click={() =>
-													(selectedCategories = [])}
-												>Clear All</button
-											>
-										</div>
-										<div class="flex flex-wrap gap-1">
-											{#each selectedCategories as category}
-												<div
-													class="badge badge-primary badge-xs"
-												>
-													{category}
-													<button
-														class="ml-1"
-														on:click={() =>
-															(selectedCategories =
-																selectedCategories.filter(
-																	(c) =>
-																		c !==
-																		category,
-																))}>×</button
-													>
-												</div>
-											{/each}
-										</div>
+								<div
+									class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
+								>
+									<!-- Search Input -->
+									<div class="form-control mb-2">
+										<input
+											class="input input-bordered input-xs"
+											placeholder="Search categories..."
+											bind:value={categorySearch}
+										/>
 									</div>
-								{/if}
 
-								<!-- Category List -->
-								<ul class="menu max-h-40 overflow-y-auto">
-									{#each filteredCategories as category (category)}
-										<li>
-											<label
-												class="cursor-pointer flex items-center gap-2 text-xs"
-											>
-												<input
-													type="checkbox"
-													class="checkbox checkbox-xs"
-													checked={selectedCategories.includes(
-														category,
-													)}
-													on:change={() =>
-														toggleCategory(
+									<!-- Selected Categories Display -->
+									{#if selectedCategories.length > 0}
+										<div class="mb-2 p-2 bg-base-200 rounded">
+											<div class="flex items-center justify-between mb-1">
+												<div class="text-xs font-semibold">Selected:</div>
+												<button
+													class="btn btn-ghost btn-xs"
+													on:click={() => (selectedCategories = [])}
+													>Clear All</button
+												>
+											</div>
+											<div class="flex flex-wrap gap-1">
+												{#each selectedCategories as category}
+													<div class="badge badge-primary badge-xs">
+														{category}
+														<button
+															class="ml-1"
+															on:click={() =>
+																(selectedCategories =
+																	selectedCategories.filter(
+																		(c) => c !== category,
+																	))}>×</button
+														>
+													</div>
+												{/each}
+											</div>
+										</div>
+									{/if}
+
+									<!-- Category List -->
+									<ul class="menu max-h-40 overflow-y-auto">
+										{#each filteredCategories as category (category)}
+											<li>
+												<label
+													class="cursor-pointer flex items-center gap-2 text-xs"
+												>
+													<input
+														type="checkbox"
+														class="checkbox checkbox-xs"
+														checked={selectedCategories.includes(
 															category,
 														)}
-												/>
-												<span>{category}</span>
-											</label>
-										</li>
-									{/each}
-									{#if filteredCategories.length === 0}
-										<li>
-											<span class="text-xs opacity-50"
-												>No categories found</span
-											>
-										</li>
-									{/if}
+														on:change={() =>
+															toggleCategory(category)}
+													/>
+													<span>{category}</span>
+												</label>
+											</li>
+										{/each}
+										{#if filteredCategories.length === 0}
+											<li>
+												<span class="text-xs opacity-50"
+													>No categories found</span
+												>
+											</li>
+										{/if}
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<!-- Post Type Select -->
+						<div class="form-control">
+							<div class="label py-1">
+								<span class="label-text text-xs">Offer/Request</span>
+							</div>
+							<div class="dropdown dropdown-top w-full">
+								<div
+									role="button"
+									class="btn btn-soft btn-sm w-full justify-start"
+									tabindex="0"
+								>
+									{postTypeFilter === "both"
+										? "Both"
+										: postTypeFilter === "offers"
+											? "Offers Only"
+											: "Requests Only"}
+								</div>
+								<ul
+									class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
+								>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="both"
+											/>
+											<span class="text-sm">Both</span>
+										</label>
+									</li>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="offers"
+											/>
+											<span class="text-sm">Offers Only</span>
+										</label>
+									</li>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="requests"
+											/>
+											<span class="text-sm">Requests Only</span>
+										</label>
+									</li>
 								</ul>
 							</div>
 						</div>
-					</div>
 
-					<!-- Post Type Select -->
-					<div class="form-control">
-						<div class="label">
-							<span class="label-text text-xs">Offer/Request</span
-							>
+						<!-- User Name Search -->
+						<div class="form-control">
+							<label class="label py-1" for="mobile-user-search">
+								<span class="label-text text-xs">Filter by User</span>
+							</label>
+							<input
+								id="mobile-user-search"
+								class="input input-bordered input-sm"
+								placeholder="Search by user name..."
+								bind:value={userNameSearch}
+							/>
 						</div>
-						<div class="dropdown dropdown-bottom">
-							<div
-								role="button"
-								class="btn btn-soft btn-sm"
-								tabindex="0"
-							>
-								{postTypeFilter === "both"
-									? "Both"
-									: postTypeFilter === "offers"
-										? "Offers Only"
-										: "Requests Only"}
-							</div>
-							<ul
-								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
-							>
-								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
-										<input
-											type="radio"
-											class="radio radio-sm"
-											bind:group={postTypeFilter}
-											value="both"
-										/>
-										<span class="text-sm">Both</span>
-									</label>
-								</li>
-								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
-										<input
-											type="radio"
-											class="radio radio-sm"
-											bind:group={postTypeFilter}
-											value="offers"
-										/>
-										<span class="text-sm">Offers Only</span>
-									</label>
-								</li>
-								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
-										<input
-											type="radio"
-											class="radio radio-sm"
-											bind:group={postTypeFilter}
-											value="requests"
-										/>
-										<span class="text-sm"
-											>Requests Only</span
-										>
-									</label>
-								</li>
-							</ul>
-						</div>
-					</div>
 
-					<!-- User Name Search -->
-					<div class="form-control">
-						<label class="label" for="user-search">
-							<span class="label-text text-xs"
-								>Filter by User</span
-							>
-						</label>
-						<input
-							id="user-search"
-							class="input input-bordered input-sm w-48"
-							placeholder="Search by user name..."
-							bind:value={userNameSearch}
-						/>
-					</div>
-
-					<!-- Clear Filters Button -->
-					<div class="form-control">
-						<div class="label">
-							<span class="label-text text-xs opacity-0">.</span>
-						</div>
+						<!-- Clear Filters Button -->
 						<button
-							class="btn btn-ghost btn-sm"
+							class="btn btn-ghost btn-sm w-full"
 							on:click={() => {
 								textSearch = "";
 								selectedCategories = [];
 								postTypeFilter = "both";
 								userNameSearch = "";
+								showMobileFilters = false;
 							}}
 						>
-							Clear Filters
+							Clear All Filters
 						</button>
+					</div>
+				{/if}
+			</div>
+
+			<!-- Desktop Header (visible only on xl screens) -->
+			<div class="hidden xl:block">
+				<div
+					class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4"
+				>
+					<div class="flex flex-wrap gap-3 items-center">
+						<label class="label" for="text-search">
+							<span class="label-text text-xs">Pin Code Search</span>
+						</label>
+						<div class="join">
+							<input
+								class="input input-bordered join-item input-sm"
+								placeholder="Enter 6-digit pin code"
+								bind:value={searchPinCode}
+								on:keydown={(e) =>
+									e.key === "Enter" && searchByPinCode()}
+							/>
+							<button
+								class="btn btn-soft join-item btn-sm"
+								on:click={searchByPinCode}
+							>
+								<SearchSvg />
+							</button>
+						</div>
+
+						<div class="flex gap-2">
+							<a href="/offer" class="btn btn-soft btn-sm">
+								Offer-Skill
+							</a>
+							<a href="/request" class="btn btn-soft btn-sm">
+								Request-Help
+							</a>
+						</div>
+					</div>
+
+					<div
+						class="flex flex-col lg:flex-row gap-3 items-start lg:items-center"
+					>
+						<div class="form-control">
+							<label class="label" for="text-search">
+								<span class="label-text text-xs"
+									>Full Text Search</span
+								>
+							</label>
+							<input
+								id="text-search"
+								class="input input-bordered input-sm w-64"
+								placeholder="Search posts, names, categories..."
+								bind:value={textSearch}
+							/>
+						</div>
+
+						<div class="form-control">
+							<div class="label">
+								<span class="label-text text-xs"
+									>Categories ({selectedCategories.length} selected)</span
+								>
+							</div>
+							<div class="dropdown dropdown-bottom">
+								<div
+									role="button"
+									class="btn btn-soft btn-sm"
+									tabindex="0"
+								>
+									Categories {selectedCategories.length > 0
+										? `(${selectedCategories.length})`
+										: ""}
+								</div>
+								<div
+									class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow"
+								>
+									<!-- Search Input -->
+									<div class="form-control mb-2">
+										<input
+											class="input input-bordered input-xs"
+											placeholder="Search categories..."
+											bind:value={categorySearch}
+										/>
+									</div>
+
+									<!-- Selected Categories Display -->
+									{#if selectedCategories.length > 0}
+										<div class="mb-2 p-2 bg-base-200 rounded">
+											<div
+												class="flex items-center justify-between mb-1"
+											>
+												<div class="text-xs font-semibold">
+													Selected:
+												</div>
+												<button
+													class="btn btn-ghost btn-xs"
+													on:click={() =>
+														(selectedCategories = [])}
+													>Clear All</button
+												>
+											</div>
+											<div class="flex flex-wrap gap-1">
+												{#each selectedCategories as category}
+													<div
+														class="badge badge-primary badge-xs"
+													>
+														{category}
+														<button
+															class="ml-1"
+															on:click={() =>
+																(selectedCategories =
+																	selectedCategories.filter(
+																		(c) =>
+																			c !==
+																			category,
+																	))}>×</button
+														>
+													</div>
+												{/each}
+											</div>
+										</div>
+									{/if}
+
+									<!-- Category List -->
+									<ul class="menu max-h-40 overflow-y-auto">
+										{#each filteredCategories as category (category)}
+											<li>
+												<label
+													class="cursor-pointer flex items-center gap-2 text-xs"
+												>
+													<input
+														type="checkbox"
+														class="checkbox checkbox-xs"
+														checked={selectedCategories.includes(
+															category,
+														)}
+														on:change={() =>
+															toggleCategory(
+																category,
+															)}
+													/>
+													<span>{category}</span>
+												</label>
+											</li>
+										{/each}
+										{#if filteredCategories.length === 0}
+											<li>
+												<span class="text-xs opacity-50"
+													>No categories found</span
+												>
+											</li>
+										{/if}
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<!-- Post Type Select -->
+						<div class="form-control">
+							<div class="label">
+								<span class="label-text text-xs">Offer/Request</span
+								>
+							</div>
+							<div class="dropdown dropdown-bottom">
+								<div
+									role="button"
+									class="btn btn-soft btn-sm"
+									tabindex="0"
+								>
+									{postTypeFilter === "both"
+										? "Both"
+										: postTypeFilter === "offers"
+											? "Offers Only"
+											: "Requests Only"}
+								</div>
+								<ul
+									class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
+								>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="both"
+											/>
+											<span class="text-sm">Both</span>
+										</label>
+									</li>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="offers"
+											/>
+											<span class="text-sm">Offers Only</span>
+										</label>
+									</li>
+									<li>
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="radio"
+												class="radio radio-sm"
+												bind:group={postTypeFilter}
+												value="requests"
+											/>
+											<span class="text-sm"
+												>Requests Only</span
+											>
+										</label>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- User Name Search -->
+						<div class="form-control">
+							<label class="label" for="user-search">
+								<span class="label-text text-xs"
+									>Filter by User</span
+								>
+							</label>
+							<input
+								id="user-search"
+								class="input input-bordered input-sm w-48"
+								placeholder="Search by user name..."
+								bind:value={userNameSearch}
+							/>
+						</div>
+
+						<!-- Clear Filters Button -->
+						<div class="form-control">
+							<div class="label">
+								<span class="label-text text-xs opacity-0">.</span>
+							</div>
+							<button
+								class="btn btn-ghost btn-sm"
+								on:click={() => {
+									textSearch = "";
+									selectedCategories = [];
+									postTypeFilter = "both";
+									userNameSearch = "";
+								}}
+							>
+								Clear Filters
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
