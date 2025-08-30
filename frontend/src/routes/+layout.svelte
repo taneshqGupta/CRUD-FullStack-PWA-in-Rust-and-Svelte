@@ -48,16 +48,11 @@
         style="z-index: 1000;"
     >
         <div class="flex-1">
-            <nav aria-label="Theme Selection">
-                <ThemeSwitcher
-                    currentPath={data?.url?.pathname || $page.url.pathname}
-                />
-            </nav>
             <h1>
                 <a
-                    href="/"
-                    class="btn btn-ghost font-bold text-xl"
-                    aria-label="Go to SkillSwap homepage"
+                href="/"
+                class="btn btn-ghost font-bold text-xl"
+                aria-label="Go to SkillSwap homepage"
                 >
                     Skill-Swap
                 </a>
@@ -65,6 +60,12 @@
         </div>
         <div class="flex-none flex items-center gap-2">
             <InstallAppButton />
+            
+            <nav aria-label="Theme Selection">
+                <ThemeSwitcher
+                    currentPath={data?.url?.pathname || $page.url.pathname}
+                />
+            </nav>
 
             {#if !isAuthPage && $authStore.isAuthenticated}
                 <a
