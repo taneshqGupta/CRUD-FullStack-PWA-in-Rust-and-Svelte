@@ -15,3 +15,4 @@ export { default as PostgresSvg } from './PostgresSVG.svelte';
 export { default as SearchSvg } from './SearchSVG.svelte';
 export { default as PinSvg } from './PinSVG.svelte';
 export { default as MailSvg } from './MailSVG.svelte';
+export { default as MembersSvg } from './MembersSVG.svelte';
