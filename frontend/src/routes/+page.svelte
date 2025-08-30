@@ -215,7 +215,7 @@
 					<div class="card bg-base-100 w-96 shadow-xl">
 						<div class="card-body">
 							<h2 class="card-title">
-								Selected Location ({selectedLocation.lat.toFixed(
+								<PinSvg/>({selectedLocation.lat.toFixed(
 									4,
 								)}, {selectedLocation.lng.toFixed(4)})
 							</h2>
