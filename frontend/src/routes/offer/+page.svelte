@@ -1,19 +1,25 @@
 <script lang="ts">
-    import type { PostType } from '$lib/types';
+    import type { PostType, Category } from '$lib/types';
 	import { createPost, getUserProfile } from '$lib/api';
 	import { authStore } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { PinSvg } from '$lib/components/icons';
+	import { CATEGORIES } from '$lib/types';
 
 	let newPostDescription = '';
-	let newPostCategory = '';
+	let newPostCategory: Category = CATEGORIES[0];
 	const newPostType: PostType = 'offer'; // Fixed to 'offer'
 	let newPinCode = '';
 	let userDefaultPinCode = '';
 	let loading = false;
 	let success = '';
 	let error = '';
+	let categorySearch = '';
+
+	$: filteredCategories = CATEGORIES.filter(cat => 
+		cat.toLowerCase().includes(categorySearch.toLowerCase())
+	);
 
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
@@ -39,7 +45,7 @@
 		}
         
 		const description = newPostDescription.trim();
-		const category = newPostCategory.trim() || 'general';
+		const category = newPostCategory;
 		const pinCode = newPinCode.trim() || userDefaultPinCode;
 		
 		try {
@@ -52,7 +58,7 @@
 			
 			// Reset form
 			newPostDescription = '';
-			newPostCategory = '';
+			newPostCategory = CATEGORIES[0];
 			newPinCode = userDefaultPinCode;
 			
 			// Redirect to main page after success
@@ -123,14 +129,38 @@
 							<label for="skill-category" class="label">
 								<span class="label-text font-semibold">Category</span>
 							</label>
-							<input
-								id="skill-category"
-								name="category"
-								class="input input-bordered"
-								type="text"
-								placeholder="e.g., cooking, tech, music, sports"
-								bind:value={newPostCategory}
-							/>
+							<div class="dropdown dropdown-bottom">
+								<div role="button" class="btn btn-outline w-full justify-start" tabindex="0">
+									{newPostCategory}
+								</div>
+								<div class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto">
+									<!-- Search Input -->
+									<div class="form-control mb-2">
+										<input 
+											class="input input-bordered input-xs"
+											placeholder="Search categories..."
+											bind:value={categorySearch}
+										/>
+									</div>
+									
+									<!-- Category List -->
+									<ul class="menu">
+										{#each filteredCategories as category}
+											<li>
+												<button 
+													class="text-left text-sm"
+													on:click={() => newPostCategory = category}
+												>
+													{category}
+												</button>
+											</li>
+										{/each}
+										{#if filteredCategories.length === 0}
+											<li><span class="text-xs opacity-50">No categories found</span></li>
+										{/if}
+									</ul>
+								</div>
+							</div>
 							<div class="label">
 								<span class="label-text-alt">Helps others find your skill</span>
 							</div>

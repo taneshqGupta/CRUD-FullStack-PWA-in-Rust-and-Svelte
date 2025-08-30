@@ -12,7 +12,6 @@
 		MembersSvg,
 		CrossSvg,
 	} from "$lib/components/icons";
-	import { toNamespacedPath } from "path";
 
 	let allPosts: Post[] = [];
 	let loading = true;
@@ -26,10 +25,16 @@
 	// New robust filtering system
 	let textSearch = "";
 	let selectedCategories: Category[] = [];
+	let categorySearch = "";
 	let postTypeFilter: "both" | "offers" | "requests" = "both";
 	let userNameSearch = "";
 	let searchPinCode = "";
 	let userDefaultPinCode = "";
+
+	// Filtered categories for search
+	$: filteredCategories = CATEGORIES.filter(category => 
+		category.toLowerCase().includes(categorySearch.toLowerCase())
+	);
 
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
@@ -213,37 +218,60 @@
 
 					<div class="form-control">
 						<div class="label">
-							<span class="label-text text-xs">Categories</span>
+							<span class="label-text text-xs">Categories ({selectedCategories.length} selected)</span>
 						</div>
 						<div class="dropdown dropdown-bottom">
-							<div
-								role="button"
-								class="btn btn-soft btn-sm"
-								tabindex="0"
-							>
-								Categories ({selectedCategories.length})
+							<div role="button" class="btn btn-soft btn-sm" tabindex="0">
+								Categories {selectedCategories.length > 0 ? `(${selectedCategories.length})` : ''}
 							</div>
-							<ul
-								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-80 p-2 shadow max-h-60 overflow-y-auto"
-							>
-								{#each CATEGORIES as category}
-									<li>
-										<label
-											class="cursor-pointer flex items-center gap-2"
-										>
-											<input
-												type="checkbox"
-												class="checkbox checkbox-sm"
-												bind:group={selectedCategories}
-												value={category}
-											/>
-											<span class="text-sm"
-												>{category}</span
-											>
-										</label>
-									</li>
-								{/each}
-							</ul>
+							<div class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow">
+								<!-- Search Input -->
+								<div class="form-control mb-2">
+									<input 
+										class="input input-bordered input-xs"
+										placeholder="Search categories..."
+										bind:value={categorySearch}
+									/>
+								</div>
+								
+								<!-- Selected Categories Display -->
+								{#if selectedCategories.length > 0}
+									<div class="mb-2 p-2 bg-base-200 rounded">
+										<div class="text-xs font-semibold mb-1">Selected:</div>
+										<div class="flex flex-wrap gap-1">
+											{#each selectedCategories as category}
+												<div class="badge badge-primary badge-xs">
+													{category}
+													<button 
+														class="ml-1" 
+														on:click={() => selectedCategories = selectedCategories.filter(c => c !== category)}
+													>×</button>
+												</div>
+											{/each}
+										</div>
+									</div>
+								{/if}
+								
+								<!-- Category List -->
+								<ul class="menu max-h-40 overflow-y-auto">
+									{#each filteredCategories as category}
+										<li>
+											<label class="cursor-pointer flex items-center gap-2 text-xs">
+												<input 
+													type="checkbox" 
+													class="checkbox checkbox-xs"
+													bind:group={selectedCategories}
+													value={category}
+												/>
+												<span>{category}</span>
+											</label>
+										</li>
+									{/each}
+									{#if filteredCategories.length === 0}
+										<li><span class="text-xs opacity-50">No categories found</span></li>
+									{/if}
+								</ul>
+							</div>
 						</div>
 					</div>
 
