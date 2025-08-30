@@ -55,7 +55,7 @@
                 aria-label="Go to SkillSwap homepage"
                 >
                     <span class="hidden sm:inline">Skill-Swap: Learn, Teach, Socialise</span>
-                    <span class="sm:hidden">SkillSwap</span>
+                    <span class="sm:hidden">Skill-Swap</span>
                 </a>
             </h1>
         </div>
