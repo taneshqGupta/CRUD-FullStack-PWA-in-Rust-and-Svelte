@@ -4,6 +4,7 @@
 	import { authStore } from "$lib/auth";
 	import { onMount } from "svelte";
 	import type { Post } from "$lib/types";
+	import { CATEGORIES, type Category, type PostType } from "$lib/types";
 	import { goto } from "$app/navigation";
 	import {
 		SearchSvg,
@@ -21,7 +22,12 @@
 		address?: string;
 	} | null = null;
 	let mapComponent: Map;
-	let viewType: "all" | "offers" | "requests" = "all";
+	
+	// New robust filtering system
+	let textSearch = "";
+	let selectedCategories: Category[] = [];
+	let selectedPostTypes: PostType[] = ['offer', 'request'];
+	let userNameSearch = "";
 	let searchPinCode = "";
 	let userDefaultPinCode = "";
 
@@ -90,11 +96,33 @@
 		}
 	}
 
+	// Robust filtering logic
 	$: filteredPosts = allPosts.filter((post) => {
 		if (!post.pin_code) return false;
 
-		if (viewType === "offers") return post.post_type === "offer";
-		if (viewType === "requests") return post.post_type === "request";
+		// Filter by post type (offer/request)
+		if (!selectedPostTypes.includes(post.post_type)) return false;
+
+		// Filter by categories (if any selected)
+		if (selectedCategories.length > 0 && !selectedCategories.includes(post.category)) return false;
+
+		// Filter by user name search
+		if (userNameSearch.trim() && post.user_name && 
+			!post.user_name.toLowerCase().includes(userNameSearch.toLowerCase())) return false;
+
+		// Full text search across all fields
+		if (textSearch.trim()) {
+			const searchTerm = textSearch.toLowerCase();
+			const searchableContent = [
+				post.description,
+				post.category,
+				post.pin_code,
+				post.user_name || ''
+			].join(' ').toLowerCase();
+			
+			if (!searchableContent.includes(searchTerm)) return false;
+		}
+
 		return true;
 	});
 
@@ -131,7 +159,7 @@
 				<div class="flex flex-wrap gap-3 items-center">
 					<div class="join">
 						<input
-							class="input input-bordered join-item input-sm w-64"
+							class="input input-bordered join-item input-sm w-96"
 							placeholder="Search by Pin Code"
 							bind:value={searchPinCode}
 							on:keydown={(e) =>
@@ -155,31 +183,114 @@
 					</div>
 				</div>
 
-				<div class="tabs tabs-boxed">
-					<button
-						class="tab tab-sm {viewType === 'all'
-							? 'tab-active'
-							: ''}"
-						on:click={() => (viewType = "all")}
-					>
-						All ({filteredPosts.length})
-					</button>
-					<button
-						class="tab tab-sm {viewType === 'offers'
-							? 'tab-active'
-							: ''}"
-						on:click={() => (viewType = "offers")}
-					>
-						Offers ({offerCount})
-					</button>
-					<button
-						class="tab tab-sm {viewType === 'requests'
-							? 'tab-active'
-							: ''}"
-						on:click={() => (viewType = "requests")}
-					>
-						Requests ({requestCount})
-					</button>
+				<!-- New Robust Filtering System -->
+				<div class="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+					<!-- Full Text Search -->
+					<div class="form-control">
+						<label class="label" for="text-search">
+							<span class="label-text text-xs">Full Text Search</span>
+						</label>
+						<input 
+							id="text-search"
+							class="input input-bordered input-sm w-64"
+							placeholder="Search posts, names, categories..."
+							bind:value={textSearch}
+						/>
+					</div>
+
+					<!-- Category Multi-Select -->
+					<div class="form-control">
+						<div class="label">
+							<span class="label-text text-xs">Categories</span>
+						</div>
+						<div class="dropdown dropdown-bottom">
+							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
+								Categories ({selectedCategories.length})
+							</div>
+							<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-80 p-2 shadow max-h-60 overflow-y-auto">
+								{#each CATEGORIES as category}
+									<li>
+										<label class="cursor-pointer flex items-center gap-2">
+											<input 
+												type="checkbox" 
+												class="checkbox checkbox-sm"
+												bind:group={selectedCategories}
+												value={category}
+											/>
+											<span class="text-sm">{category}</span>
+										</label>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					</div>
+
+					<!-- Post Type Multi-Select -->
+					<div class="form-control">
+						<div class="label">
+							<span class="label-text text-xs">Post Type</span>
+						</div>
+						<div class="dropdown dropdown-bottom">
+							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
+								Types ({selectedPostTypes.length})
+							</div>
+							<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow">
+								<li>
+									<label class="cursor-pointer flex items-center gap-2">
+										<input 
+											type="checkbox" 
+											class="checkbox checkbox-sm"
+											bind:group={selectedPostTypes}
+											value="offer"
+										/>
+										<span class="text-sm">Offers</span>
+									</label>
+								</li>
+								<li>
+									<label class="cursor-pointer flex items-center gap-2">
+										<input 
+											type="checkbox" 
+											class="checkbox checkbox-sm"
+											bind:group={selectedPostTypes}
+											value="request"
+										/>
+										<span class="text-sm">Requests</span>
+									</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- User Name Search -->
+					<div class="form-control">
+						<label class="label" for="user-search">
+							<span class="label-text text-xs">Filter by User</span>
+						</label>
+						<input 
+							id="user-search"
+							class="input input-bordered input-sm w-48"
+							placeholder="Search by user name..."
+							bind:value={userNameSearch}
+						/>
+					</div>
+
+					<!-- Clear Filters Button -->
+					<div class="form-control">
+						<div class="label">
+							<span class="label-text text-xs opacity-0">.</span>
+						</div>
+						<button 
+							class="btn btn-ghost btn-sm"
+							on:click={() => {
+								textSearch = '';
+								selectedCategories = [];
+								selectedPostTypes = ['offer', 'request'];
+								userNameSearch = '';
+							}}
+						>
+							Clear Filters
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
