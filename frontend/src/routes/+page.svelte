@@ -128,10 +128,10 @@
 					</div>
 					
 					<div class="flex gap-2">
-						<a href="/offer" class="btn btn-primary btn-sm">
+						<a href="/offer" class="btn btn-soft btn-sm">
 							Offer-Skill
 						</a>
-						<a href="/request" class="btn btn-secondary btn-sm">
+						<a href="/request" class="btn btn-soft btn-sm">
 							Request-Help
 						</a>
 					</div>
