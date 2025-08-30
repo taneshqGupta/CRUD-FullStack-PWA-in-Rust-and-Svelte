@@ -38,20 +38,30 @@ impl CloudinaryService {
     }
 
     pub async fn upload_image(&self, base64_data: &str, public_id: Option<String>) -> Result<String> {
+        tracing::info!("Cloudinary upload_image called");
+        
         // Remove data URL prefix if present
         let image_data = if base64_data.starts_with("data:") {
+            tracing::info!("Removing data URL prefix from base64");
             base64_data.split(',').nth(1).unwrap_or(base64_data)
         } else {
+            tracing::info!("No data URL prefix found");
             base64_data
         };
 
         // Decode base64 to bytes
+        tracing::info!("Decoding base64 to bytes, length: {}", image_data.len());
         let image_bytes = BASE64_STANDARD.decode(image_data)
-            .map_err(|e| anyhow::anyhow!("Failed to decode base64: {}", e))?;
+            .map_err(|e| {
+                tracing::error!("Base64 decode failed: {}", e);
+                anyhow::anyhow!("Failed to decode base64: {}", e)
+            })?;
+        tracing::info!("Decoded to {} bytes", image_bytes.len());
 
         // Generate timestamp for signed upload
         let timestamp = chrono::Utc::now().timestamp();
         let timestamp_str = timestamp.to_string();
+        tracing::info!("Generated timestamp: {}", timestamp_str);
 
         // Create parameters for signature
         let mut params_for_signature = std::collections::HashMap::new();
@@ -60,13 +70,17 @@ impl CloudinaryService {
         params_for_signature.insert("transformation", "c_fill,w_300,h_300,f_auto,q_auto");
         
         if let Some(ref id) = public_id {
+            tracing::info!("Using public_id: {}", id);
             params_for_signature.insert("public_id", id);
         }
 
         // Generate signature
+        tracing::info!("Generating signature");
         let signature = self.generate_signature(&params_for_signature)?;
+        tracing::info!("Signature generated successfully");
 
         // Create multipart form with signed parameters
+        tracing::info!("Creating multipart form");
         let mut form = multipart::Form::new()
             .part("file", multipart::Part::bytes(image_bytes).file_name("profile.jpg"))
             .text("timestamp", timestamp_str)
@@ -81,6 +95,7 @@ impl CloudinaryService {
         }
 
         let url = format!("https://api.cloudinary.com/v1_1/{}/image/upload", self.config.cloud_name);
+        tracing::info!("Uploading to URL: {}", url);
 
         let response = self.client
             .post(&url)
@@ -88,47 +103,27 @@ impl CloudinaryService {
             .send()
             .await?;
 
-        if !response.status().is_success() {
+        let status = response.status();
+        tracing::info!("HTTP response status: {}", status);
+
+        if status.is_success() {
+            let json: Value = response.json().await?;
+            tracing::info!("Cloudinary response received");
+            
+            let secure_url = json["secure_url"]
+                .as_str()
+                .ok_or_else(|| {
+                    tracing::error!("No secure_url in Cloudinary response: {:?}", json);
+                    anyhow::anyhow!("No secure_url in Cloudinary response")
+                })?;
+
+            tracing::info!("Upload successful, URL: {}", secure_url);
+            Ok(secure_url.to_string())
+        } else {
             let error_text = response.text().await.unwrap_or_default();
-            return Err(anyhow::anyhow!("Cloudinary upload failed: {}", error_text));
+            tracing::error!("Cloudinary upload failed with status {}: {}", status, error_text);
+            Err(anyhow::anyhow!("Cloudinary upload failed: {}", error_text))
         }
-
-        let json: Value = response.json().await?;
-        
-        let secure_url = json["secure_url"]
-            .as_str()
-            .ok_or_else(|| anyhow::anyhow!("No secure_url in Cloudinary response"))?;
-
-        Ok(secure_url.to_string())
-    }
-
-    pub async fn delete_image(&self, public_id: &str) -> Result<()> {
-        let url = format!("https://api.cloudinary.com/v1_1/{}/image/destroy", self.config.cloud_name);
-        
-        let timestamp = chrono::Utc::now().timestamp();
-        let timestamp_str = timestamp.to_string();
-        
-        let mut params = HashMap::new();
-        params.insert("public_id", public_id);
-        params.insert("timestamp", timestamp_str.as_str());
-        
-        // Generate signature
-        let signature = self.generate_signature(&params)?;
-        params.insert("signature", &signature);
-        params.insert("api_key", &self.config.api_key);
-
-        let response = self.client
-            .post(&url)
-            .form(&params)
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            let error_text = response.text().await.unwrap_or_default();
-            return Err(anyhow::anyhow!("Cloudinary delete failed: {}", error_text));
-        }
-
-        Ok(())
     }
 
     fn generate_signature(&self, params: &HashMap<&str, &str>) -> Result<String> {

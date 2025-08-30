@@ -220,20 +220,36 @@ pub async fn update_profile_picture(
     session: Session, 
     Form(update): Form<ProfilePictureUpdate>
 ) -> Result<Json<UserProfile>, AppError> {
+    tracing::info!("Starting profile picture update");
     let user_id = require_auth(session).await?;
+    tracing::info!("User authenticated: user_id={}", user_id);
     
     // Initialize Cloudinary service
+    tracing::info!("Initializing Cloudinary service");
     let cloudinary_config = CloudinaryConfig::from_env()
-        .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
+        .map_err(|e| {
+            tracing::error!("Failed to load Cloudinary config: {}", e);
+            AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e)
+        })?;
+    tracing::info!("Cloudinary config loaded: cloud_name={}", cloudinary_config.cloud_name);
     let cloudinary = CloudinaryService::new(cloudinary_config);
     
     // Upload image to Cloudinary with user-specific public_id
     let public_id = format!("profile_pictures/user_{}", user_id);
+    tracing::info!("Uploading to Cloudinary with public_id: {}", public_id);
+    tracing::info!("Base64 data length: {} chars", update.profile_picture.len());
+    
     let image_url = cloudinary.upload_image(&update.profile_picture, Some(public_id))
         .await
-        .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
+        .map_err(|e| {
+            tracing::error!("Cloudinary upload failed: {}", e);
+            AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e)
+        })?;
+    
+    tracing::info!("Cloudinary upload successful: {}", image_url);
     
     // Update database with Cloudinary URL
+    tracing::info!("Updating database with image URL");
     let user = sqlx::query!(
         "UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING id, email, name, pin_code, profile_picture",
         image_url,
@@ -241,6 +257,8 @@ pub async fn update_profile_picture(
     )
     .fetch_one(&pool)
     .await?;
+
+    tracing::info!("Database updated successfully");
 
     Ok(Json(UserProfile {
         id: user.id,
