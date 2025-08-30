@@ -22,11 +22,11 @@
 		address?: string;
 	} | null = null;
 	let mapComponent: Map;
-	
+
 	// New robust filtering system
 	let textSearch = "";
 	let selectedCategories: Category[] = [];
-	let postTypeFilter: 'both' | 'offers' | 'requests' = 'both';
+	let postTypeFilter: "both" | "offers" | "requests" = "both";
 	let userNameSearch = "";
 	let searchPinCode = "";
 	let userDefaultPinCode = "";
@@ -101,15 +101,25 @@
 		if (!post.pin_code) return false;
 
 		// Filter by post type (offer/request/both)
-		if (postTypeFilter === 'offers' && post.post_type !== 'offer') return false;
-		if (postTypeFilter === 'requests' && post.post_type !== 'request') return false;
+		if (postTypeFilter === "offers" && post.post_type !== "offer")
+			return false;
+		if (postTypeFilter === "requests" && post.post_type !== "request")
+			return false;
 
 		// Filter by categories (if any selected)
-		if (selectedCategories.length > 0 && !selectedCategories.includes(post.category)) return false;
+		if (
+			selectedCategories.length > 0 &&
+			!selectedCategories.includes(post.category)
+		)
+			return false;
 
 		// Filter by user name search
-		if (userNameSearch.trim() && post.user_name && 
-			!post.user_name.toLowerCase().includes(userNameSearch.toLowerCase())) return false;
+		if (
+			userNameSearch.trim() &&
+			post.user_name &&
+			!post.user_name.toLowerCase().includes(userNameSearch.toLowerCase())
+		)
+			return false;
 
 		// Full text search across all fields
 		if (textSearch.trim()) {
@@ -118,9 +128,11 @@
 				post.description,
 				post.category,
 				post.pin_code,
-				post.user_name || ''
-			].join(' ').toLowerCase();
-			
+				post.user_name || "",
+			]
+				.join(" ")
+				.toLowerCase();
+
 			if (!searchableContent.includes(searchTerm)) return false;
 		}
 
@@ -159,6 +171,11 @@
 			>
 				<div class="flex flex-wrap gap-3 items-center">
 					<div class="join">
+						<label class="label" for="text-search">
+							<span class="label-text text-xs"
+								>PIN-CODE</span
+							>
+						</label>
 						<input
 							class="input input-bordered join-item input-sm"
 							placeholder="Search by Pin Code"
@@ -185,13 +202,17 @@
 				</div>
 
 				<!-- New Robust Filtering System -->
-				<div class="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+				<div
+					class="flex flex-col lg:flex-row gap-3 items-start lg:items-center"
+				>
 					<!-- Full Text Search -->
 					<div class="form-control">
 						<label class="label" for="text-search">
-							<span class="label-text text-xs">Full Text Search</span>
+							<span class="label-text text-xs"
+								>Full Text Search</span
+							>
 						</label>
-						<input 
+						<input
 							id="text-search"
 							class="input input-bordered input-sm w-64"
 							placeholder="Search posts, names, categories..."
@@ -205,20 +226,30 @@
 							<span class="label-text text-xs">Categories</span>
 						</div>
 						<div class="dropdown dropdown-bottom">
-							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
+							<div
+								role="button"
+								class="btn btn-outline btn-sm"
+								tabindex="0"
+							>
 								Categories ({selectedCategories.length})
 							</div>
-							<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-80 p-2 shadow max-h-60 overflow-y-auto">
+							<ul
+								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-80 p-2 shadow max-h-60 overflow-y-auto"
+							>
 								{#each CATEGORIES as category}
 									<li>
-										<label class="cursor-pointer flex items-center gap-2">
-											<input 
-												type="checkbox" 
+										<label
+											class="cursor-pointer flex items-center gap-2"
+										>
+											<input
+												type="checkbox"
 												class="checkbox checkbox-sm"
 												bind:group={selectedCategories}
 												value={category}
 											/>
-											<span class="text-sm">{category}</span>
+											<span class="text-sm"
+												>{category}</span
+											>
 										</label>
 									</li>
 								{/each}
@@ -229,17 +260,30 @@
 					<!-- Post Type Select -->
 					<div class="form-control">
 						<div class="label">
-							<span class="label-text text-xs">Offer/Request</span>
+							<span class="label-text text-xs">Offer/Request</span
+							>
 						</div>
 						<div class="dropdown dropdown-bottom">
-							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
-								{postTypeFilter === 'both' ? 'Both' : postTypeFilter === 'offers' ? 'Offers Only' : 'Requests Only'}
+							<div
+								role="button"
+								class="btn btn-outline btn-sm"
+								tabindex="0"
+							>
+								{postTypeFilter === "both"
+									? "Both"
+									: postTypeFilter === "offers"
+										? "Offers Only"
+										: "Requests Only"}
 							</div>
-							<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow">
+							<ul
+								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
+							>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
-										<input 
-											type="radio" 
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
+										<input
+											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="both"
@@ -248,9 +292,11 @@
 									</label>
 								</li>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
-										<input 
-											type="radio" 
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
+										<input
+											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="offers"
@@ -259,14 +305,18 @@
 									</label>
 								</li>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
-										<input 
-											type="radio" 
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
+										<input
+											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="requests"
 										/>
-										<span class="text-sm">Requests Only</span>
+										<span class="text-sm"
+											>Requests Only</span
+										>
 									</label>
 								</li>
 							</ul>
@@ -276,9 +326,11 @@
 					<!-- User Name Search -->
 					<div class="form-control">
 						<label class="label" for="user-search">
-							<span class="label-text text-xs">Filter by User</span>
+							<span class="label-text text-xs"
+								>Filter by User</span
+							>
 						</label>
-						<input 
+						<input
 							id="user-search"
 							class="input input-bordered input-sm w-48"
 							placeholder="Search by user name..."
@@ -291,13 +343,13 @@
 						<div class="label">
 							<span class="label-text text-xs opacity-0">.</span>
 						</div>
-						<button 
+						<button
 							class="btn btn-ghost btn-sm"
 							on:click={() => {
-								textSearch = '';
+								textSearch = "";
 								selectedCategories = [];
-								postTypeFilter = 'both';
-								userNameSearch = '';
+								postTypeFilter = "both";
+								userNameSearch = "";
 							}}
 						>
 							Clear Filters
