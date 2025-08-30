@@ -160,7 +160,7 @@
 				<div class="flex flex-wrap gap-3 items-center">
 					<div class="join">
 						<input
-							class="input input-bordered join-item input-sm w-96"
+							class="input input-bordered join-item input-sm"
 							placeholder="Search by Pin Code"
 							bind:value={searchPinCode}
 							on:keydown={(e) =>
