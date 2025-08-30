@@ -1,19 +1,37 @@
-<!-- svelte-ignore a11y_missing_attribute -->
 <script lang="ts">
     import '../app.css';
     import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
     import InstallAppButton from '$lib/components/InstallAppButton.svelte'; 
-	import { GithubSvg, SquirrelSvg, TasksSvg } from '$lib/components/icons';
+    import ProfilePicture from '$lib/components/ProfilePicture.svelte';
+    import { GithubSvg, SquirrelSvg, TasksSvg } from '$lib/components/icons';
     import { authStore, initAuth, logout } from '$lib/auth';
+    import { getUserProfile } from '$lib/api';
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
     
     export let data;
 
-    onMount(() => {
-        // Initialize auth state
+    let userProfile: any = null;
+
+    onMount(async () => {
         initAuth();
+        
+        if ($authStore.isAuthenticated) {
+            try {
+                userProfile = await getUserProfile();
+            } catch (err) {
+                console.log('Could not load user profile for header');
+            }
+        }
     });
+
+    $: if ($authStore.isAuthenticated && !userProfile) {
+        getUserProfile().then(profile => {
+            userProfile = profile;
+        }).catch(() => {
+            console.log('Could not load user profile for header');
+        });
+    }
 
     async function handleLogout() {
         await logout();
@@ -35,8 +53,13 @@
         </div>
         <div class="flex-none flex items-center gap-2">
             {#if !isAuthPage && $authStore.isAuthenticated}
-                <a href="/profile" class="btn btn-ghost btn-sm">
-                    👤 Profile
+                <a href="/profile" class="btn btn-ghost btn-sm p-1" aria-label="Go to profile">
+                    <ProfilePicture 
+                        profilePicture={userProfile?.profile_picture}
+                        name={userProfile?.name || 'User'}
+                        size="sm"
+                        editable={false}
+                    />
                 </a>
             {/if}
             
