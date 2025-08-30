@@ -310,43 +310,39 @@
 										? "Offers Only"
 										: "Requests Only"}
 							</div>
-							<ul
-								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
-							>
-								<li>
-									<label class="cursor-pointer p-3 hover:bg-base-200 rounded flex items-center gap-3">
+							<div class="dropdown-content bg-base-100 rounded-box z-[1] w-48 p-2 shadow">
+								<div class="space-y-1">
+									<label class="cursor-pointer flex items-center gap-3 p-2 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="both"
 										/>
-										Both
+										<span>Both</span>
 									</label>
-								</li>
-								<li>
-									<label class="cursor-pointer p-3 hover:bg-base-200 rounded flex items-center gap-3">
+									
+									<label class="cursor-pointer flex items-center gap-3 p-2 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="offers"
 										/>
-										Offers Only
+										<span>Offers Only</span>
 									</label>
-								</li>
-								<li>
-									<label class="cursor-pointer p-3 hover:bg-base-200 rounded flex items-center gap-3">
+									
+									<label class="cursor-pointer flex items-center gap-3 p-2 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="requests"
 										/>
-										Requests Only
+										<span>Requests Only</span>
 									</label>
-								</li>
-							</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 
