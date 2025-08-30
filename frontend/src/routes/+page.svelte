@@ -36,6 +36,17 @@
 		category.toLowerCase().includes(categorySearch.toLowerCase())
 	);
 
+	// Helper function to toggle category selection
+	function toggleCategory(category: Category) {
+		if (selectedCategories.includes(category)) {
+			selectedCategories = selectedCategories.filter(c => c !== category);
+		} else {
+			selectedCategories = [...selectedCategories, category];
+		}
+		// Clear search after selection for better UX
+		categorySearch = "";
+	}
+
 	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
 		goto("/login");
@@ -237,7 +248,13 @@
 								<!-- Selected Categories Display -->
 								{#if selectedCategories.length > 0}
 									<div class="mb-2 p-2 bg-base-200 rounded">
-										<div class="text-xs font-semibold mb-1">Selected:</div>
+										<div class="flex items-center justify-between mb-1">
+											<div class="text-xs font-semibold">Selected:</div>
+											<button 
+												class="btn btn-ghost btn-xs"
+												on:click={() => selectedCategories = []}
+											>Clear All</button>
+										</div>
 										<div class="flex flex-wrap gap-1">
 											{#each selectedCategories as category}
 												<div class="badge badge-primary badge-xs">
@@ -254,14 +271,14 @@
 								
 								<!-- Category List -->
 								<ul class="menu max-h-40 overflow-y-auto">
-									{#each filteredCategories as category}
+									{#each filteredCategories as category (category)}
 										<li>
 											<label class="cursor-pointer flex items-center gap-2 text-xs">
 												<input 
 													type="checkbox" 
 													class="checkbox checkbox-xs"
-													bind:group={selectedCategories}
-													value={category}
+													checked={selectedCategories.includes(category)}
+													on:change={() => toggleCategory(category)}
 												/>
 												<span>{category}</span>
 											</label>
