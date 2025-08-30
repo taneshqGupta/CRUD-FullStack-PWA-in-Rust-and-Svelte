@@ -104,13 +104,10 @@
 		<span class="loading loading-infinity loading-xl"></span>
 	</div>
 {:else if $authStore.isAuthenticated}
-	<!-- Full Height Map Layout -->
 	<div class="h-full flex flex-col bg-base-100">
 		
-		<!-- Top Controls Bar -->
 		<div class="flex-none bg-base-100 border-b border-base-100 shadow-sm">
 			<div class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4">
-				<!-- Search and Navigation -->
 				<div class="flex flex-wrap gap-3 items-center">
 					<div class="join">
 						<input 
@@ -137,7 +134,6 @@
 					</div>
 				</div>
 
-				<!-- Filter Tabs -->
 				<div class="tabs tabs-boxed">
 					<button 
 						class="tab tab-sm {viewType === 'all' ? 'tab-active' : ''}"
@@ -165,10 +161,7 @@
 		<div class="flex-1 relative">
 			{#if loading}
 				<div class="absolute inset-0 flex items-center justify-center bg-base-100">
-					<div class="text-center">
-						<span class="loading loading-spinner loading-lg text-primary mb-4"></span>
-						<p class="text-base-content/70">Loading community...</p>
-					</div>
+					<span class="loading loading-infinity loading-xl"></span>
 				</div>
 			{:else}
 				<Map
