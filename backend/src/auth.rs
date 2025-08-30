@@ -1,5 +1,6 @@
 use crate::error::AppError;
 use crate::structs::{AuthResponse, LoginRequest, NewUser, UserProfile, ProfilePictureUpdate};
+use crate::cloudinary::{CloudinaryService, CloudinaryConfig};
 use axum::{Form, Json, extract::State};
 use bcrypt::{DEFAULT_COST, hash, verify};
 use http::StatusCode;
@@ -56,12 +57,30 @@ pub async fn register(
         )
     })?;
 
+    // Handle profile picture upload to Cloudinary if provided
+    let profile_picture_url = if let Some(profile_picture_data) = &new_user.profile_picture {
+        // Initialize Cloudinary service
+        let cloudinary_config = CloudinaryConfig::from_env()
+            .map_err(|e| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, e))?;
+        let cloudinary = CloudinaryService::new(cloudinary_config);
+        
+        // Generate a temporary public_id (we'll update it after user creation)
+        let temp_public_id = format!("profile_pictures/temp_{}", uuid::Uuid::new_v4());
+        let image_url = cloudinary.upload_image(profile_picture_data, Some(temp_public_id))
+            .await
+            .map_err(|e| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, e))?;
+        Some(image_url)
+    } else {
+        None
+    };
+
     let user = sqlx::query!(
-        "INSERT INTO users (email, password_hash, name, pin_code) VALUES ($1, $2, $3, $4) RETURNING id",
+        "INSERT INTO users (email, password_hash, name, pin_code, profile_picture) VALUES ($1, $2, $3, $4, $5) RETURNING id",
         new_user.email,
         password_hash,
         new_user.name,
-        new_user.pin_code
+        new_user.pin_code,
+        profile_picture_url
     )
     .fetch_one(&pool)
     .await?;
@@ -203,9 +222,21 @@ pub async fn update_profile_picture(
 ) -> Result<Json<UserProfile>, AppError> {
     let user_id = require_auth(session).await?;
     
+    // Initialize Cloudinary service
+    let cloudinary_config = CloudinaryConfig::from_env()
+        .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
+    let cloudinary = CloudinaryService::new(cloudinary_config);
+    
+    // Upload image to Cloudinary with user-specific public_id
+    let public_id = format!("profile_pictures/user_{}", user_id);
+    let image_url = cloudinary.upload_image(&update.profile_picture, Some(public_id))
+        .await
+        .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
+    
+    // Update database with Cloudinary URL
     let user = sqlx::query!(
         "UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING id, email, name, pin_code, profile_picture",
-        update.profile_picture,
+        image_url,
         user_id
     )
     .fetch_one(&pool)
