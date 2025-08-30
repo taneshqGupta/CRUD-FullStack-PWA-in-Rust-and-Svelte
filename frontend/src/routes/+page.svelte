@@ -6,6 +6,7 @@
 	import type { Post } from '$lib/types';
 	import { goto } from '$app/navigation';
 	import { SearchSvg, PinSvg, MembersSvg, CrossSvg } from '$lib/components/icons';
+    import { toNamespacedPath } from 'path';
 
 	let allPosts: Post[] = [];
 	let loading = true;
@@ -94,16 +95,13 @@
 </script>
 
 <svelte:head>
-	<title>SkillSwap - Community Skills Map</title>
+	<title>SkillSwap: Learn, Teach, Socialise</title>
 	<meta name="description" content="Discover and share skills in your neighborhood with our interactive community map" />
 </svelte:head>
 
 {#if $authStore.loading}
 	<div class="flex justify-center items-center h-full bg-base-100">
-		<div class="text-center">
-			<span class="loading loading-spinner loading-lg text-primary"></span>
-			<p class="mt-4 text-base-content/70">Loading community map...</p>
-		</div>
+		<span class="loading loading-infinity loading-xl"></span>
 	</div>
 {:else if $authStore.isAuthenticated}
 	<!-- Full Height Map Layout -->
