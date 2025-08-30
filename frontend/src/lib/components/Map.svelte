@@ -230,13 +230,13 @@
                                 <div class="border border-base-300 rounded-lg p-2">
                                     <div class="flex items-center gap-2 mb-1">
                                         <span class="badge ${post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-xs">
-                                            ${post.post_type === 'offer' ? '💡' : '🙋'}
+                                            ${post.post_type === 'offer' ? '' : ''}
                                         </span>
                                         <span class="text-xs font-medium">${post.category}</span>
                                     </div>
                                     <p class="text-sm">${post.description}</p>
                                     ${post.user_name ? `<p class="text-xs opacity-70 mt-1">By: ${post.user_name}</p>` : ''}
-                                    ${post.completed ? '<p class="text-xs text-success mt-1">✅ Completed</p>' : ''}
+                                    ${post.completed ? '<p class="text-xs text-success mt-1">Completed</p>' : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -280,7 +280,7 @@
                     position: relative;
                 " title="${offerCount} offers, ${requestCount} requests">
                     <span style="position: absolute; top: -2px; left: 50%; transform: translateX(-50%); font-size: 8px;">
-                        ${offerCount > 0 ? '💡' : ''}${requestCount > 0 ? '🙋' : ''}
+                        ${offerCount > 0 ? '' : ''}${requestCount > 0 ? '' : ''}
                     </span>
                     <span style="margin-top: 4px;">${offerCount + requestCount}</span>
                 </div>

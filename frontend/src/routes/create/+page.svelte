@@ -76,7 +76,7 @@
 			<div class="card-body p-8">
                 <!-- Header -->
 				<div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-base-content mb-2">✨ Share with Community</h1>
+                    <h1 class="text-3xl font-bold text-base-content mb-2">Share with Community</h1>
 					<p class="text-base-content/70">What would you like to offer or request?</p>
 				</div>
                 
@@ -116,7 +116,7 @@
                                     />
                                     <div class="card border-2 transition-all duration-200 hover:shadow-lg {newPostType === 'offer' ? 'border-primary bg-primary/10' : 'border-base-300 hover:border-primary/50'}">
 									<div class="card-body items-center text-center p-6">
-                                        <div class="text-4xl mb-2">💡</div>
+                                        <div class="text-4xl mb-2"></div>
 										<h3 class="card-title text-primary font-bold">Offer a Skill</h3>
 										<p class="text-sm text-base-content/70">Share something you're good at</p>
 									</div>
@@ -133,7 +133,7 @@
 								/>
 								<div class="card border-2 transition-all duration-200 hover:shadow-lg {newPostType === 'request' ? 'border-secondary bg-secondary/10' : 'border-base-300 hover:border-secondary/50'}">
 									<div class="card-body items-center text-center p-6">
-										<div class="text-4xl mb-2">🙋</div>
+										<div class="text-4xl mb-2"></div>
 										<h3 class="card-title text-secondary font-bold">Request Help</h3>
 										<p class="text-sm text-base-content/70">Ask for assistance with something</p>
 									</div>
@@ -214,7 +214,7 @@
 								<span class="loading loading-spinner loading-sm"></span>
 								Creating...
 							{:else}
-								{newPostType === 'offer' ? '💡 Share Skill' : '🙋 Request Help'}
+								{newPostType === 'offer' ? 'Share Skill' : 'Request Help'}
 							{/if}
 						</button>
 						
@@ -231,13 +231,14 @@
 						<div class="card-body p-4">
 							<div class="flex items-center gap-2 mb-2">
 								<span class="badge {newPostType === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-sm">
-									{newPostType === 'offer' ? '💡 Offering' : '🙋 Requesting'}
+																	<div class="badge badge-primary badge-sm">
+									{newPostType === 'offer' ? 'Offering' : 'Requesting'}
 								</span>
 								{#if newPostCategory.trim()}
 									<span class="badge badge-outline badge-sm">{newPostCategory.trim()}</span>
 								{/if}
 								{#if newPinCode.trim() || userDefaultPinCode}
-									<span class="badge badge-ghost badge-sm">📍 {newPinCode.trim() || userDefaultPinCode}</span>
+									<span class="badge badge-ghost badge-sm">Pin Code: {newPinCode.trim() || userDefaultPinCode}</span>
 								{/if}
 							</div>
 							<p class="text-sm">{newPostDescription.trim()}</p>
