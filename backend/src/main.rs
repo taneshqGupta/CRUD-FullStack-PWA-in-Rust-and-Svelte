@@ -23,8 +23,6 @@ use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
-    dotenvy::dotenv().ok();
-    
     telemetry::init_telemetry();
 
     let url = std::env::var("DATABASE_URL").unwrap_or_else(|_| "http://0.0.0.0:8000".to_string());

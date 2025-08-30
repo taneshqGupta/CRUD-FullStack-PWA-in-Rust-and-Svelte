@@ -148,7 +148,6 @@ dependencies = [
  "base64",
  "bcrypt",
  "chrono",
- "dotenvy",
  "http",
  "pulldown-cmark",
  "reqwest",
