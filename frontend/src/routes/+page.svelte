@@ -108,7 +108,7 @@
 	<div class="h-full flex flex-col bg-base-100">
 		
 		<!-- Top Controls Bar -->
-		<div class="flex-none bg-base-200 border-b border-base-300 shadow-sm">
+		<div class="flex-none bg-base-100 border-b border-base-100 shadow-sm">
 			<div class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4">
 				<!-- Search and Navigation -->
 				<div class="flex flex-wrap gap-3 items-center">
