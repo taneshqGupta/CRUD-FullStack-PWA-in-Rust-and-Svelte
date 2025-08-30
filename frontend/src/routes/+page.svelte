@@ -166,7 +166,7 @@
 			>
 				<div class="flex flex-wrap gap-3 items-center">
 					<label class="label" for="text-search">
-						<span class="label-text text-xs">PIN-CODE</span>
+						<span class="label-text text-xs">Pin Code Search</span>
 					</label>
 					<div class="join">
 						<input
