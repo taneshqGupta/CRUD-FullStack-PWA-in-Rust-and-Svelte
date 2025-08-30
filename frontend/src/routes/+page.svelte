@@ -229,7 +229,7 @@
 					<!-- Post Type Select -->
 					<div class="form-control">
 						<div class="label">
-							<span class="label-text text-xs">Post Type</span>
+							<span class="label-text text-xs">Offer/Request</span>
 						</div>
 						<div class="dropdown dropdown-bottom">
 							<div role="button" class="btn btn-outline btn-sm" tabindex="0">
