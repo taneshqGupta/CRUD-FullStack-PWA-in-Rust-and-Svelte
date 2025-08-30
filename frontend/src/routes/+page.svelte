@@ -129,10 +129,10 @@
 					
 					<div class="flex gap-2">
 						<a href="/offer" class="btn btn-primary btn-sm">
-							<div class="badge badge-ghost">Offer</div> Skill
+							Offer-Skill
 						</a>
 						<a href="/request" class="btn btn-secondary btn-sm">
-							<div class="badge badge-ghost">Request</div> Help
+							Request-Help
 						</a>
 					</div>
 				</div>
