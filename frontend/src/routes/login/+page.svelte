@@ -306,6 +306,7 @@
 					disabled={loading}
 				>
 					{#if loading}
+						<span class="loading loading-infinity loading-xs"></span>
 						{isLogin ? "Signing In..." : "Creating Account..."}
 					{:else}
 						{isLogin ? "Sign In" : "Create Account"}
