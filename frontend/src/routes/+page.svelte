@@ -132,9 +132,7 @@
 					<div class="join">
 						<input
 							class="input input-bordered join-item input-sm w-64"
-							placeholder={userDefaultPinCode
-								? `Search pin code (default: ${userDefaultPinCode})`
-								: "Search by pin code..."}
+							placeholder="Search by Pin Code"
 							bind:value={searchPinCode}
 							on:keydown={(e) =>
 								e.key === "Enter" && searchByPinCode()}
