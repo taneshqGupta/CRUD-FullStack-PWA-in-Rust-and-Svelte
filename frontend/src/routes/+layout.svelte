@@ -1,96 +1,113 @@
 <script lang="ts">
-    import '../app.css';
-    import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-    import InstallAppButton from '$lib/components/InstallAppButton.svelte'; 
-    import ProfilePicture from '$lib/components/ProfilePicture.svelte';
-    import { GithubSvg, SquirrelSvg, TasksSvg } from '$lib/components/icons';
-    import { authStore, initAuth, logout } from '$lib/auth';
-    import { getUserProfile } from '$lib/api';
-    import { page } from '$app/stores';
-    import { onMount } from 'svelte';
-    
+    import "../app.css";
+    import ThemeSwitcher from "$lib/components/ThemeSwitcher.svelte";
+    import InstallAppButton from "$lib/components/InstallAppButton.svelte";
+    import ProfilePicture from "$lib/components/ProfilePicture.svelte";
+    import { GithubSvg, SquirrelSvg, TasksSvg } from "$lib/components/icons";
+    import { authStore, initAuth, logout } from "$lib/auth";
+    import { getUserProfile } from "$lib/api";
+    import { page } from "$app/stores";
+    import { onMount } from "svelte";
+
     export let data;
 
     let userProfile: any = null;
 
     onMount(async () => {
         initAuth();
-        
+
         if ($authStore.isAuthenticated) {
             try {
                 userProfile = await getUserProfile();
             } catch (err) {
-                console.log('Could not load user profile for header');
+                console.log("Could not load user profile for header");
             }
         }
     });
 
     $: if ($authStore.isAuthenticated && !userProfile) {
-        getUserProfile().then(profile => {
-            userProfile = profile;
-        }).catch(() => {
-            console.log('Could not load user profile for header');
-        });
+        getUserProfile()
+            .then((profile) => {
+                userProfile = profile;
+            })
+            .catch(() => {
+                console.log("Could not load user profile for header");
+            });
     }
 
     async function handleLogout() {
         await logout();
     }
 
-    $: isAuthPage = $page.url.pathname === '/login';
+    $: isAuthPage = $page.url.pathname === "/login";
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden bg-base-100">
-    <header class="flex-none navbar bg-base-100 border-b border-base-300 relative" style="z-index: 1000;">
+    <header
+        class="flex-none navbar bg-base-100 border-b border-base-300 relative"
+        style="z-index: 1000;"
+    >
         <div class="flex-1">
+            <nav aria-label="Theme Selection">
+                <ThemeSwitcher
+                    currentPath={data?.url?.pathname || $page.url.pathname}
+                />
+            </nav>
             <h1>
-                <a href="/" 
-                   class="btn btn-ghost font-bold text-xl" aria-label="Go to SkillSwap homepage"
+                <a
+                    href="/"
+                    class="btn btn-ghost font-bold text-xl"
+                    aria-label="Go to SkillSwap homepage"
                 >
-                    Skill-Swap 
+                    Skill-Swap
                 </a>
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
+            <InstallAppButton />
+
             {#if !isAuthPage && $authStore.isAuthenticated}
-                <a href="/profile" class="btn btn-ghost btn-sm p-1" aria-label="Go to profile">
-                    <ProfilePicture 
+                <a
+                    href="/profile"
+                    class="btn btn-ghost btn-sm p-1"
+                    aria-label="Go to profile"
+                >
+                    <ProfilePicture
                         profilePicture={userProfile?.profile_picture}
-                        name={userProfile?.name || 'User'}
+                        name={userProfile?.name || "User"}
                         size="sm"
                         editable={false}
                     />
                 </a>
             {/if}
-            
-            <InstallAppButton />
 
-            <nav aria-label="Theme Selection">
-                <ThemeSwitcher currentPath={data?.url?.pathname || $page.url.pathname} />
-            </nav>
         </div>
     </header>
-    
+
     <main class="flex-1 overflow-hidden" id="main-content">
         <slot />
     </main>
-    
-    <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">
-    <aside class="grid-flow-col items-center">
-        <SquirrelSvg />
-        <a href="/about" class="link link-hover">About This Template</a>
-    </aside>
-    <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-        <a
-            href="https://github.com/taneshqGupta/rust-svelte-template"
-            class="link link-hover flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View project on GitHub"
+
+    <footer
+        class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4"
+    >
+        <aside class="grid-flow-col items-center">
+            <SquirrelSvg />
+            <a href="/about" class="link link-hover">About This Template</a>
+        </aside>
+        <nav
+            class="grid-flow-col gap-4 md:place-self-center md:justify-self-end"
+        >
+            <a
+                href="https://github.com/taneshqGupta/rust-svelte-template"
+                class="link link-hover flex items-center gap-1"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View project on GitHub"
             >
-            <GithubSvg /> 
-            View on GitHub
-        </a>
-    </nav>
+                <GithubSvg />
+                View on GitHub
+            </a>
+        </nav>
     </footer>
 </div>
