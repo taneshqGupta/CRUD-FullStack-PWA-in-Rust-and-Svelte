@@ -314,44 +314,36 @@
 								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
 							>
 								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
+									<label class="label cursor-pointer justify-start p-3 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="both"
 										/>
-										<span class="text-sm">Both</span>
+										<span class="label-text ml-3">Both</span>
 									</label>
 								</li>
 								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
+									<label class="label cursor-pointer justify-start p-3 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="offers"
 										/>
-										<span class="text-sm">Offers Only</span>
+										<span class="label-text ml-3">Offers Only</span>
 									</label>
 								</li>
 								<li>
-									<label
-										class="cursor-pointer flex items-center gap-2"
-									>
+									<label class="label cursor-pointer justify-start p-3 hover:bg-base-200 rounded">
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="requests"
 										/>
-										<span class="text-sm"
-											>Requests Only</span
-										>
+										<span class="label-text ml-3">Requests Only</span>
 									</label>
 								</li>
 							</ul>
