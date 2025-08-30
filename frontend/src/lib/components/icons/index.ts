@@ -18,3 +18,4 @@ export { default as MailSvg } from './MailSVG.svelte';
 export { default as MembersSvg } from './MembersSVG.svelte';
 export { default as CrossSvg } from './CrossSVG.svelte';
 export { default as LogoutSvg } from './LogoutSVG.svelte';
+export { default as LoginSvg } from './LoginSVG.svelte';
