@@ -214,11 +214,11 @@
 				>
 					<div class="card bg-base-100 w-96 shadow-xl">
 						<div class="card-body">
-							<h2 class="card-title">
+							<h3 class="card-title">
 								<PinSvg/>[{selectedLocation.lat.toFixed(
 									4,
 								)}, {selectedLocation.lng.toFixed(4)}]
-							</h2>
+							</h3>
 							<p>
 								{selectedLocation.address}
 							</p>
