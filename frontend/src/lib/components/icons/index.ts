@@ -17,3 +17,4 @@ export { default as PinSvg } from './PinSVG.svelte';
 export { default as MailSvg } from './MailSVG.svelte';
 export { default as MembersSvg } from './MembersSVG.svelte';
 export { default as CrossSvg } from './CrossSVG.svelte';
+export { default as LogoutSvg } from './LogoutSVG.svelte';
