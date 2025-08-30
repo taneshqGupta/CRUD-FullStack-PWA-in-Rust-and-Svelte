@@ -170,8 +170,7 @@
 							: ''}"
 						on:click={() => (viewType = "offers")}
 					>
-						<div class="badge badge-ghost">Offers</div>
-						({offerCount})
+						Offers ({offerCount})
 					</button>
 					<button
 						class="tab tab-sm {viewType === 'requests'
@@ -179,8 +178,7 @@
 							: ''}"
 						on:click={() => (viewType = "requests")}
 					>
-						<div class="badge badge-ghost">Requests</div>
-						({requestCount})
+						Requests ({requestCount})
 					</button>
 				</div>
 			</div>
@@ -215,9 +213,9 @@
 					<div class="card bg-base-100 w-96 shadow-xl">
 						<div class="card-body">
 							<h3 class="card-title">
-								<PinSvg/>[{selectedLocation.lat.toFixed(
+								<PinSvg />[{selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(
 									4,
-								)}, {selectedLocation.lng.toFixed(4)}]
+								)}]
 							</h3>
 							<p>
 								{selectedLocation.address}
