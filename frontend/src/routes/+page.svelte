@@ -32,14 +32,16 @@
 	let userDefaultPinCode = "";
 
 	// Filtered categories for search
-	$: filteredCategories = CATEGORIES.filter(category => 
-		category.toLowerCase().includes(categorySearch.toLowerCase())
+	$: filteredCategories = CATEGORIES.filter((category) =>
+		category.toLowerCase().includes(categorySearch.toLowerCase()),
 	);
 
 	// Helper function to toggle category selection
 	function toggleCategory(category: Category) {
 		if (selectedCategories.includes(category)) {
-			selectedCategories = selectedCategories.filter(c => c !== category);
+			selectedCategories = selectedCategories.filter(
+				(c) => c !== category,
+			);
 		} else {
 			selectedCategories = [...selectedCategories, category];
 		}
@@ -229,63 +231,98 @@
 
 					<div class="form-control">
 						<div class="label">
-							<span class="label-text text-xs">Categories ({selectedCategories.length} selected)</span>
+							<span class="label-text text-xs"
+								>Categories ({selectedCategories.length} selected)</span
+							>
 						</div>
 						<div class="dropdown dropdown-bottom">
-							<div role="button" class="btn btn-soft btn-sm" tabindex="0">
-								Categories {selectedCategories.length > 0 ? `(${selectedCategories.length})` : ''}
+							<div
+								role="button"
+								class="btn btn-soft btn-sm"
+								tabindex="0"
+							>
+								Categories {selectedCategories.length > 0
+									? `(${selectedCategories.length})`
+									: ""}
 							</div>
-							<div class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow">
+							<div
+								class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow"
+							>
 								<!-- Search Input -->
 								<div class="form-control mb-2">
-									<input 
+									<input
 										class="input input-bordered input-xs"
 										placeholder="Search categories..."
 										bind:value={categorySearch}
 									/>
 								</div>
-								
+
 								<!-- Selected Categories Display -->
 								{#if selectedCategories.length > 0}
 									<div class="mb-2 p-2 bg-base-200 rounded">
-										<div class="flex items-center justify-between mb-1">
-											<div class="text-xs font-semibold">Selected:</div>
-											<button 
+										<div
+											class="flex items-center justify-between mb-1"
+										>
+											<div class="text-xs font-semibold">
+												Selected:
+											</div>
+											<button
 												class="btn btn-ghost btn-xs"
-												on:click={() => selectedCategories = []}
-											>Clear All</button>
+												on:click={() =>
+													(selectedCategories = [])}
+												>Clear All</button
+											>
 										</div>
 										<div class="flex flex-wrap gap-1">
 											{#each selectedCategories as category}
-												<div class="badge badge-primary badge-xs">
+												<div
+													class="badge badge-primary badge-xs"
+												>
 													{category}
-													<button 
-														class="ml-1" 
-														on:click={() => selectedCategories = selectedCategories.filter(c => c !== category)}
-													>×</button>
+													<button
+														class="ml-1"
+														on:click={() =>
+															(selectedCategories =
+																selectedCategories.filter(
+																	(c) =>
+																		c !==
+																		category,
+																))}>×</button
+													>
 												</div>
 											{/each}
 										</div>
 									</div>
 								{/if}
-								
+
 								<!-- Category List -->
 								<ul class="menu max-h-40 overflow-y-auto">
 									{#each filteredCategories as category (category)}
 										<li>
-											<label class="cursor-pointer flex items-center gap-2 text-xs">
-												<input 
-													type="checkbox" 
+											<label
+												class="cursor-pointer flex items-center gap-2 text-xs"
+											>
+												<input
+													type="checkbox"
 													class="checkbox checkbox-xs"
-													checked={selectedCategories.includes(category)}
-													on:change={() => toggleCategory(category)}
+													checked={selectedCategories.includes(
+														category,
+													)}
+													on:change={() =>
+														toggleCategory(
+															category,
+														)}
 												/>
 												<span>{category}</span>
 											</label>
 										</li>
 									{/each}
 									{#if filteredCategories.length === 0}
-										<li><span class="text-xs opacity-50">No categories found</span></li>
+										<li>
+											<span class="text-xs opacity-50"
+												>No categories found</span
+											>
+										</li>
 									{/if}
 								</ul>
 							</div>
@@ -314,7 +351,9 @@
 								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
 							>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
 										<input
 											type="radio"
 											class="radio radio-sm"
@@ -325,7 +364,9 @@
 									</label>
 								</li>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
 										<input
 											type="radio"
 											class="radio radio-sm"
@@ -336,14 +377,18 @@
 									</label>
 								</li>
 								<li>
-									<label class="cursor-pointer flex items-center gap-2">
+									<label
+										class="cursor-pointer flex items-center gap-2"
+									>
 										<input
 											type="radio"
 											class="radio radio-sm"
 											bind:group={postTypeFilter}
 											value="requests"
 										/>
-										<span class="text-sm">Requests Only</span>
+										<span class="text-sm"
+											>Requests Only</span
+										>
 									</label>
 								</li>
 							</ul>
@@ -404,27 +449,6 @@
 					zoom={6}
 					userPinCode={userDefaultPinCode}
 				/>
-			{/if}
-			<!-- Coordinates: {selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}
-			Address: {selectedLocation.address} -->
-			{#if selectedLocation}
-				<div
-					class="absolute bottom-4 left-4 right-4"
-					style="z-index: 400;"
-				>
-					<div class="card bg-base-100 w-96 shadow-xl">
-						<div class="card-body">
-							<h3 class="card-title">
-								<PinSvg />[{selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(
-									4,
-								)}]
-							</h3>
-							<p>
-								{selectedLocation.address}
-							</p>
-						</div>
-					</div>
-				</div>
 			{/if}
 		</div>
 	</div>
