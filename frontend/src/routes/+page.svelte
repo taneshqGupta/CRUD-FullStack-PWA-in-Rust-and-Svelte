@@ -185,7 +185,7 @@
 			
 			<!-- Floating Stats Card -->
 			{#if !loading}
-				<div class="absolute top-4 right-4 z-50">
+				<div class="absolute top-4 right-4" style="z-index: 1000;">
 					<div class="card card-compact bg-base-100/95 backdrop-blur-sm shadow-xl border border-base-300">
 						<div class="card-body">
 							<h3 class="card-title text-sm">📊 Community Stats</h3>
@@ -214,7 +214,7 @@
 
 			<!-- Floating Location Info -->
 			{#if selectedLocation}
-				<div class="absolute bottom-4 left-4 right-4 z-40">
+				<div class="absolute bottom-4 left-4 right-4" style="z-index: 999;">
 					<div class="alert alert-info shadow-lg">
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
