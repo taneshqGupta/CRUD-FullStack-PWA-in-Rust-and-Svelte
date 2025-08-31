@@ -1,5 +1,5 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import type { Post, NewPost, AuthResponse, LoginRequest } from '$lib/types';
+import type { Post, NewPost, AuthResponse, LoginRequest, UserProfile } from '$lib/types';
 
 export async function createPost(description: string, category: string, post_type: 'offer' | 'request', pin_code?: string): Promise<Post> {
     const formData = new URLSearchParams();
@@ -175,7 +175,7 @@ export async function checkAuth(): Promise<AuthResponse> {
     return response.json();
 }
 
-export async function getMyProfile(): Promise<any> {
+export async function getMyProfile(): Promise<UserProfile> {
     const response = await fetch(`${PUBLIC_BACKEND_URL}auth/myprofile`, {
         method: "GET",
         credentials: "include",
@@ -196,6 +196,19 @@ export async function getMyUserId(): Promise<number> {
     if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to get user ID: ${response.statusText} - ${errorText}`);
+    }
+    return response.json();
+}
+
+export async function getUserProfile(userId: number): Promise<UserProfile> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/userprofile/${userId}`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to get user profile: ${response.statusText} - ${errorText}`);
     }
     return response.json();
 }

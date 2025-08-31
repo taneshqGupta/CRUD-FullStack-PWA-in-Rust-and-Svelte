@@ -13,7 +13,6 @@
     let error = '';
     let profileUpdateLoading = false;
 
-    // Redirect to auth if not authenticated
     $: if (!$authStore.loading && !$authStore.isAuthenticated) {
         goto('/login');
     }
@@ -50,14 +49,12 @@
             profileUpdateLoading = true;
             error = '';
             
-            // Convert to base64
             const reader = new FileReader();
             reader.onload = async () => {
                 try {
                     const base64Data = reader.result as string;
                     await updateProfilePicture(base64Data);
                     
-                    // Reload profile to get updated picture
                     await loadProfile();
                 } catch (err) {
                     error = err instanceof Error ? err.message : 'Failed to update profile picture';
