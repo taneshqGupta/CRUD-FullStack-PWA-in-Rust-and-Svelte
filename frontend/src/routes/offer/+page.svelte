@@ -192,7 +192,7 @@
 										{/if}
 									</ul>
 								</div>
-								<div class="label text-xs">
+								<div class="label text-xs font-bold">
 									<span class="label-text-alt">
 										Category
 									</span>
@@ -212,7 +212,7 @@
 								maxlength="10"
 								title="Enter your pin code (optional)"
 							/>
-							<div class="label">
+							<div class="label text-xs font-bold">
 								<span class="label-text-alt">
 									{userDefaultPinCode
 										? `Pin Code [Your Default: ${userDefaultPinCode}]`
