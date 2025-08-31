@@ -202,7 +202,6 @@
 						on:click={() => showMobileFilters = !showMobileFilters}
 					>
 						<FilterSvg />
-						Filters
 						{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
 							<div class="badge badge-primary badge-xs">{
 								selectedCategories.length + 
@@ -214,7 +213,6 @@
 					</button>
 				</div>
 
-				<!-- Action Buttons -->
 				<div class="flex gap-2 mb-3">
 					<a href="/offer" class="btn btn-soft btn-sm flex-1">
 						Offer-Skill
@@ -224,10 +222,8 @@
 					</a>
 				</div>
 
-				<!-- Mobile Filters Panel (collapsible) -->
 				{#if showMobileFilters}
 					<div class="bg-base-200 rounded-lg p-3 space-y-3">
-						<!-- Full Text Search -->
 						<div class="form-control">
 							<label class="label py-1" for="mobile-text-search">
 								<span class="label-text text-xs">Full Text Search</span>
@@ -240,7 +236,6 @@
 							/>
 						</div>
 
-						<!-- Categories -->
 						<div class="form-control">
 							<div class="label py-1">
 								<span class="label-text text-xs">
@@ -269,7 +264,6 @@
 										/>
 									</div>
 
-									<!-- Selected Categories Display -->
 									{#if selectedCategories.length > 0}
 										<div class="mb-2 p-2 bg-base-200 rounded">
 											<div class="flex items-center justify-between mb-1">
@@ -298,7 +292,6 @@
 										</div>
 									{/if}
 
-									<!-- Category List -->
 									<ul class="menu max-h-40 overflow-y-auto">
 										{#each filteredCategories as category (category)}
 											<li>
@@ -330,7 +323,6 @@
 							</div>
 						</div>
 
-						<!-- Post Type Select -->
 						<div class="form-control">
 							<div class="label py-1">
 								<span class="label-text text-xs">Offer/Request</span>
@@ -393,7 +385,6 @@
 							</div>
 						</div>
 
-						<!-- User Name Search -->
 						<div class="form-control">
 							<label class="label py-1" for="mobile-user-search">
 								<span class="label-text text-xs">Filter by User</span>
@@ -406,7 +397,6 @@
 							/>
 						</div>
 
-						<!-- Clear Filters Button -->
 						<button
 							class="btn btn-ghost btn-sm w-full"
 							on:click={() => {
@@ -417,7 +407,7 @@
 								showMobileFilters = false;
 							}}
 						>
-							Clear All Filters
+							Clear Filters
 						</button>
 					</div>
 				{/if}
