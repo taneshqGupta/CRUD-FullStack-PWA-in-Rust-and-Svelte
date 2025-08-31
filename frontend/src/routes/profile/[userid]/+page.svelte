@@ -5,13 +5,6 @@
     import { goto } from "$app/navigation";
     import type { Post, UserProfile } from "$lib/types";
     import ProfilePicture from "$lib/components/ProfilePicture.svelte";
-    import {
-        MailSvg,
-        PinSvg,
-        TasksSvg,
-        LogoutSvg,
-    } from "$lib/components/icons";
-    import { onMount } from "svelte";
 
     let loading = true;
     let profile: UserProfile | null = null;
