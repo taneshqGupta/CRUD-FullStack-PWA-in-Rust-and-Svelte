@@ -239,29 +239,16 @@
 					</div>
 
 					<!-- Actions -->
-					<div
-						class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4"
-					>
-						<button
-							type="button"
-							on:click={handleCreatePost}
-							class="btn btn-primary btn-lg w-full sm:w-auto"
-							class:loading
-							disabled={loading}
-						>
-							{#if loading}
-								<span class="loading loading-spinner loading-sm"
-								></span>
-								Posting...
-							{:else}
-								<div class="badge badge-ghost">Share</div>
-								My Skill
-							{/if}
-						</button>
-
-						<a href="/" class="btn btn-ghost w-full sm:w-auto">
-							Cancel
-						</a>
+					<div class="flex justify-center items-center pt-4">
+						{#if loading}
+							<span class="loading loading-infinity loading-sm"
+							></span>
+						{:else}
+							<button
+								class="btn btn-soft"
+								on:click={handleCreatePost}>Offer Skill</button
+							>
+						{/if}
 					</div>
 				</form>
 
