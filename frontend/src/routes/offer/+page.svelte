@@ -225,8 +225,8 @@
 								placeholder={userDefaultPinCode ||
 									"e.g., 110001"}
 								bind:value={newPinCode}
-								pattern="[0-9]{6}"
-								title="Please enter a valid 6-digit pin code"
+								maxlength="10"
+								title="Enter your pin code (optional)"
 							/>
 							<div class="label">
 								<span class="label-text-alt">
