@@ -38,7 +38,7 @@ export async function getMyPosts(): Promise<Post[]> {
 }
 
 export async function getUserPosts(id: number): Promise<Post[]> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}posts/${id}`, {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}foreignposts/${id}`, {
         method: "GET",
         credentials: "include"
     });
