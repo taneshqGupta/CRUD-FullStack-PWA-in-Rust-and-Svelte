@@ -173,12 +173,9 @@
 	</div>
 {:else if $authStore.isAuthenticated}
 	<div class="h-full flex flex-col bg-base-100">
-		<!-- Mobile Header with Filter Toggle -->
 		<div class="flex-none bg-base-100 border-b border-base-100 shadow-sm">
-			<!-- Mobile/Tablet Header (hidden on xl screens) -->
 			<div class="xl:hidden p-3">
 				<div class="flex items-center justify-between mb-3">
-					<!-- Pin Code Search and Action Buttons -->
 					<div class="flex items-center gap-2">
 						<div class="join">
 							<input
@@ -203,7 +200,7 @@
 					>
 						<FilterSvg />
 						{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
-							<div class="badge badge-primary badge-xs">{
+							<div class="badge badge-xs">{
 								selectedCategories.length + 
 								(textSearch.trim() ? 1 : 0) + 
 								(userNameSearch.trim() ? 1 : 0) + 
@@ -413,7 +410,6 @@
 				{/if}
 			</div>
 
-			<!-- Desktop Header (visible only on xl screens) -->
 			<div class="hidden xl:block">
 				<div
 					class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4"
@@ -484,7 +480,6 @@
 								<div
 									class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow"
 								>
-									<!-- Search Input -->
 									<div class="form-control mb-2">
 										<input
 											class="input input-bordered input-xs"
@@ -493,7 +488,6 @@
 										/>
 									</div>
 
-									<!-- Selected Categories Display -->
 									{#if selectedCategories.length > 0}
 										<div class="mb-2 p-2 bg-base-200 rounded">
 											<div
@@ -531,7 +525,6 @@
 										</div>
 									{/if}
 
-									<!-- Category List -->
 									<ul class="menu max-h-40 overflow-y-auto">
 										{#each filteredCategories as category (category)}
 											<li>
@@ -565,7 +558,6 @@
 							</div>
 						</div>
 
-						<!-- Post Type Select -->
 						<div class="form-control">
 							<div class="label">
 								<span class="label-text text-xs">Offer/Request</span
@@ -631,7 +623,6 @@
 							</div>
 						</div>
 
-						<!-- User Name Search -->
 						<div class="form-control">
 							<label class="label" for="user-search">
 								<span class="label-text text-xs"
@@ -646,7 +637,6 @@
 							/>
 						</div>
 
-						<!-- Clear Filters Button -->
 						<div class="form-control">
 							<div class="label">
 								<span class="label-text text-xs opacity-0">.</span>
@@ -668,7 +658,6 @@
 			</div>
 		</div>
 
-		<!-- Full Screen Map -->
 		<div class="flex-1 relative">
 			{#if loading}
 				<div
