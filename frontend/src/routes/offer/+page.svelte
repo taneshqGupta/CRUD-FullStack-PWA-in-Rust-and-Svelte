@@ -94,7 +94,6 @@
 					</p>
 				</div>
 
-				<!-- Success/Error Messages -->
 				{#if success}
 					<div class="alert alert-success">
 						<svg
