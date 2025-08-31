@@ -139,7 +139,7 @@
 								>What skill can you share?</legend
 							>
 							<textarea
-								class="input textarea h-24 text-xs"
+								class="input textarea h-24"
 								placeholder="I can cook rice, design websites .."
 								bind:value={newPostDescription}
 								required
