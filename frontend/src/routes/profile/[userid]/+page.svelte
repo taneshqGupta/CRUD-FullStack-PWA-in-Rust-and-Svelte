@@ -51,7 +51,7 @@
         try {
             loading = true;
             const [profileData, posts] = await Promise.all([
-                getUserProfile(Number(id)),
+                getUserProfile(4),
                 getPosts(),
             ]);
             profile = profileData;
