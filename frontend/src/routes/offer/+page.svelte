@@ -134,23 +134,16 @@
 
 				<form class="space-y-6">
 					<div class="form-control">
-						<label class="floating-label">
+						<label id="skill-description" class="floating-label">
 							<span>What skill can you share?</span>
 							<input
 								type="text"
 								placeholder="I can teach guitar/ cook indian food/ design websites .."
 								class="input input-md"
+								bind:value={newPostDescription}
+								required
 							/>
 						</label>
-
-						<textarea
-							id="skill-description"
-							name="description"
-							class="textarea textarea-bordered textarea-lg h-32"
-							placeholder="e.g., I can teach guitar, help with math homework, cook Indian food, design websites..."
-							bind:value={newPostDescription}
-							required
-						></textarea>
 					</div>
 
 					<!-- Category and Pin Code -->
