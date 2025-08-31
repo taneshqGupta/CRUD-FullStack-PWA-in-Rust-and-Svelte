@@ -78,7 +78,7 @@
 
 {#if $authStore.isAuthenticated}
 	<div class="h-full flex items-center justify-center">
-		<div class="card w-full max-w-2xl bg-base-100 shadow-2xl">
+		<div class="card card-border w-full max-w-md shadow-2xl bg-base-100">
 			<div class="card-body p-8">
 				<div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-base-content mb-2"><div class="badge badge-ghost">Offer</div> Your Skill</h1>
