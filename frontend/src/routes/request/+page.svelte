@@ -198,54 +198,41 @@
 						</div>
 
 						<div class="form-control">
-							<label for="help-pincode" class="label">
-								<span class="label-text font-semibold"
-									>Pin Code</span
-								>
-							</label>
+							<div class="label text-xs font-black">
+								<span class="label-text-alt">
+									{userDefaultPinCode
+										? `Pin Code [Your Default: ${userDefaultPinCode}]`
+										: "Pin Code"}
+								</span>
+							</div>
 							<input
 								id="help-pincode"
 								name="pincode"
-								class="input input-bordered"
+								class="input input-bordered w-full"
 								type="text"
 								placeholder={userDefaultPinCode ||
 									"e.g., 110001"}
 								bind:value={newPinCode}
-								pattern="[0-9]{6}"
-								title="Please enter a valid 6-digit pin code"
+								maxlength="10"
+								title="Enter your pin code (optional)"
 							/>
-							<div class="label">
-								<span class="label-text-alt">
-									{userDefaultPinCode
-										? `Default: ${userDefaultPinCode}`
-										: "For location-based matching"}
-								</span>
-							</div>
 						</div>
 					</div>
 
-					<div
-						class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4"
-					>
+					<div class="flex justify-center items-center pt-4">
 						<button
 							type="submit"
-							class="btn btn-secondary btn-lg w-full sm:w-auto"
-							class:loading
-							disabled={loading}
+							class="btn btn-soft btn-block"
+							on:click={handleCreatePost}
 						>
 							{#if loading}
-								<span class="loading loading-spinner loading-sm"
+								<span
+									class="loading loading-infinity loading-sm"
 								></span>
-								Posting...
 							{:else}
-								<div class="badge badge-ghost">Request</div>
-								Help
+								Request Help
 							{/if}
 						</button>
-
-						<a href="/" class="btn btn-ghost w-full sm:w-auto">
-							Cancel
-						</a>
 					</div>
 				</form>
 			</div>
