@@ -13,7 +13,6 @@
     export let data;
 
     let userProfile: UserProfile | null = null;
-    let userID = $authStore.user_id;
 
     onMount(async () => {
         initAuth();
@@ -73,9 +72,9 @@
             </nav>
 
             {#if !isAuthPage && $authStore.isAuthenticated}
-                {#if userID && userProfile}
+                {#if $authStore.user_id && userProfile}
                     <a
-                        href="/profile/{userID}"
+                        href="/profile/{$authStore.user_id}"
                         class="btn btn-circle btn-sm p-1"
                         aria-label="Go to profile"
                     >
