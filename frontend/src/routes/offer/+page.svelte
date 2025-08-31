@@ -147,10 +147,11 @@
 						</fieldset>
 					</div>
 
-					<div
-						class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full"
-					>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full">
 						<div class="form-control pb-4">
+							<div class="label text-xs font-bold">
+								<span class="label-text-alt"> Category </span>
+							</div>
 							<div class="dropdown dropdown-bottom w-full">
 								<div
 									role="button"
@@ -191,11 +192,6 @@
 											</li>
 										{/if}
 									</ul>
-								</div>
-								<div class="label text-xs font-bold">
-									<span class="label-text-alt">
-										Category
-									</span>
 								</div>
 							</div>
 						</div>
