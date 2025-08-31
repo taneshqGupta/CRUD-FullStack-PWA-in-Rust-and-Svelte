@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Map from "$lib/components/Map.svelte";
-	import { getCommunityPosts, getPosts, getMyProfile } from "$lib/api";
+	import { getCommunityPosts, getMyPosts, getMyProfile } from "$lib/api";
 	import { authStore } from "$lib/auth";
 	import { onMount } from "svelte";
 	import type { Post } from "$lib/types";
@@ -71,7 +71,7 @@
 			loading = true;
 			const [personalPosts, communityPosts, userProfile] =
 				await Promise.all([
-					getPosts(),
+					getMyPosts(),
 					getCommunityPosts(),
 					getMyProfile().catch(() => null),
 				]);

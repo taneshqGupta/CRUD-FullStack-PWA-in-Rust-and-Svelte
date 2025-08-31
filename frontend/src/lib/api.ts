@@ -24,8 +24,21 @@ export async function createPost(description: string, category: string, post_typ
     return response.json();
 }
 
-export async function getPosts(): Promise<Post[]> {
+export async function getMyPosts(): Promise<Post[]> {
     const response = await fetch(`${PUBLIC_BACKEND_URL}posts`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to fetch posts: ${response.statusText}`);
+    }
+    return response.json();
+}
+
+export async function getUserPosts(id: number): Promise<Post[]> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}posts/${id}`, {
         method: "GET",
         credentials: "include"
     });

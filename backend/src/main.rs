@@ -18,13 +18,15 @@ use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
 use posts::{
     create_post, delete_post, list_community_offers, list_community_posts, list_community_requests,
-    list_offers, list_posts, list_requests, update_post,
+    list_offers, list_my_posts, list_requests, update_post,
 };
 use sqlx::PgPool;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tower_http::cors::CorsLayer;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
+
+use crate::posts::list_user_posts;
 
 
 #[tokio::main]
@@ -56,10 +58,11 @@ async fn main() -> Result<(), AppError> {
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
-        .route("/", get(list_posts))
-        .route("/posts", get(list_posts))
+        .route("/", get(list_my_posts))
+        .route("/posts", get(list_my_posts))
         .route("/posts/offers", get(list_offers))
         .route("/posts/requests", get(list_requests))
+        .route("/foreignposts/{userid}", get(list_user_posts))
         .route("/community", get(list_community_posts))
         .route("/community/offers", get(list_community_offers))
         .route("/community/requests", get(list_community_requests))
