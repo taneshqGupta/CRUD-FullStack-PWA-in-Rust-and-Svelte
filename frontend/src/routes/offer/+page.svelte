@@ -158,7 +158,7 @@
 									{newPostCategory || "Select a category..."}
 								</div>
 								<div
-									class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow max-h-60 overflow-y-auto"
+									class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  w-69 max-h-60 overflow-y-auto"
 								>
 									<div class="form-control mb-2">
 										<input
