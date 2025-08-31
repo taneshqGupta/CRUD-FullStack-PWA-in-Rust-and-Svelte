@@ -14,7 +14,14 @@
     let error = '';
     let profileUpdateLoading = false;
 
-    let isOwnProfile = $authStore.user_id === Number($page.params.userId);
+    $: isOwnProfile = $authStore.user_id === Number($page.params.userId);
+
+    $: {
+        const userId = $page.params.userId;
+        if (userId) {
+            loadProfile(userId);
+        }
+    }
 
     $: if (!$authStore.loading && !$authStore.isAuthenticated) {
         goto('/login');
@@ -27,6 +34,12 @@
     });
 
     async function loadProfile(id: string) {
+        const numericID = Number(id);
+        if(isNaN(numericID)) {
+            error = 'Invalid User-Id in the URL';
+            loading = false;
+            return;
+        }
         try {
             loading = true;
             const [profileData, posts] = await Promise.all([
@@ -48,6 +61,7 @@
     }
 
     async function handleProfilePictureChange(file: File) {
+        if (!$page.params.userId) return;
         try {
             profileUpdateLoading = true;
             error = '';
