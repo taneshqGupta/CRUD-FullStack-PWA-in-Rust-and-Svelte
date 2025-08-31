@@ -136,10 +136,7 @@
 					</div>
 				{/if}
 
-				<form
-					on:submit|preventDefault={handleCreatePost}
-					class="space-y-6"
-				>
+				<form class="space-y-6">
 					<!-- Description -->
 					<div class="form-control">
 						<label for="skill-description" class="label">
@@ -249,7 +246,8 @@
 						class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4"
 					>
 						<button
-							type="submit"
+							type="button"
+							on:click={handleCreatePost}
 							class="btn btn-primary btn-lg w-full sm:w-auto"
 							class:loading
 							disabled={loading}
