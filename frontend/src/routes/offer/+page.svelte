@@ -152,7 +152,7 @@
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
-									class="btn btn-soft w-full justify-start"
+									class="btn btn-soft btn-wide justify-start"
 									class:btn-soft={!newPostCategory}
 									tabindex="0"
 								>
@@ -169,7 +169,6 @@
 										/>
 									</div>
 
-									<!-- Category List -->
 									<ul class="menu">
 										{#each filteredCategories as category}
 											<li>
