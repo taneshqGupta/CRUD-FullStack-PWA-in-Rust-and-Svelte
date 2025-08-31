@@ -170,7 +170,7 @@
 										/>
 									</div>
 
-									<ul class="menu">
+									<ul class="menu w-full">
 										{#each filteredCategories as category}
 											<li>
 												<button
@@ -184,7 +184,7 @@
 											</li>
 										{/each}
 										{#if filteredCategories.length === 0}
-											<li>
+											<li class="w-full">
 												<span class="text-xs opacity-50 w-full"
 													>No categories found</span
 												>

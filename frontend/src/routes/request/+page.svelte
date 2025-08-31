@@ -43,6 +43,11 @@
 			return;
 		}
 
+		if (!newPostCategory) {
+			error = "Please select a category";
+			return;
+		}
+
 		const description = newPostDescription.trim();
 		const category = newPostCategory;
 		const pinCode = newPinCode.trim() || userDefaultPinCode;
@@ -56,7 +61,7 @@
 			success = "Help request posted successfully!";
 
 			newPostDescription = "";
-			newPostCategory = CATEGORIES[0];
+			newPostCategory = null;
 			newPinCode = userDefaultPinCode;
 
 			setTimeout(() => goto("/"), 1500);
@@ -180,19 +185,15 @@
 											</li>
 										{/each}
 										{#if filteredCategories.length === 0}
-											<li>
-												<span class="text-xs opacity-50 w-full"
+											<li class="w-full">
+												<span
+													class="text-xs opacity-50 w-full"
 													>No categories found</span
 												>
 											</li>
 										{/if}
 									</ul>
 								</div>
-							</div>
-							<div class="label">
-								<span class="label-text-alt"
-									>Helps others find your request</span
-								>
 							</div>
 						</div>
 
@@ -223,7 +224,6 @@
 						</div>
 					</div>
 
-					<!-- Actions -->
 					<div
 						class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4"
 					>
@@ -248,35 +248,6 @@
 						</a>
 					</div>
 				</form>
-
-				<!-- Preview -->
-				{#if newPostDescription.trim()}
-					<div class="divider">Preview</div>
-					<div class="card bg-base-200 shadow-sm">
-						<div class="card-body p-4">
-							<div class="flex items-center gap-2 mb-2">
-								<span class="badge badge-secondary badge-sm">
-									<div class="badge badge-ghost">
-										Requesting
-									</div>
-								</span>
-								{#if newPostCategory.trim()}
-									<span class="badge badge-outline badge-sm"
-										>{newPostCategory.trim()}</span
-									>
-								{/if}
-								{#if newPinCode.trim() || userDefaultPinCode}
-									<span class="badge badge-ghost badge-sm"
-										><PinSvg />
-										{newPinCode.trim() ||
-											userDefaultPinCode}</span
-									>
-								{/if}
-							</div>
-							<p class="text-sm">{newPostDescription.trim()}</p>
-						</div>
-					</div>
-				{/if}
 			</div>
 		</div>
 	</div>
