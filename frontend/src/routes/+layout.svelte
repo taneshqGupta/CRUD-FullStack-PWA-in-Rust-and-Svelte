@@ -8,10 +8,11 @@
     import { getMyProfile } from "$lib/api";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
+    import type { UserProfile } from "$lib/types";
 
     export let data;
 
-    let userProfile: any = null;
+    let userProfile: UserProfile | null = null;
 
     onMount(async () => {
         initAuth();
@@ -70,7 +71,7 @@
 
             {#if !isAuthPage && $authStore.isAuthenticated}
                 <a
-                    href="/profile"
+                    href="/profile/${userProfile?.id}"
                     class="btn btn-circle btn-sm p-1"
                     aria-label="Go to profile"
                 >

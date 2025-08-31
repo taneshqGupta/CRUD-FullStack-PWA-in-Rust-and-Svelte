@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { getMyProfile, getPosts, updateProfilePicture } from '$lib/api';
+    import { getUserProfile, getPosts, updateProfilePicture } from '$lib/api';
+    import { page } from '$app/stores';
     import { authStore, logout } from '$lib/auth';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
@@ -13,21 +14,23 @@
     let error = '';
     let profileUpdateLoading = false;
 
+    let isOwnProfile = $authStore.user_id === Number($page.params.userId);
+
     $: if (!$authStore.loading && !$authStore.isAuthenticated) {
         goto('/login');
     }
 
     onMount(async () => {
         if ($authStore.isAuthenticated) {
-            await loadProfile();
+            await loadProfile($page.params.userId);
         }
     });
 
-    async function loadProfile() {
+    async function loadProfile(id: string) {
         try {
             loading = true;
             const [profileData, posts] = await Promise.all([
-                getMyProfile(),
+                getUserProfile(Number(id)),
                 getPosts()
             ]);
             profile = profileData;
@@ -55,7 +58,7 @@
                     const base64Data = reader.result as string;
                     await updateProfilePicture(base64Data);
                     
-                    await loadProfile();
+                    await loadProfile($page.params.userId);
                 } catch (err) {
                     error = err instanceof Error ? err.message : 'Failed to update profile picture';
                 } finally {
