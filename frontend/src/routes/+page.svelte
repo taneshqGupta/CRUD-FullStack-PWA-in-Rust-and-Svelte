@@ -11,10 +11,8 @@
 		PinSvg,
 		MembersSvg,
 		CrossSvg,
+		FilterSvg
 	} from "$lib/components/icons";
-
-	// Add a simple FilterSvg icon or use existing one
-	const FilterSvg = () => `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.121A1 1 0 013 6.414V4z" /></svg>`;
 
 	let allPosts: Post[] = [];
 	let loading = true;
@@ -25,7 +23,6 @@
 	} | null = null;
 	let mapComponent: Map;
 
-	// New robust filtering system
 	let textSearch = "";
 	let selectedCategories: Category[] = [];
 	let categorySearch = "";
@@ -35,12 +32,10 @@
 	let userDefaultPinCode = "";
 	let showMobileFilters = false;
 
-	// Filtered categories for search
 	$: filteredCategories = CATEGORIES.filter((category) =>
 		category.toLowerCase().includes(categorySearch.toLowerCase()),
 	);
 
-	// Helper function to toggle category selection
 	function toggleCategory(category: Category) {
 		if (selectedCategories.includes(category)) {
 			selectedCategories = selectedCategories.filter(
@@ -49,11 +44,9 @@
 		} else {
 			selectedCategories = [...selectedCategories, category];
 		}
-		// Clear search after selection for better UX
 		categorySearch = "";
 	}
 
-	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
 		goto("/login");
 	}
@@ -83,12 +76,10 @@
 					getUserProfile().catch(() => null),
 				]);
 
-			// Set user default pin code
 			if (userProfile?.pin_code) {
 				userDefaultPinCode = userProfile.pin_code;
 			}
 
-			// Combine and deduplicate posts
 			const seenIds = new Set<number>();
 			allPosts = [];
 
@@ -206,12 +197,11 @@
 						</div>
 					</div>
 					
-					<!-- Filter Toggle Button -->
 					<button
 						class="btn btn-soft btn-sm gap-2"
 						on:click={() => showMobileFilters = !showMobileFilters}
 					>
-						{@html FilterSvg()}
+						<FilterSvg />
 						Filters
 						{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
 							<div class="badge badge-primary badge-xs">{
