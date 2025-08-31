@@ -134,19 +134,20 @@
 
 				<form class="space-y-6">
 					<div class="form-control">
-						<label id="skill-description" class="floating-label">
-							<span>What skill can you share?</span>
+						<fieldset class="fieldset">
+							<legend class="fieldset-legend"
+								>What skill can you share?</legend
+							>
 							<input
 								type="text"
+								class="input"
 								placeholder="I can teach guitar/ cook indian food/ design websites .."
-								class="input input-md"
 								bind:value={newPostDescription}
 								required
 							/>
-						</label>
+						</fieldset>
 					</div>
 
-					<!-- Category and Pin Code -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="form-control">
 							<label for="skill-category" class="label">
