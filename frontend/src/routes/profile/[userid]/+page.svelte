@@ -116,8 +116,8 @@
                                 onImageChange={isOwnProfile ? handleProfilePictureChange : null}
                             />
                             {#if profileUpdateLoading}
-                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                                    <span class="loading loading-spinner loading-md text-white"></span>
+                                <div class="absolute inset-0 bg-primary-content bg-opacity-50 rounded-full flex items-center justify-center">
+                                    <span class="loading loading-infinity loading-md"></span>
                                 </div>
                             {/if}
                         </div>
