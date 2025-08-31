@@ -642,7 +642,7 @@
 								<span class="label-text text-xs opacity-0">.</span>
 							</div>
 							<button
-								class="btn btn-ghost btn-sm"
+								class="btn btn-soft btn-sm text-xs"
 								on:click={() => {
 									textSearch = "";
 									selectedCategories = [];
