@@ -1,16 +1,35 @@
-import { authStore } from '$lib/auth';
+// In: src/routes/profile/[userid]/+layout.ts
 import { redirect } from '@sveltejs/kit';
-import { get } from 'svelte/store';
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import type { LayoutLoad } from './$types';
 
-// This load function runs BEFORE your page component
-export function load() {
-    const auth = get(authStore);
+export const load: LayoutLoad = async ({ fetch }) => {
+    try {
+        // Use the universal `fetch` to call your backend's auth check endpoint.
+        const response = await fetch(`${PUBLIC_BACKEND_URL}auth/check`);
 
-    // If the auth check is done and the user is not logged in, redirect them.
-    if (!auth.loading && !auth.isAuthenticated) {
+        if (!response.ok) {
+            throw redirect(307, '/login');
+        }
+
+        const authData = await response.json();
+
+        if (!authData.success) {
+            throw redirect(307, '/login');
+        }
+
+        // If authenticated, return the user data.
+        return {
+            user: {
+                id: authData.user_id
+            }
+        };
+
+    } catch (err) {
+        if (err instanceof Error && err.message.startsWith('redirect')) {
+            throw err;
+        }
+        
         throw redirect(307, '/login');
     }
-
-    // If everything is okay, let the page load
-    return {};
-}
+};

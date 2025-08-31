@@ -1,41 +1,86 @@
 <script lang="ts">
+    import { getUserProfile, getPosts, updateProfilePicture } from '$lib/api';
     import { page } from '$app/stores';
-    import { getUserProfile } from '$lib/api';
+    import { authStore, logout } from '$lib/auth';
+    import { goto } from '$app/navigation';
+    import type { Post, UserProfile } from '$lib/types';
+    import ProfilePicture from '$lib/components/ProfilePicture.svelte';
+    import { MailSvg, PinSvg, TasksSvg, LogoutSvg } from '$lib/components/icons';
 
+    let loading = true;
+    let profile: UserProfile | null = null;
+    let userPosts: Post[] = [];
+    let error = '';
+    let profileUpdateLoading = false;
 
-    // This is the only code that will run.
-    // It will test if the API call can finish inside a reactive block.
+    // Correctly uses the lowercase 'userid' parameter
+    $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
+
+    // This is the final, correct data loading logic
     $: {
         const userid = $page.params.userid;
-        console.log(userid);
-        if (userid) {
-            console.log("Reactive block triggered with userId:", userid);
-
-            // We create a new, simple test function
-            const testApiCall = async (id: string) => {
-                try {
-                    const numericId = Number(id);
-                    if (isNaN(numericId)) {
-                        console.error("User ID is not a number:", id);
-                        return;
-                    }
-                    
-                    console.log("Attempting to fetch profile for ID:", numericId);
-                    const profile = await getUserProfile(numericId);
-                    
-                    // If we see this, the API call worked.
-                    console.log("SUCCESS! Fetched profile:", profile);
-
-                } catch (err) {
-                    // If we see this, the API call failed with an error.
-                    console.error("FAILED! Error fetching profile:", err);
-                }
-            };
-
-            // We call the test function
-            testApiCall(userid);
+        if (userid && !loading) {
+            loadProfile(userid);
         }
     }
+
+    async function loadProfile(id: string) {
+        const numericId = Number(id);
+        if (isNaN(numericId)) {
+            error = 'Invalid User-Id in the URL';
+            loading = false;
+            return;
+        }
+
+        try {
+            loading = true;
+            error = '';
+            const [profileData, allPosts] = await Promise.all([
+                getUserProfile(numericId),
+                getPosts()
+            ]);
+            profile = profileData;
+            userPosts = allPosts.filter(p => p.user_id === profileData.id);
+        } catch (err) {
+            error = err instanceof Error ? err.message : 'Failed to load profile';
+        } finally {
+            loading = false;
+        }
+    }
+
+    async function handleLogout() {
+        await logout();
+        goto('/login');
+    }
+
+    async function handleProfilePictureChange(file: File) {
+        if (!$page.params.userid) return;
+        try {
+            profileUpdateLoading = true;
+            error = '';
+            
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    const base64Data = reader.result as string;
+                    await updateProfilePicture(base64Data);
+                    await loadProfile($page.params.userid);
+                } catch (err) {
+                    error = err instanceof Error ? err.message : 'Failed to update profile picture';
+                } finally {
+                    profileUpdateLoading = false;
+                }
+            };
+            reader.readAsDataURL(file);
+        } catch (err) {
+            error = err instanceof Error ? err.message : 'Failed to process image';
+            profileUpdateLoading = false;
+        }
+    }
+
+    $: offerCount = userPosts.filter(post => post.post_type === 'offer').length;
+    $: requestCount = userPosts.filter(post => post.post_type === 'request').length;
+    $: completedCount = userPosts.filter(post => post.completed).length;
 </script>
 
 <svelte:head>
