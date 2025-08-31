@@ -153,7 +153,6 @@
 								<div
 									role="button"
 									class="btn btn-soft btn-wide justify-start"
-									class:btn-soft={!newPostCategory}
 									tabindex="0"
 								>
 									{newPostCategory || "Select a category..."}
