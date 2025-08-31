@@ -11,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     const host = event.request.headers.get('host');
 
-    if (redirectDomains.includes(host)) {
+    if (host && redirectDomains.includes(host)) {
         const newUrl = `https://${mainDomain}${event.url.pathname}${event.url.search}`;
 
         return new Response(null, {
