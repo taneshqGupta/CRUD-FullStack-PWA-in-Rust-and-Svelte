@@ -7,6 +7,7 @@
     // It will test if the API call can finish inside a reactive block.
     $: {
         const userId = $page.params.userId;
+        console.log(userId);
         if (userId) {
             console.log("Reactive block triggered with userId:", userId);
 
