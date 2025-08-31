@@ -140,7 +140,7 @@
 							>
 							<textarea
 								class="input textarea h-24"
-								placeholder="I can teach guitar/ cook indian food/ design websites .."
+								placeholder="I can cook rice, design websites, .."
 								bind:value={newPostDescription}
 								required
 							></textarea>
