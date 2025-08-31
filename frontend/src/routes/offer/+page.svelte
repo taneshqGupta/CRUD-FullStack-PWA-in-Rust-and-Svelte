@@ -197,11 +197,7 @@
 						</div>
 
 						<div class="label text-xs font-black">
-							<span class="label-text-alt">
-								{userDefaultPinCode
-									? `Pin Code [Your Default: ${userDefaultPinCode}]`
-									: "Pin Code"}
-							</span>
+							<span class="label-text-alt"> Pin Code</span>
 						</div>
 						<div class="form-control">
 							<input
