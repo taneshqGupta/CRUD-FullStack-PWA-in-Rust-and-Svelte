@@ -8,7 +8,7 @@
 	import { CATEGORIES } from "$lib/types";
 
 	let newPostDescription = "";
-	let newPostCategory: Category = CATEGORIES[0];
+	let newPostCategory: Category | null = null;
 	const newPostType: PostType = "offer";
 	let newPinCode = "";
 	let userDefaultPinCode = "";
@@ -43,6 +43,11 @@
 			return;
 		}
 
+		if (!newPostCategory) {
+			error = "Please select a category";
+			return;
+		}
+
 		const description = newPostDescription.trim();
 		const category = newPostCategory;
 		const pinCode = newPinCode.trim() || userDefaultPinCode;
@@ -58,7 +63,7 @@
 
 			// Reset form
 			newPostDescription = "";
-			newPostCategory = CATEGORIES[0];
+			newPostCategory = null;
 			newPinCode = userDefaultPinCode;
 
 			// Redirect to main page after success
@@ -164,9 +169,10 @@
 								<div
 									role="button"
 									class="btn btn-outline w-full justify-start"
+									class:btn-error={!newPostCategory}
 									tabindex="0"
 								>
-									{newPostCategory}
+									{newPostCategory || "Select a category..."}
 								</div>
 								<div
 									class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto"
@@ -275,9 +281,9 @@
 										Offering
 									</div>
 								</span>
-								{#if newPostCategory.trim()}
+								{#if newPostCategory}
 									<span class="badge badge-outline badge-sm"
-										>{newPostCategory.trim()}</span
+										>{newPostCategory}</span
 									>
 								{/if}
 								{#if newPinCode.trim() || userDefaultPinCode}
