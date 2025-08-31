@@ -115,12 +115,12 @@
 				{/if}
 
 				{#if error}
-					<div class="alert alert-error mb-6">
+					<div role="alert" class="alert alert-error">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							class="stroke-current shrink-0 h-6 w-6"
+							class="h-6 w-6 shrink-0 stroke-current"
 							fill="none"
-							viewBox="0 0 24 24"
+							viewBox="0 0 16 16"
 						>
 							<path
 								stroke-linecap="round"
