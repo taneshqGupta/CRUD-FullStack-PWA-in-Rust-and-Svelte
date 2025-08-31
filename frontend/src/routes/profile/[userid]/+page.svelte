@@ -23,7 +23,7 @@
 
     $: {
         const userId = $page.params.userId;
-        if (userId) {
+        if (userId && !loading) {
             loadProfile(userId);
         }
     }
