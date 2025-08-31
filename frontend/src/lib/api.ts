@@ -191,7 +191,7 @@ export async function updateProfilePicture(profilePicture: string): Promise<any>
     const formData = new URLSearchParams();
     formData.append('profile_picture', profilePicture);
 
-    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/profile/picture`, {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/myprofile/picture`, {
         method: "POST",
         credentials: "include",
         headers: {
