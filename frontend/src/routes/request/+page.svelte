@@ -134,8 +134,8 @@
 
 				<form class="space-y-6">
 					<div class="form-control">
-						<fieldset class="fieldset-legend">
-							<legend class="label"
+						<fieldset class="fieldset">
+							<legend class="fieldset-legend"
 								>What do you wish to learn?</legend
 							>
 							<textarea
