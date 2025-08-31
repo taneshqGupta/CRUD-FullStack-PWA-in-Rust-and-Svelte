@@ -238,11 +238,10 @@
 						</div>
 					</div>
 
-					<!-- Actions -->
 					<div class="flex justify-center items-center pt-4">
 						<button
 							type="button"
-							class="btn btn-soft w-full sm:w-auto"
+							class="btn btn-soft btn-block"
 							on:click={handleCreatePost}
 						>
 							{#if loading}
