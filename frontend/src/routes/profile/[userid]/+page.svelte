@@ -92,15 +92,12 @@
     <meta name="description" content="View a user's SkillSwap profile" />
 </svelte:head>
 
-<div class="h-full overflow-y-auto bg-base-200 p-4">
+<div class="h-full overflow-y-auto bg-base-100 p-4">
     <div class="max-w-4xl mx-auto">
         
         {#if loading}
-            <div class="flex justify-center items-center h-64">
-                <div class="text-center">
-                    <span class="loading loading-spinner loading-lg text-primary"></span>
-                    <p class="mt-4 text-base-content/70">Loading profile...</p>
-                </div>
+            <div class="flex justify-center items-center h-full w-full">
+                <span class="loading loading-infinity loading-xl"></span>
             </div>
         {:else if error}
             <div class="alert alert-error">
