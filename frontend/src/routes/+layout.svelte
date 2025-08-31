@@ -51,18 +51,20 @@
         <div class="flex-1">
             <h1>
                 <a
-                href="/"
-                class="btn btn-ghost font-bold text-xl"
-                aria-label="Go to SkillSwap homepage"
+                    href="/"
+                    class="btn btn-ghost font-bold text-xl"
+                    aria-label="Go to SkillSwap homepage"
                 >
-                    <span class="hidden sm:inline">Skill-Swap: Learn, Teach, Socialise</span>
+                    <span class="hidden sm:inline"
+                        >Skill-Swap: Learn, Teach, Socialise</span
+                    >
                     <span class="sm:hidden">Skill-Swap</span>
                 </a>
             </h1>
         </div>
         <div class="flex-none flex items-center gap-2">
             <InstallAppButton />
-            
+
             <nav aria-label="Theme Selection">
                 <ThemeSwitcher
                     currentPath={data?.url?.pathname || $page.url.pathname}
@@ -70,20 +72,23 @@
             </nav>
 
             {#if !isAuthPage && $authStore.isAuthenticated}
-                <a
-                    href="/profile/{userProfile?.id}"
-                    class="btn btn-circle btn-sm p-1"
-                    aria-label="Go to profile"
-                >
-                    <ProfilePicture
-                        profilePicture={userProfile?.profile_picture}
-                        name={userProfile?.name || "User"}
-                        size="sm"
-                        editable={false}
-                    />
-                </a>
+                {#if userProfile?.id}
+                    <a
+                        href="/profile/{userProfile.id}"
+                        class="btn btn-circle btn-sm p-1"
+                        aria-label="Go to profile"
+                    >
+                        <ProfilePicture
+                            profilePicture={userProfile.profile_picture}
+                            name={userProfile.name || "User"}
+                            size="sm"
+                            editable={false}
+                        />
+                    </a>
+                {:else}
+                    <div class="btn btn-circle btn-sm p-1 skeleton"></div>
+                {/if}
             {/if}
-
         </div>
     </header>
 
