@@ -59,7 +59,7 @@
 			await createPost(description, category, newPostType, pinCode);
 
 			success =
-				"Skill offer posted successfully! Redirecting to community map...";
+				"Skill offer posted successfully!";
 
 			// Reset form
 			newPostDescription = "";
