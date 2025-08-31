@@ -255,35 +255,6 @@
 						</button>
 					</div>
 				</form>
-
-				<!-- Preview -->
-				{#if newPostDescription.trim()}
-					<div class="divider">Preview</div>
-					<div class="card bg-base-200 shadow-sm">
-						<div class="card-body p-4">
-							<div class="flex items-center gap-2 mb-2">
-								<span class="badge badge-primary badge-sm">
-									<div class="badge badge-ghost">
-										Offering
-									</div>
-								</span>
-								{#if newPostCategory}
-									<span class="badge badge-outline badge-sm"
-										>{newPostCategory}</span
-									>
-								{/if}
-								{#if newPinCode.trim() || userDefaultPinCode}
-									<span class="badge badge-ghost badge-sm"
-										><PinSvg />
-										{newPinCode.trim() ||
-											userDefaultPinCode}</span
-									>
-								{/if}
-							</div>
-							<p class="text-sm">{newPostDescription.trim()}</p>
-						</div>
-					</div>
-				{/if}
 			</div>
 		</div>
 	</div>
