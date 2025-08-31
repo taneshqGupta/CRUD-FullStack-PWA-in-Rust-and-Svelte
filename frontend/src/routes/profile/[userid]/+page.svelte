@@ -15,13 +15,10 @@
 
     let currentID: string | null = null;
     
-    // This reactive variable is the key to showing/hiding owner-specific UI
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
 
-    // This reactive block correctly loads data when the page opens or the URL changes
     $: {
         const userid = $page.params.userid;
-        // The !loading check prevents infinite loops
         if (userid && userid !== currentID) {
             loadProfile(userid);
         }
@@ -43,7 +40,6 @@
         try {
             loading = true;
             error = '';
-            // We fetch the profile AND the posts for that specific user
             const [profileData, postsData] = await Promise.all([
                 getUserProfile(numericId),
                 getUserPosts(numericId)
