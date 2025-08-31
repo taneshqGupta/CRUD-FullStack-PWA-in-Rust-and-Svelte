@@ -2,6 +2,7 @@ export type PostType = 'offer' | 'request';
 
 // Comprehensive category enum with 100+ categories
 export const CATEGORIES = [
+    'General',
     // Technology & Programming
     'Web Development', 'Mobile App Development', 'Software Engineering', 'Data Science', 'Artificial Intelligence',
     'Machine Learning', 'Cybersecurity', 'Cloud Computing', 'DevOps', 'Database Management',
