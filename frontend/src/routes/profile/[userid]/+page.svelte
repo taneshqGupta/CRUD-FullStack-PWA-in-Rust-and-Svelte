@@ -12,6 +12,8 @@
     let userPosts: Post[] = [];
     let error = '';
     let profileUpdateLoading = false;
+
+    let currentID: string | null = null;
     
     // This reactive variable is the key to showing/hiding owner-specific UI
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
@@ -20,12 +22,17 @@
     $: {
         const userid = $page.params.userid;
         // The !loading check prevents infinite loops
-        if (userid && !loading) {
+        if (userid && userid !== currentID) {
             loadProfile(userid);
         }
     }
 
+    $: if (!$authStore.loading && !$authStore.isAuthenticated) {
+        goto('/login');
+    }
+
     async function loadProfile(id: string) {
+        currentID = id;
         const numericId = Number(id);
         if (isNaN(numericId)) {
             error = 'Invalid User-Id in the URL';
