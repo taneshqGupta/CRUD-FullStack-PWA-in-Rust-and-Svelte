@@ -239,7 +239,7 @@
 									Categories ({selectedCategories.length} selected)
 								</span>
 							</div>
-							<div class="dropdown dropdown-top w-full">
+							<div class="dropdown w-full">
 								<div
 									role="button"
 									class="btn btn-soft btn-sm w-full justify-start"
