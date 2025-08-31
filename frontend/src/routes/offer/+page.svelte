@@ -152,7 +152,7 @@
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
-									class="btn btn-soft btn-wide justify-start"
+									class="btn btn-soft btn-block justify-start"
 									tabindex="0"
 								>
 									{newPostCategory || "Select a category..."}
