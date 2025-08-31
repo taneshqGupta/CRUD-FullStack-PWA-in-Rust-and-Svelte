@@ -133,7 +133,6 @@
 				{/if}
 
 				<form class="space-y-6">
-					<!-- Description -->
 					<div class="form-control">
 						<label for="skill-description" class="label">
 							<span class="label-text text-lg font-semibold"
