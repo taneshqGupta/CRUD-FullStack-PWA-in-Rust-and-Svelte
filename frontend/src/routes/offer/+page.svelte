@@ -138,13 +138,12 @@
 							<legend class="fieldset-legend"
 								>What skill can you share?</legend
 							>
-							<input
-								type="text"
-								class="input"
+							<textarea
+								class="input textarea h-24"
 								placeholder="I can teach guitar/ cook indian food/ design websites .."
 								bind:value={newPostDescription}
 								required
-							/>
+							></textarea>
 						</fieldset>
 					</div>
 
