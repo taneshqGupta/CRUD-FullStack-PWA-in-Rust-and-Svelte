@@ -195,11 +195,6 @@
 						</div>
 
 						<div class="form-control">
-							<label for="skill-pincode" class="label">
-								<span class="label-text font-semibold"
-									>Pin Code</span
-								>
-							</label>
 							<input
 								id="skill-pincode"
 								name="pincode"
