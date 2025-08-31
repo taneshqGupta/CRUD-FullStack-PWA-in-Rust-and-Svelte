@@ -192,11 +192,6 @@
 									</ul>
 								</div>
 							</div>
-							<div class="label">
-								<span class="label-text-alt"
-									>Helps others find your skill</span
-								>
-							</div>
 						</div>
 
 						<div class="form-control">
