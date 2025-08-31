@@ -197,7 +197,7 @@
 							<input
 								id="skill-pincode"
 								name="pincode"
-								class="input input-bordered"
+								class="input input-bordered w-full"
 								type="text"
 								placeholder={userDefaultPinCode ||
 									"e.g., 110001"}
