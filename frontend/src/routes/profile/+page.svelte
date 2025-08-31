@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserProfile, getPosts, updateProfilePicture } from '$lib/api';
+    import { getMyProfile, getPosts, updateProfilePicture } from '$lib/api';
     import { authStore, logout } from '$lib/auth';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
@@ -28,7 +28,7 @@
         try {
             loading = true;
             const [profileData, posts] = await Promise.all([
-                getUserProfile(),
+                getMyProfile(),
                 getPosts()
             ]);
             profile = profileData;

@@ -9,7 +9,6 @@
     
     let fileInput: HTMLInputElement;
     
-    // Size classes
     const sizeClasses = {
         sm: 'w-8 h-8',
         md: 'w-12 h-12', 
@@ -35,7 +34,6 @@
         const file = target.files?.[0];
         
         if (file && onImageChange) {
-            // Basic validation
             if (!file.type.startsWith('image/')) {
                 alert('Please select an image file');
                 return;
@@ -50,7 +48,6 @@
         }
     }
     
-    // Get initials from name
     function getInitials(name: string): string {
         return name
             .split(' ')
@@ -60,7 +57,6 @@
             .slice(0, 2);
     }
 
-    // Tooltip text
     $: tooltipText = profilePicture ? 'Change picture' : 'Upload picture';
 </script>
 

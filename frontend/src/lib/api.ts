@@ -1,7 +1,6 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
 import type { Todo, Post, NewPost, AuthResponse, LoginRequest } from '$lib/types';
 
-// Post API functions for new skill-sharing system
 export async function createPost(description: string, category: string, post_type: 'offer' | 'request', pin_code?: string): Promise<Post> {
     const formData = new URLSearchParams();
     formData.append('description', description);
@@ -106,7 +105,6 @@ export async function deletePost(id: number): Promise<void> {
     }
 }
 
-// Auth API functions
 export async function login(email: string, password: string): Promise<AuthResponse> {
     const formData = new URLSearchParams();
     formData.append('email', email);
@@ -177,8 +175,8 @@ export async function checkAuth(): Promise<AuthResponse> {
     return response.json();
 }
 
-export async function getUserProfile(): Promise<any> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/profile`, {
+export async function getMyProfile(): Promise<any> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/myprofile`, {
         method: "GET",
         credentials: "include",
     });

@@ -57,14 +57,11 @@ pub async fn register(
         )
     })?;
 
-    // Handle profile picture upload to Cloudinary if provided
     let profile_picture_url = if let Some(profile_picture_data) = &new_user.profile_picture {
-        // Initialize Cloudinary service
         let cloudinary_config = CloudinaryConfig::from_env()
             .map_err(|e| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, e))?;
         let cloudinary = CloudinaryService::new(cloudinary_config);
         
-        // Generate a temporary public_id (we'll update it after user creation)
         let temp_public_id = format!("profile_pictures/temp_{}", uuid::Uuid::new_v4());
         let image_url = cloudinary.upload_image(profile_picture_data, Some(temp_public_id))
             .await
@@ -196,7 +193,7 @@ pub async fn require_auth(session: Session) -> Result<i32, AppError> {
     }
 }
 
-pub async fn get_profile(State(pool): State<PgPool>, session: Session) -> Result<Json<UserProfile>, AppError> {
+pub async fn get_my_profile(State(pool): State<PgPool>, session: Session) -> Result<Json<UserProfile>, AppError> {
     let user_id = require_auth(session).await?;
     
     let user = sqlx::query!(

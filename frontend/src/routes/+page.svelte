@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Map from "$lib/components/Map.svelte";
-	import { getCommunityPosts, getPosts, getUserProfile } from "$lib/api";
+	import { getCommunityPosts, getPosts, getMyProfile } from "$lib/api";
 	import { authStore } from "$lib/auth";
 	import { onMount } from "svelte";
 	import type { Post } from "$lib/types";
@@ -73,7 +73,7 @@
 				await Promise.all([
 					getPosts(),
 					getCommunityPosts(),
-					getUserProfile().catch(() => null),
+					getMyProfile().catch(() => null),
 				]);
 
 			if (userProfile?.pin_code) {

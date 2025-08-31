@@ -5,7 +5,7 @@
     import ProfilePicture from "$lib/components/ProfilePicture.svelte";
     import { GithubSvg, SquirrelSvg, TasksSvg } from "$lib/components/icons";
     import { authStore, initAuth, logout } from "$lib/auth";
-    import { getUserProfile } from "$lib/api";
+    import { getMyProfile } from "$lib/api";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
 
@@ -18,7 +18,7 @@
 
         if ($authStore.isAuthenticated) {
             try {
-                userProfile = await getUserProfile();
+                userProfile = await getMyProfile();
             } catch (err) {
                 console.log("Could not load user profile for header");
             }
@@ -26,7 +26,7 @@
     });
 
     $: if ($authStore.isAuthenticated && !userProfile) {
-        getUserProfile()
+        getMyProfile()
             .then((profile) => {
                 userProfile = profile;
             })

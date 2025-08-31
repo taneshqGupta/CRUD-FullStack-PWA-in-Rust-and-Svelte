@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PostType, Category } from "$lib/types";
-	import { createPost, getUserProfile } from "$lib/api";
+	import { createPost, getMyProfile } from "$lib/api";
 	import { authStore } from "$lib/auth";
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
@@ -27,7 +27,7 @@
 	onMount(async () => {
 		if ($authStore.isAuthenticated) {
 			try {
-				const userProfile = await getUserProfile();
+				const userProfile = await getMyProfile();
 				userDefaultPinCode = userProfile.pin_code || "";
 				newPinCode = userDefaultPinCode;
 			} catch (error) {
