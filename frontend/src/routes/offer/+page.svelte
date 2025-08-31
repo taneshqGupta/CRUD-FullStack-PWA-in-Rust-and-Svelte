@@ -240,15 +240,21 @@
 
 					<!-- Actions -->
 					<div class="flex justify-center items-center pt-4">
-						{#if loading}
-							<span class="loading loading-infinity loading-sm"
-							></span>
-						{:else}
-							<button
-								class="btn btn-soft"
-								on:click={handleCreatePost}>Offer Skill</button
-							>
-						{/if}
+						<button
+							type="button"
+							class="btn btn-soft w-full sm:w-auto"
+							class:loading
+							disabled={loading}
+							on:click={handleCreatePost}
+						>
+							{#if loading}
+								<span
+									class="loading loading-infinity loading-sm"
+								></span>
+							{:else}
+								Offer Skill
+							{/if}
+						</button>
 					</div>
 				</form>
 
