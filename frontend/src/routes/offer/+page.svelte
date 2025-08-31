@@ -147,7 +147,7 @@
 						</fieldset>
 					</div>
 
-					<div class="w-full">
+					<div class="w-69 m-3">
 						<div class="form-control">
 							<div class="dropdown dropdown-bottom">
 								<div
