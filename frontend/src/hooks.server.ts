@@ -1,15 +1,34 @@
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+    const mainDomain = 'skillswap.taneshq.iitmandi.in.net';
+
+    const redirectDomains = [
+        'www.skillswap.taneshq.me',
+        'skillswap.taneshq.me',
+        'www.skillswap.taneshq.iitmandi.in.net'
+    ];
+
+    const host = event.request.headers.get('host');
+
+    if (redirectDomains.includes(host)) {
+        const newUrl = `https://${mainDomain}${event.url.pathname}${event.url.search}`;
+
+        return new Response(null, {
+            status: 301,
+            headers: {
+                'Location': newUrl
+            }
+        });
+    }
+
     const theme = event.cookies.get('theme') || 'lemonade';
 
     const response = await resolve(event, {
         transformPageChunk: ({ html }) => {
-            // Inject client-side script to handle PWA theme loading
             const themeScript = `
                 <script>
                     (function() {
-                        // Check if we're in a PWA and no theme is set
                         const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
                                       navigator.standalone;
                         
