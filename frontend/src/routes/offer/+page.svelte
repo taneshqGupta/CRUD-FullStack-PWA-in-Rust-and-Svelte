@@ -147,7 +147,7 @@
 						</fieldset>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full mr-2">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full mr-2 pb-2">
 						<div class="form-control">
 							<div class="dropdown dropdown-bottom w-full">
 								<div
