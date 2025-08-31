@@ -10,7 +10,10 @@ export const load: LayoutLoad = async ({ fetch }) => {
         const authCheckUrl = `${PUBLIC_BACKEND_URL}auth/check`;
         console.log(`[INFO] Fetching auth status from: ${authCheckUrl}`);
         
-        const response = await fetch(authCheckUrl);
+        // This is the critical fix: forward the user's cookie to the backend
+        const response = await fetch(authCheckUrl, {
+            credentials: 'include'
+        });
 
         console.log(`[INFO] Fetch response status: ${response.status}, OK: ${response.ok}`);
         if (!response.ok) {
@@ -27,7 +30,6 @@ export const load: LayoutLoad = async ({ fetch }) => {
         }
 
         console.log(`[SUCCESS] Auth check successful for user_id: ${authData.user_id}. Allowing page to load.`);
-        // If authenticated, return the user data.
         return {
             user: {
                 id: authData.user_id
@@ -36,7 +38,6 @@ export const load: LayoutLoad = async ({ fetch }) => {
 
     } catch (err) {
         if (err instanceof Error && err.message.startsWith('redirect')) {
-            // This is expected when we throw a redirect, just re-throw it.
             throw err;
         }
         
