@@ -187,6 +187,19 @@ export async function getMyProfile(): Promise<any> {
     return response.json();
 }
 
+export async function getMyUserId(): Promise<number> {
+    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/my_userid`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to get user ID: ${response.statusText} - ${errorText}`);
+    }
+    return response.json();
+}
+
 export async function updateProfilePicture(profilePicture: string): Promise<any> {
     const formData = new URLSearchParams();
     formData.append('profile_picture', profilePicture);
@@ -204,68 +217,4 @@ export async function updateProfilePicture(profilePicture: string): Promise<any>
         throw new Error(`Failed to update profile picture: ${response.statusText}`);
     }
     return response.json();
-}
-
-// Legacy todo functions for backward compatibility
-export async function createTodo(descript: string, category: string): Promise<Todo> {
-    const formData = new URLSearchParams();
-    formData.append('descript', descript);
-    formData.append('category', category);
-
-    const response = await fetch(`${PUBLIC_BACKEND_URL}create`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData.toString()
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to create todo: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    return response.json();
-}
-
-export async function getTodos(): Promise<Todo[]> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}`, {
-        method: "GET",
-        credentials: "include"
-    });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to fetch todos: ${response.statusText}`);
-    }
-    return response.json();
-}
-
-export async function updateTodo(todoToUpdate: Todo): Promise<Todo> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}update`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(todoToUpdate)
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to update todo: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-    return response.json();
-}
-
-export async function deleteTodo(id: number): Promise<void> {
-    const response = await fetch(`${PUBLIC_BACKEND_URL}delete/${id}`, {
-        method: "DELETE",
-        credentials: "include"
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to delete todo: ${response.status} ${response.statusText} - ${errorText}`);
-    }
 }
