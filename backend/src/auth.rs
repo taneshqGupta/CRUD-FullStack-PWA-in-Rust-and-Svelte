@@ -1,7 +1,7 @@
+use crate::cloudinary::{CloudinaryConfig, CloudinaryService};
 use crate::error::AppError;
-use crate::structs::{AuthResponse, LoginRequest, NewUser, UserProfile, ProfilePictureUpdate};
-use crate::cloudinary::{CloudinaryService, CloudinaryConfig};
-use axum::{Form, Json, extract::State};
+use crate::structs::{AuthResponse, LoginRequest, NewUser, ProfilePictureUpdate, UserProfile};
+use axum::{Form, Json, extract::{Path, State}};
 use bcrypt::{DEFAULT_COST, hash, verify};
 use http::StatusCode;
 use sqlx::PgPool;
@@ -61,9 +61,10 @@ pub async fn register(
         let cloudinary_config = CloudinaryConfig::from_env()
             .map_err(|e| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, e))?;
         let cloudinary = CloudinaryService::new(cloudinary_config);
-        
+
         let temp_public_id = format!("profile_pictures/temp_{}", uuid::Uuid::new_v4());
-        let image_url = cloudinary.upload_image(profile_picture_data, Some(temp_public_id))
+        let image_url = cloudinary
+            .upload_image(profile_picture_data, Some(temp_public_id))
             .await
             .map_err(|e| AppError::HttpError(StatusCode::INTERNAL_SERVER_ERROR, e))?;
         Some(image_url)
@@ -183,7 +184,7 @@ pub async fn check_auth(session: Session) -> Result<Json<AuthResponse>, AppError
     }
 }
 
-pub async fn require_auth(session: Session) -> Result<i32, AppError> {
+pub async fn get_my_user_id(session: Session) -> Result<i32, AppError> {
     match session.get::<i32>("user_id").await {
         Ok(Some(user_id)) => Ok(user_id),
         _ => Err(AppError::HttpError(
@@ -193,9 +194,32 @@ pub async fn require_auth(session: Session) -> Result<i32, AppError> {
     }
 }
 
-pub async fn get_my_profile(State(pool): State<PgPool>, session: Session) -> Result<Json<UserProfile>, AppError> {
-    let user_id = require_auth(session).await?;
-    
+pub async fn get_my_profile(
+    State(pool): State<PgPool>,
+    session: Session,
+) -> Result<Json<UserProfile>, AppError> {
+    let user_id = get_my_user_id(session).await?;
+
+    let user = sqlx::query!(
+        "SELECT id, email, name, pin_code, profile_picture FROM users WHERE id = $1",
+        user_id
+    )
+    .fetch_one(&pool)
+    .await?;
+
+    Ok(Json(UserProfile {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        pin_code: user.pin_code,
+        profile_picture: user.profile_picture,
+    }))
+}
+
+pub async fn get_user_profile(
+    State(pool): State<PgPool>,
+    Path(user_id): Path<i32>,
+) -> Result<Json<UserProfile>, AppError> {
     let user = sqlx::query!(
         "SELECT id, email, name, pin_code, profile_picture FROM users WHERE id = $1",
         user_id
@@ -213,28 +237,26 @@ pub async fn get_my_profile(State(pool): State<PgPool>, session: Session) -> Res
 }
 
 pub async fn update_profile_picture(
-    State(pool): State<PgPool>, 
-    session: Session, 
-    Form(update): Form<ProfilePictureUpdate>
+    State(pool): State<PgPool>,
+    session: Session,
+    Form(update): Form<ProfilePictureUpdate>,
 ) -> Result<Json<UserProfile>, AppError> {
-    let user_id = require_auth(session).await?;
-    
+    let user_id = get_my_user_id(session).await?;
+
     let cloudinary_config = CloudinaryConfig::from_env()
-        .map_err(|e| {
-            AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e)
-        })?;
+        .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
     let cloudinary = CloudinaryService::new(cloudinary_config);
-    
+
     let public_id = format!("profile_pictures/user_{}", user_id);
-    
-    let image_url = cloudinary.upload_image(&update.profile_picture, Some(public_id))
+
+    let image_url = cloudinary
+        .upload_image(&update.profile_picture, Some(public_id))
         .await
         .map_err(|e| {
             tracing::error!("Cloudinary upload failed: {}", e);
             AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e)
         })?;
-    
-    
+
     let user = sqlx::query!(
         "UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING id, email, name, pin_code, profile_picture",
         image_url,

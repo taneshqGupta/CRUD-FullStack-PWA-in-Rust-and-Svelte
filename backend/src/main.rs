@@ -5,16 +5,20 @@ mod partitioned_cookies;
 mod posts;
 mod structs;
 mod telemetry;
-use auth::{check_auth, login, logout, register, get_my_profile, update_profile_picture};
+use auth::{
+    check_auth, get_my_profile, get_user_profile, login, logout, register, update_profile_picture,
+};
 use axum::{
     Router, middleware,
     routing::{delete, get, post},
 };
 use error::AppError;
-use posts::{create_post, delete_post, list_posts, update_post, list_offers, list_requests, 
-           list_community_posts, list_community_offers, list_community_requests};
 use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
+use posts::{
+    create_post, delete_post, list_community_offers, list_community_posts, list_community_requests,
+    list_offers, list_posts, list_requests, update_post,
+};
 use sqlx::PgPool;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
@@ -46,16 +50,16 @@ async fn main() -> Result<(), AppError> {
 
     let session_store = MemoryStore::default();
     let session_layer = SessionManagerLayer::new(session_store)
-        .with_secure(true) 
+        .with_secure(true)
         .with_same_site(tower_sessions::cookie::SameSite::None);
 
     let app = Router::new()
-        .route("/", get(list_posts))  
+        .route("/", get(list_posts))
         .route("/posts", get(list_posts))
-        .route("/posts/offers", get(list_offers))     
-        .route("/posts/requests", get(list_requests)) 
-        .route("/community", get(list_community_posts))           
-        .route("/community/offers", get(list_community_offers)) 
+        .route("/posts/offers", get(list_offers))
+        .route("/posts/requests", get(list_requests))
+        .route("/community", get(list_community_posts))
+        .route("/community/offers", get(list_community_offers))
         .route("/community/requests", get(list_community_requests))
         .route("/posts/create", post(create_post))
         .route("/posts/delete/{id}", delete(delete_post))
@@ -66,6 +70,7 @@ async fn main() -> Result<(), AppError> {
         .route("/auth/check", get(check_auth))
         .route("/auth/myprofile", get(get_my_profile))
         .route("/auth/myprofile/picture", post(update_profile_picture))
+        .route("/auth/userprofile/{user_id}", get(get_user_profile))
         .with_state(pool)
         .layer(session_layer)
         .layer(middleware::from_fn(add_partitioned_attribute))

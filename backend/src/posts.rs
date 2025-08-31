@@ -1,14 +1,14 @@
 use crate::error;
 use error::AppError;
 use crate::structs::{Post, NewPost, DeleteResponse, PostType};
-use crate::auth::require_auth;
+use crate::auth::get_my_user_id;
 use axum::{extract::{Path, State}, Form, Json};
 use http::StatusCode;
 use sqlx::PgPool;
 use tower_sessions::Session;
 
 pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -42,7 +42,7 @@ pub async fn list_posts(State(pool): State<PgPool>, session: Session) -> Result<
 }
 
 pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -72,7 +72,7 @@ pub async fn list_offers(State(pool): State<PgPool>, session: Session) -> Result
 }
 
 pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -102,7 +102,7 @@ pub async fn list_requests(State(pool): State<PgPool>, session: Session) -> Resu
 }
 
 pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let _user_id = require_auth(session).await?; 
+    let _user_id = get_my_user_id(session).await?; 
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -135,7 +135,7 @@ pub async fn list_community_posts(State(pool): State<PgPool>, session: Session) 
 }
 
 pub async fn list_community_offers(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let _user_id = require_auth(session).await?;
+    let _user_id = get_my_user_id(session).await?;
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -164,7 +164,7 @@ pub async fn list_community_offers(State(pool): State<PgPool>, session: Session)
 }
 
 pub async fn list_community_requests(State(pool): State<PgPool>, session: Session) -> Result<Json<Vec<Post>>, AppError> {
-    let _user_id = require_auth(session).await?;
+    let _user_id = get_my_user_id(session).await?;
     
     let rows = sqlx::query!(
         "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
@@ -193,7 +193,7 @@ pub async fn list_community_requests(State(pool): State<PgPool>, session: Sessio
 }
 
 pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_post): Form<NewPost>) -> Result<Json<Post>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     let post_type_str = new_post.post_type.to_string();
     
     let row = sqlx::query!(
@@ -231,7 +231,7 @@ pub async fn create_post(State(pool): State<PgPool>, session: Session, Form(new_
 }
 
 pub async fn delete_post(State(pool): State<PgPool>, session: Session, Path(id): Path<i32>) -> Result<Json<DeleteResponse>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     
     let result = sqlx::query!("DELETE FROM posts WHERE id = $1 AND user_id = $2", id, user_id) 
         .execute(&pool)
@@ -246,7 +246,7 @@ pub async fn delete_post(State(pool): State<PgPool>, session: Session, Path(id):
 }
 
 pub async fn update_post(State(pool): State<PgPool>, session: Session, Json(post): Json<Post>) -> Result<Json<Post>, AppError> {
-    let user_id = require_auth(session).await?;
+    let user_id = get_my_user_id(session).await?;
     let post_type_str = post.post_type.to_string();
     
     let result = sqlx::query!(
