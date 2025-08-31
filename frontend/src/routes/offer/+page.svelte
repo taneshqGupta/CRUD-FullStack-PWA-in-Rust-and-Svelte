@@ -148,9 +148,9 @@
 					</div>
 
 					<div
-						class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full mr-2 pb-2"
+						class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full"
 					>
-						<div class="form-control">
+						<div class="form-control pb-2">
 							<div class="dropdown dropdown-bottom w-full">
 								<div
 									role="button"
