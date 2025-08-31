@@ -134,11 +134,15 @@
 
 				<form class="space-y-6">
 					<div class="form-control">
-						<label for="skill-description" class="label">
-							<span class="label-text text-lg font-semibold"
-								>What skill can you share?</span
-							>
+						<label class="floating-label">
+							<span>What skill can you share?</span>
+							<input
+								type="text"
+								placeholder="I can teach guitar/ cook indian food/ design websites .."
+								class="input input-md"
+							/>
 						</label>
+
 						<textarea
 							id="skill-description"
 							name="description"
