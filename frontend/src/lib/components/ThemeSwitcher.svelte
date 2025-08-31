@@ -28,7 +28,7 @@
 	<div
 		tabindex="0"
 		role="button"
-		class={`btn btn-ghost text-lg ${dropdownOpen ? 'bg-base-200' : ''}`}
+		class={`btn btn-circle text-lg ${dropdownOpen ? 'bg-base-200' : ''}`}
 		aria-label="themes"
 	>
 		<ThemeSvg />
