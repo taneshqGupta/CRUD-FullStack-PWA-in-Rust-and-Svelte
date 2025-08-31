@@ -157,8 +157,8 @@
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
-									class="btn btn-outline w-full justify-start"
-									class:btn-error={!newPostCategory}
+									class="btn btn-soft w-full justify-start"
+									class:btn-soft={!newPostCategory}
 									tabindex="0"
 								>
 									{newPostCategory || "Select a category..."}
