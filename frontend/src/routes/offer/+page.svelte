@@ -149,11 +149,6 @@
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="form-control">
-							<label for="skill-category" class="label">
-								<span class="label-text font-semibold"
-									>Category</span
-								>
-							</label>
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
