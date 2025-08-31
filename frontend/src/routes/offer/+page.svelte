@@ -196,6 +196,13 @@
 							</div>
 						</div>
 
+						<div class="label text-xs font-bold">
+							<span class="label-text-alt">
+								{userDefaultPinCode
+									? `Pin Code [Your Default: ${userDefaultPinCode}]`
+									: "Pin Code"}
+							</span>
+						</div>
 						<div class="form-control">
 							<input
 								id="skill-pincode"
@@ -208,13 +215,6 @@
 								maxlength="10"
 								title="Enter your pin code (optional)"
 							/>
-							<div class="label text-xs font-bold">
-								<span class="label-text-alt">
-									{userDefaultPinCode
-										? `Pin Code [Your Default: ${userDefaultPinCode}]`
-										: "Pin Code"}
-								</span>
-							</div>
 						</div>
 					</div>
 
