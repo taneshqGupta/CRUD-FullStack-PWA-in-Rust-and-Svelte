@@ -4,7 +4,6 @@
 	import { authStore } from "$lib/auth";
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
-	import { PinSvg } from "$lib/components/icons";
 	import { CATEGORIES } from "$lib/types";
 
 	let newPostDescription = "";
@@ -140,7 +139,7 @@
 							>
 							<textarea
 								class="input textarea h-24 w-full"
-								placeholder="I can teach maths, design websites .."
+								placeholder="e.g., I can teach maths, design websites .."
 								bind:value={newPostDescription}
 								required
 							></textarea>
@@ -150,7 +149,7 @@
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full">
 						<div class="form-control pb-4">
 							<div class="label text-xs font-black">
-								<span class="label-text-alt"> Category </span>
+								<span class="label-text-alt">Category</span>
 							</div>
 							<div class="dropdown dropdown-bottom w-full">
 								<div
@@ -158,7 +157,7 @@
 									class="btn btn-soft btn-block justify-start"
 									tabindex="0"
 								>
-									{newPostCategory || "Select a category..."}
+									{newPostCategory || "Select Category"}
 								</div>
 								<div
 									class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow w-full max-h-60 overflow-y-auto"
@@ -186,7 +185,7 @@
 										{/each}
 										{#if filteredCategories.length === 0}
 											<li>
-												<span class="text-xs opacity-50"
+												<span class="text-xs opacity-50 w-full"
 													>No categories found</span
 												>
 											</li>
