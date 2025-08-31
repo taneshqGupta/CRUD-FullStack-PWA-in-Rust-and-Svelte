@@ -199,7 +199,7 @@
 						<div class="label text-xs font-black">
 							<span class="label-text-alt">
 								{userDefaultPinCode
-									? `Pin Code [Yours: ${userDefaultPinCode}]`
+									? `Pin Code [Your Default: ${userDefaultPinCode}]`
 									: "Pin Code"}
 							</span>
 						</div>
