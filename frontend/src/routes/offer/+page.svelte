@@ -58,15 +58,12 @@
 
 			await createPost(description, category, newPostType, pinCode);
 
-			success =
-				"Skill offer posted successfully!";
+			success = "Skill offer posted successfully!";
 
-			// Reset form
 			newPostDescription = "";
 			newPostCategory = null;
 			newPinCode = userDefaultPinCode;
 
-			// Redirect to main page after success
 			setTimeout(() => goto("/"), 1500);
 		} catch (err) {
 			error =
@@ -99,12 +96,12 @@
 
 				<!-- Success/Error Messages -->
 				{#if success}
-					<div class="alert alert-success mb-6">
+					<div role="alert" class="alert alert-success">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							class="stroke-current shrink-0 h-6 w-6"
+							class="h-6 w-6 shrink-0 stroke-current"
 							fill="none"
-							viewBox="0 0 24 24"
+							viewBox="0 0 16 16"
 						>
 							<path
 								stroke-linecap="round"
@@ -113,7 +110,7 @@
 								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
 							/>
 						</svg>
-						<span>{success}</span>
+						<span>Skill Offer Posted!</span>
 					</div>
 				{/if}
 
