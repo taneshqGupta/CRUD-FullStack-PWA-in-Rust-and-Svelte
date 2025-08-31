@@ -6,7 +6,8 @@ mod posts;
 mod structs;
 mod telemetry;
 use auth::{
-    check_auth, get_my_profile, get_user_profile, login, logout, register, update_profile_picture,
+    check_auth, get_my_profile, get_my_user_id, get_user_profile, login, logout, register,
+    update_profile_picture,
 };
 use axum::{
     Router, middleware,
@@ -24,6 +25,7 @@ use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tower_http::cors::CorsLayer;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
+
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
@@ -69,6 +71,7 @@ async fn main() -> Result<(), AppError> {
         .route("/auth/logout", post(logout))
         .route("/auth/check", get(check_auth))
         .route("/auth/myprofile", get(get_my_profile))
+        .route("/auth/my_userid", get(get_my_user_id))
         .route("/auth/myprofile/picture", post(update_profile_picture))
         .route("/auth/userprofile/{user_id}", get(get_user_profile))
         .with_state(pool)

@@ -184,9 +184,9 @@ pub async fn check_auth(session: Session) -> Result<Json<AuthResponse>, AppError
     }
 }
 
-pub async fn get_my_user_id(session: Session) -> Result<i32, AppError> {
+pub async fn get_my_user_id(session: Session) -> Result<Json<i32>, AppError> {
     match session.get::<i32>("user_id").await {
-        Ok(Some(user_id)) => Ok(user_id),
+        Ok(Some(user_id)) => Ok(Json(user_id)),
         _ => Err(AppError::HttpError(
             StatusCode::UNAUTHORIZED,
             anyhow::anyhow!("Authentication required"),
@@ -198,7 +198,7 @@ pub async fn get_my_profile(
     State(pool): State<PgPool>,
     session: Session,
 ) -> Result<Json<UserProfile>, AppError> {
-    let user_id = get_my_user_id(session).await?;
+    let user_id = get_my_user_id(session).await?.0;
 
     let user = sqlx::query!(
         "SELECT id, email, name, pin_code, profile_picture FROM users WHERE id = $1",
@@ -241,7 +241,7 @@ pub async fn update_profile_picture(
     session: Session,
     Form(update): Form<ProfilePictureUpdate>,
 ) -> Result<Json<UserProfile>, AppError> {
-    let user_id = get_my_user_id(session).await?;
+    let user_id = get_my_user_id(session).await?.0;
 
     let cloudinary_config = CloudinaryConfig::from_env()
         .map_err(|e| AppError::HttpError(http::StatusCode::INTERNAL_SERVER_ERROR, e))?;
