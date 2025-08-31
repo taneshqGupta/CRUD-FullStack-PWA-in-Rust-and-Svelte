@@ -1,64 +1,46 @@
 <script lang="ts">
-    import { getUserProfile, getPosts, updateProfilePicture } from "$lib/api";
-    import { page } from "$app/stores";
-    import { authStore, logout } from "$lib/auth";
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
-    import type { Post } from "$lib/types";
-    import ProfilePicture from "$lib/components/ProfilePicture.svelte";
-    import {
-        MailSvg,
-        PinSvg,
-        TasksSvg,
-        LogoutSvg,
-    } from "$lib/components/icons";
+    import { getUserProfile, getPosts, updateProfilePicture } from '$lib/api';
+    import { page } from '$app/stores';
+    import { authStore, logout } from '$lib/auth';
+    import { goto } from '$app/navigation';
+    import type { Post, UserProfile } from '$lib/types';
+    import ProfilePicture from '$lib/components/ProfilePicture.svelte';
+    import { MailSvg, PinSvg, TasksSvg, LogoutSvg } from '$lib/components/icons';
 
     let loading = true;
-    let profile: any = null;
+    let profile: UserProfile | null = null;
     let userPosts: Post[] = [];
-    let error = "";
+    let error = '';
     let profileUpdateLoading = false;
 
-    // $: isOwnProfile = $authStore.user_id === Number($page.params.userId);
+    $: isOwnProfile = $authStore.user_id === Number($page.params.userId);
 
-    // $: {
-    //     const userId = $page.params.userId;
-    //     if (userId && !loading) {
-    //         loadProfile(userId);
-    //     }
-    // }
-
-    $: if (!$authStore.loading && !$authStore.isAuthenticated) {
-        goto("/login");
+    $: {
+        const userId = $page.params.userId;
+        if (userId && !loading) {
+            loadProfile(userId);
+        }
     }
 
-    // onMount(async () => {
-    //     if ($authStore.isAuthenticated) {
-    //         const userID = $page.params.userID;
-    //         if (userID) {
-    //             await loadProfile($page.params.userId);
-    //         }
-    //     }
-    // });
-
     async function loadProfile(id: string) {
-        const numericID = Number(id);
-        if (isNaN(numericID)) {
-            error = "Invalid User-Id in the URL";
+        const numericId = Number(id);
+        if (isNaN(numericId)) {
+            error = 'Invalid User-Id in the URL';
             loading = false;
             return;
         }
+
         try {
             loading = true;
-            const [profileData, posts] = await Promise.all([
-                getUserProfile(4),
-                getPosts(),
+            error = '';
+            const [profileData, allPosts] = await Promise.all([
+                getUserProfile(numericId),
+                getPosts()
             ]);
             profile = profileData;
-            userPosts = posts;
+            userPosts = allPosts.filter(p => p.user_id === profileData.id);
         } catch (err) {
-            error =
-                err instanceof Error ? err.message : "Failed to load profile";
+            error = err instanceof Error ? err.message : 'Failed to load profile';
         } finally {
             loading = false;
         }
@@ -66,47 +48,37 @@
 
     async function handleLogout() {
         await logout();
-        goto("/login");
+        goto('/login');
     }
 
     async function handleProfilePictureChange(file: File) {
         if (!$page.params.userId) return;
         try {
             profileUpdateLoading = true;
-            error = "";
-
+            error = '';
+            
             const reader = new FileReader();
             reader.onload = async () => {
                 try {
                     const base64Data = reader.result as string;
                     await updateProfilePicture(base64Data);
-
                     await loadProfile($page.params.userId);
                 } catch (err) {
-                    error =
-                        err instanceof Error
-                            ? err.message
-                            : "Failed to update profile picture";
+                    error = err instanceof Error ? err.message : 'Failed to update profile picture';
                 } finally {
                     profileUpdateLoading = false;
                 }
             };
             reader.readAsDataURL(file);
         } catch (err) {
-            error =
-                err instanceof Error ? err.message : "Failed to process image";
+            error = err instanceof Error ? err.message : 'Failed to process image';
             profileUpdateLoading = false;
         }
     }
-    loadProfile('4');
 
-    $: offerCount = userPosts.filter(
-        (post) => post.post_type === "offer",
-    ).length;
-    $: requestCount = userPosts.filter(
-        (post) => post.post_type === "request",
-    ).length;
-    $: completedCount = userPosts.filter((post) => post.completed).length;
+    $: offerCount = userPosts.filter(post => post.post_type === 'offer').length;
+    $: requestCount = userPosts.filter(post => post.post_type === 'request').length;
+    $: completedCount = userPosts.filter(post => post.completed).length;
 </script>
 
 <svelte:head>
