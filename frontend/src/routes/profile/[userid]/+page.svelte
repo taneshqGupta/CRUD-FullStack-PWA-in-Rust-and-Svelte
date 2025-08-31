@@ -6,10 +6,10 @@
     // This is the only code that will run.
     // It will test if the API call can finish inside a reactive block.
     $: {
-        const userId = $page.params.userId;
-        console.log(userId);
-        if (userId) {
-            console.log("Reactive block triggered with userId:", userId);
+        const userid = $page.params.userid;
+        console.log(userid);
+        if (userid) {
+            console.log("Reactive block triggered with userId:", userid);
 
             // We create a new, simple test function
             const testApiCall = async (id: string) => {
@@ -33,7 +33,7 @@
             };
 
             // We call the test function
-            testApiCall(userId);
+            testApiCall(userid);
         }
     }
 </script>
