@@ -149,7 +149,7 @@
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full">
 						<div class="form-control pb-4">
-							<div class="label text-xs font-black">
+							<div class="label text-xs font-extrabold">
 								<span class="label-text-alt"> Category </span>
 							</div>
 							<div class="dropdown dropdown-bottom w-full">
