@@ -147,18 +147,18 @@
 						</fieldset>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full">
 						<div class="form-control">
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
-									class="btn btn-soft w-69 justify-start"
+									class="btn btn-soft btn-block justify-start"
 									tabindex="0"
 								>
 									{newPostCategory || "Select a category..."}
 								</div>
 								<div
-									class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  w-69 max-h-60 overflow-y-auto"
+									class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow w-full max-h-60 overflow-y-auto"
 								>
 									<div class="form-control mb-2">
 										<input
