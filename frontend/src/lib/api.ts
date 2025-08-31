@@ -1,5 +1,5 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import type { Todo, Post, NewPost, AuthResponse, LoginRequest } from '$lib/types';
+import type { Post, NewPost, AuthResponse, LoginRequest } from '$lib/types';
 
 export async function createPost(description: string, category: string, post_type: 'offer' | 'request', pin_code?: string): Promise<Post> {
     const formData = new URLSearchParams();

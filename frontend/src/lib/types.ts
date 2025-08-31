@@ -74,15 +74,6 @@ export interface NewPost {
     pin_code?: string;
 }
 
-// Keep Todo for backward compatibility during transition
-export interface Todo {
-    id: number;
-    descript: string;
-    done: boolean;
-    category: string;
-    user_id: number;
-}
-
 export interface NewUser {
     email: string;
     password: string;
