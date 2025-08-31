@@ -192,7 +192,7 @@
 										{/if}
 									</ul>
 								</div>
-								<div class="label">
+								<div class="label text-xs">
 									<span class="label-text-alt">
 										Category
 									</span>
@@ -215,8 +215,8 @@
 							<div class="label">
 								<span class="label-text-alt">
 									{userDefaultPinCode
-										? `Default: ${userDefaultPinCode}`
-										: "For location-based matching"}
+										? `Pin Code [Your Default: ${userDefaultPinCode}]`
+										: "Pin Code"}
 								</span>
 							</div>
 						</div>
