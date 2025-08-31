@@ -9,7 +9,7 @@
 
 	let newPostDescription = '';
 	let newPostCategory: Category = CATEGORIES[0];
-	const newPostType: PostType = 'offer'; // Fixed to 'offer'
+	const newPostType: PostType = 'offer'; 
 	let newPinCode = '';
 	let userDefaultPinCode = '';
 	let loading = false;
@@ -21,7 +21,6 @@
 		cat.toLowerCase().includes(categorySearch.toLowerCase())
 	);
 
-	// Redirect to auth if not authenticated
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
 		goto('/login');
 	}
@@ -78,10 +77,9 @@
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
-	<div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+	<div class="h-full flex items-center justify-center">
 		<div class="card w-full max-w-2xl bg-base-100 shadow-2xl">
 			<div class="card-body p-8">
-                <!-- Header -->
 				<div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-base-content mb-2"><div class="badge badge-ghost">Offer</div> Your Skill</h1>
 					<p class="text-base-content/70">Share something you're good at with your community</p>
