@@ -71,7 +71,7 @@
 
             {#if !isAuthPage && $authStore.isAuthenticated}
                 <a
-                    href="/profile/${userProfile?.id}"
+                    href="/profile/{userProfile?.id}"
                     class="btn btn-circle btn-sm p-1"
                     aria-label="Go to profile"
                 >
