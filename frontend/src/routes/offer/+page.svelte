@@ -1,70 +1,71 @@
 <script lang="ts">
-    import type { PostType, Category } from '$lib/types';
-	import { createPost, getUserProfile } from '$lib/api';
-	import { authStore } from '$lib/auth';
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { PinSvg } from '$lib/components/icons';
-	import { CATEGORIES } from '$lib/types';
+	import type { PostType, Category } from "$lib/types";
+	import { createPost, getUserProfile } from "$lib/api";
+	import { authStore } from "$lib/auth";
+	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import { PinSvg } from "$lib/components/icons";
+	import { CATEGORIES } from "$lib/types";
 
-	let newPostDescription = '';
+	let newPostDescription = "";
 	let newPostCategory: Category = CATEGORIES[0];
-	const newPostType: PostType = 'offer'; 
-	let newPinCode = '';
-	let userDefaultPinCode = '';
+	const newPostType: PostType = "offer";
+	let newPinCode = "";
+	let userDefaultPinCode = "";
 	let loading = false;
-	let success = '';
-	let error = '';
-	let categorySearch = '';
+	let success = "";
+	let error = "";
+	let categorySearch = "";
 
-	$: filteredCategories = CATEGORIES.filter(cat => 
-		cat.toLowerCase().includes(categorySearch.toLowerCase())
+	$: filteredCategories = CATEGORIES.filter((cat) =>
+		cat.toLowerCase().includes(categorySearch.toLowerCase()),
 	);
 
 	$: if (!$authStore.loading && !$authStore.isAuthenticated) {
-		goto('/login');
+		goto("/login");
 	}
 
 	onMount(async () => {
-        if ($authStore.isAuthenticated) {
+		if ($authStore.isAuthenticated) {
 			try {
-                const userProfile = await getUserProfile();
-				userDefaultPinCode = userProfile.pin_code || '';
+				const userProfile = await getUserProfile();
+				userDefaultPinCode = userProfile.pin_code || "";
 				newPinCode = userDefaultPinCode;
 			} catch (error) {
-                console.error('Error loading user profile:', error);
+				console.error("Error loading user profile:", error);
 			}
 		}
 	});
 
 	async function handleCreatePost() {
 		if (!newPostDescription.trim()) {
-			error = 'Please describe your skill';
+			error = "Please describe your skill";
 			return;
 		}
-        
+
 		const description = newPostDescription.trim();
 		const category = newPostCategory;
 		const pinCode = newPinCode.trim() || userDefaultPinCode;
-		
+
 		try {
-            loading = true;
-			error = '';
-			
+			loading = true;
+			error = "";
+
 			await createPost(description, category, newPostType, pinCode);
-			
-			success = 'Skill offer posted successfully! Redirecting to community map...';
-			
+
+			success =
+				"Skill offer posted successfully! Redirecting to community map...";
+
 			// Reset form
-			newPostDescription = '';
+			newPostDescription = "";
 			newPostCategory = CATEGORIES[0];
 			newPinCode = userDefaultPinCode;
-			
+
 			// Redirect to main page after success
-			setTimeout(() => goto('/'), 1500);
-			
+			setTimeout(() => goto("/"), 1500);
 		} catch (err) {
-			error = err instanceof Error ? err.message : 'Failed to create post';
+			error =
+				err instanceof Error ? err.message : "Failed to create post";
 		} finally {
 			loading = false;
 		}
@@ -72,44 +73,74 @@
 </script>
 
 <svelte:head>
-    <title>Offer Skill - SkillSwap</title>
+	<title>Offer Skill - SkillSwap</title>
 	<meta name="description" content="Share your skills with the community" />
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
 	<div class="h-full flex items-center justify-center">
 		<div class="card card-border w-full max-w-md shadow-2xl bg-base-100">
-			<div class="card-body p-8">
+			<div class="card-body">
 				<div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-base-content mb-2"><div class="badge badge-ghost">Offer</div> Your Skill</h1>
-					<p class="text-base-content/70">Share something you're good at with your community</p>
+					<h2
+						class="card-title text-2xl font-bold text-base-content justify-center"
+					>
+						Offer a Skill
+					</h2>
+					<p class="text-base-content/70 text-sm">
+						Share something you're good at to people around you.
+					</p>
 				</div>
-                
+
 				<!-- Success/Error Messages -->
 				{#if success}
 					<div class="alert alert-success mb-6">
-						<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="stroke-current shrink-0 h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
 						</svg>
 						<span>{success}</span>
 					</div>
 				{/if}
-                
+
 				{#if error}
 					<div class="alert alert-error mb-6">
-						<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="stroke-current shrink-0 h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
 						</svg>
 						<span>{error}</span>
 					</div>
 				{/if}
-                
-				<form on:submit|preventDefault={handleCreatePost} class="space-y-6">
 
+				<form
+					on:submit|preventDefault={handleCreatePost}
+					class="space-y-6"
+				>
 					<!-- Description -->
 					<div class="form-control">
 						<label for="skill-description" class="label">
-							<span class="label-text text-lg font-semibold">What skill can you share?</span>
+							<span class="label-text text-lg font-semibold"
+								>What skill can you share?</span
+							>
 						</label>
 						<textarea
 							id="skill-description"
@@ -125,83 +156,108 @@
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="form-control">
 							<label for="skill-category" class="label">
-								<span class="label-text font-semibold">Category</span>
+								<span class="label-text font-semibold"
+									>Category</span
+								>
 							</label>
 							<div class="dropdown dropdown-bottom">
-								<div role="button" class="btn btn-outline w-full justify-start" tabindex="0">
+								<div
+									role="button"
+									class="btn btn-outline w-full justify-start"
+									tabindex="0"
+								>
 									{newPostCategory}
 								</div>
-								<div class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto">
+								<div
+									class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto"
+								>
 									<!-- Search Input -->
 									<div class="form-control mb-2">
-										<input 
+										<input
 											class="input input-bordered input-xs"
 											placeholder="Search categories..."
 											bind:value={categorySearch}
 										/>
 									</div>
-									
+
 									<!-- Category List -->
 									<ul class="menu">
 										{#each filteredCategories as category}
 											<li>
-												<button 
+												<button
 													class="text-left text-sm"
-													on:click={() => newPostCategory = category}
+													on:click={() =>
+														(newPostCategory =
+															category)}
 												>
 													{category}
 												</button>
 											</li>
 										{/each}
 										{#if filteredCategories.length === 0}
-											<li><span class="text-xs opacity-50">No categories found</span></li>
+											<li>
+												<span class="text-xs opacity-50"
+													>No categories found</span
+												>
+											</li>
 										{/if}
 									</ul>
 								</div>
 							</div>
 							<div class="label">
-								<span class="label-text-alt">Helps others find your skill</span>
+								<span class="label-text-alt"
+									>Helps others find your skill</span
+								>
 							</div>
 						</div>
 
 						<div class="form-control">
 							<label for="skill-pincode" class="label">
-								<span class="label-text font-semibold">Pin Code</span>
+								<span class="label-text font-semibold"
+									>Pin Code</span
+								>
 							</label>
 							<input
 								id="skill-pincode"
 								name="pincode"
 								class="input input-bordered"
 								type="text"
-								placeholder={userDefaultPinCode || 'e.g., 110001'}
+								placeholder={userDefaultPinCode ||
+									"e.g., 110001"}
 								bind:value={newPinCode}
 								pattern="[0-9]{6}"
 								title="Please enter a valid 6-digit pin code"
 							/>
 							<div class="label">
 								<span class="label-text-alt">
-									{userDefaultPinCode ? `Default: ${userDefaultPinCode}` : 'For location-based matching'}
+									{userDefaultPinCode
+										? `Default: ${userDefaultPinCode}`
+										: "For location-based matching"}
 								</span>
 							</div>
 						</div>
 					</div>
 
 					<!-- Actions -->
-					<div class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4">
-						<button 
-							type="submit" 
+					<div
+						class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4"
+					>
+						<button
+							type="submit"
 							class="btn btn-primary btn-lg w-full sm:w-auto"
 							class:loading
 							disabled={loading}
 						>
 							{#if loading}
-								<span class="loading loading-spinner loading-sm"></span>
+								<span class="loading loading-spinner loading-sm"
+								></span>
 								Posting...
 							{:else}
-								<div class="badge badge-ghost">Share</div> My Skill
+								<div class="badge badge-ghost">Share</div>
+								My Skill
 							{/if}
 						</button>
-						
+
 						<a href="/" class="btn btn-ghost w-full sm:w-auto">
 							Cancel
 						</a>
@@ -215,13 +271,21 @@
 						<div class="card-body p-4">
 							<div class="flex items-center gap-2 mb-2">
 								<span class="badge badge-primary badge-sm">
-									<div class="badge badge-ghost">Offering</div>
+									<div class="badge badge-ghost">
+										Offering
+									</div>
 								</span>
 								{#if newPostCategory.trim()}
-									<span class="badge badge-outline badge-sm">{newPostCategory.trim()}</span>
+									<span class="badge badge-outline badge-sm"
+										>{newPostCategory.trim()}</span
+									>
 								{/if}
 								{#if newPinCode.trim() || userDefaultPinCode}
-									<span class="badge badge-ghost badge-sm"><PinSvg /> {newPinCode.trim() || userDefaultPinCode}</span>
+									<span class="badge badge-ghost badge-sm"
+										><PinSvg />
+										{newPinCode.trim() ||
+											userDefaultPinCode}</span
+									>
 								{/if}
 							</div>
 							<p class="text-sm">{newPostDescription.trim()}</p>
