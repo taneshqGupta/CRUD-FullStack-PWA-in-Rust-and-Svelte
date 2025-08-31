@@ -243,8 +243,6 @@
 						<button
 							type="button"
 							class="btn btn-soft w-full sm:w-auto"
-							class:loading
-							disabled={loading}
 							on:click={handleCreatePost}
 						>
 							{#if loading}
