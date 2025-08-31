@@ -147,12 +147,12 @@
 						</fieldset>
 					</div>
 
-					<div class="w-69 m-3">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
 						<div class="form-control">
 							<div class="dropdown dropdown-bottom">
 								<div
 									role="button"
-									class="btn btn-soft btn-block justify-start"
+									class="btn btn-soft w-69 justify-start"
 									tabindex="0"
 								>
 									{newPostCategory || "Select a category..."}
@@ -193,26 +193,24 @@
 							</div>
 						</div>
 
-						<div class="w-69 m-3">
-							<div class="form-control">
-								<input
-									id="skill-pincode"
-									name="pincode"
-									class="input input-bordered"
-									type="text"
-									placeholder={userDefaultPinCode ||
-										"e.g., 110001"}
-									bind:value={newPinCode}
-									maxlength="10"
-									title="Enter your pin code (optional)"
-								/>
-								<div class="label">
-									<span class="label-text-alt">
-										{userDefaultPinCode
-											? `Default: ${userDefaultPinCode}`
-											: "For location-based matching"}
-									</span>
-								</div>
+						<div class="form-control">
+							<input
+								id="skill-pincode"
+								name="pincode"
+								class="input input-bordered"
+								type="text"
+								placeholder={userDefaultPinCode ||
+									"e.g., 110001"}
+								bind:value={newPinCode}
+								maxlength="10"
+								title="Enter your pin code (optional)"
+							/>
+							<div class="label">
+								<span class="label-text-alt">
+									{userDefaultPinCode
+										? `Default: ${userDefaultPinCode}`
+										: "For location-based matching"}
+								</span>
 							</div>
 						</div>
 					</div>
