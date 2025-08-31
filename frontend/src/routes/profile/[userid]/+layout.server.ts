@@ -1,18 +1,28 @@
 // In: src/routes/profile/[userid]/+layout.ts
 import { redirect } from '@sveltejs/kit';
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import type { LayoutLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutLoad = async ({ fetch }) => {
+export const load: LayoutServerLoad = async ({ fetch, cookies }) => {
     console.log('[INFO] Layout load function started...');
+
+    const sessionCookie = cookies.get('session');
+
+    if (!sessionCookie) {
+        console.log('[REDIRECT] No session cookie found. Redirecting to /login...');
+        throw redirect(307, '/login');
+    }
     
+    console.log(`[INFO] Found session cookie.`);
+
     try {
         const authCheckUrl = `${PUBLIC_BACKEND_URL}auth/check`;
         console.log(`[INFO] Fetching auth status from: ${authCheckUrl}`);
         
-        // This is the critical fix: forward the user's cookie to the backend
         const response = await fetch(authCheckUrl, {
-            credentials: 'include'
+            headers: {
+                'Cookie': `session=${sessionCookie}`
+            }
         });
 
         console.log(`[INFO] Fetch response status: ${response.status}, OK: ${response.ok}`);

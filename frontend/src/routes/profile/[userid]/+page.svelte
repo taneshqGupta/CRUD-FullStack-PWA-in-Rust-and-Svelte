@@ -13,10 +13,8 @@
     let error = '';
     let profileUpdateLoading = false;
 
-    // Correctly uses the lowercase 'userid' parameter
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
 
-    // This is the final, correct data loading logic
     $: {
         const userid = $page.params.userid;
         if (userid && !loading) {
