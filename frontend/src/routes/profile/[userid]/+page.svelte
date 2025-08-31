@@ -19,14 +19,14 @@
     let error = "";
     let profileUpdateLoading = false;
 
-    $: isOwnProfile = $authStore.user_id === Number($page.params.userId);
+    // $: isOwnProfile = $authStore.user_id === Number($page.params.userId);
 
-    $: {
-        const userId = $page.params.userId;
-        if (userId && !loading) {
-            loadProfile(userId);
-        }
-    }
+    // $: {
+    //     const userId = $page.params.userId;
+    //     if (userId && !loading) {
+    //         loadProfile(userId);
+    //     }
+    // }
 
     $: if (!$authStore.loading && !$authStore.isAuthenticated) {
         goto("/login");
@@ -98,6 +98,7 @@
             profileUpdateLoading = false;
         }
     }
+    loadProfile('4');
 
     $: offerCount = userPosts.filter(
         (post) => post.post_type === "offer",
