@@ -106,17 +106,15 @@ export async function deletePost(id: number): Promise<void> {
 }
 
 export async function login(email: string, password: string): Promise<AuthResponse> {
-    const formData = new URLSearchParams();
+    const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
 
-    const response = await fetch(`${PUBLIC_BACKEND_URL}auth/login`, {
+    // Change the URL to your new SvelteKit endpoint
+    const response = await fetch(`/api/login`, {
         method: "POST",
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData.toString()
+        // 'credentials: include' is no longer needed here, but doesn't hurt
+        body: formData
     });
 
     if (!response.ok) {
