@@ -166,7 +166,6 @@
 										/>
 									</div>
 
-									<!-- Category List -->
 									<ul class="menu">
 										{#each filteredCategories as category}
 											<li>
@@ -182,7 +181,7 @@
 										{/each}
 										{#if filteredCategories.length === 0}
 											<li>
-												<span class="text-xs opacity-50"
+												<span class="text-xs opacity-50 w-full"
 													>No categories found</span
 												>
 											</li>
