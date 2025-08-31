@@ -161,10 +161,9 @@
 								<div
 									class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto"
 								>
-									<!-- Search Input -->
 									<div class="form-control mb-2">
 										<input
-											class="input input-bordered input-xs"
+											class="input input-bordered input-sm"
 											placeholder="Search categories..."
 											bind:value={categorySearch}
 										/>
