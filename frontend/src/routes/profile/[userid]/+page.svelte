@@ -230,7 +230,7 @@
             </div>
 
             <div class="flex flex-wrap gap-3 justify-center">
-                <div class="join join-horizontal">
+                <div class="join join-horizontal flex-1">
                     <div
                         class="badge join-item badge-soft badge-outline font-black text-2xl"
                     >
@@ -242,7 +242,7 @@
                         Total Posts
                     </div>
                 </div>
-                <div class="join join-horizontal">
+                <div class="join join-horizontal flex-1">
                     <div
                         class="badge join-item badge-soft badge-outline font-black text-2xl"
                     >
@@ -254,7 +254,7 @@
                         Skills Offered
                     </div>
                 </div>
-                <div class="join join-horizontal">
+                <div class="join join-horizontal flex-1">
                     <div
                         class="badge join-item badge-soft badge-outline font-black text-2xl"
                     >
