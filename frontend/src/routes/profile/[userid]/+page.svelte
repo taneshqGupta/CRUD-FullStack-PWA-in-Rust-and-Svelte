@@ -233,7 +233,7 @@
                 <div class="flex flex-col lg:flex-row flex-wrap gap-3 justify-center w-full">
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-medium text-2xl w-full p-4"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-2xl w-full p-4"
                         >
                             {userPosts.length}
                         </div>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-medium text-2xl w-full p-4"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-2xl w-full p-4"
                         >
                             {offerCount}
                         </div>
@@ -257,7 +257,7 @@
                     </div>
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-medium text-2xl w-full p-4"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-2xl w-full p-4"
                         >
                             {requestCount}
                         </div>
