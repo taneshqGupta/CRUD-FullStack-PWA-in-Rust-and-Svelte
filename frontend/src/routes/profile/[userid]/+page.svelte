@@ -8,13 +8,17 @@
     import { page } from "$app/stores";
     import { authStore, logout } from "$lib/auth";
     import { goto } from "$app/navigation";
-    import type { Post, UserProfile } from "$lib/types";
+    import type { Post, UserProfile, Category } from "$lib/types";
+    import { CATEGORIES } from "$lib/types";
     import ProfilePicture from "$lib/components/ProfilePicture.svelte";
     import {
         MailSvg,
         PinSvg,
         TasksSvg,
         LogoutSvg,
+        SearchSvg,
+        FilterSvg,
+        CrossSvg,
     } from "$lib/components/icons";
 
     let loading = true;
@@ -25,7 +29,29 @@
 
     let currentID: string | null = null;
 
+    // Filter state variables
+    let textSearch = "";
+    let selectedCategories: Category[] = [];
+    let categorySearch = "";
+    let postTypeFilter: "both" | "offers" | "requests" = "both";
+    let showMobileFilters = false;
+
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
+
+    $: filteredCategories = CATEGORIES.filter((category) =>
+        category.toLowerCase().includes(categorySearch.toLowerCase()),
+    );
+
+    function toggleCategory(category: Category) {
+        if (selectedCategories.includes(category)) {
+            selectedCategories = selectedCategories.filter(
+                (c) => c !== category,
+            );
+        } else {
+            selectedCategories = [...selectedCategories, category];
+        }
+        categorySearch = "";
+    }
 
     $: {
         const userid = $page.params.userid;
@@ -97,13 +123,42 @@
         }
     }
 
-    $: offerCount = userPosts.filter(
+    $: filteredPosts = userPosts.filter((post) => {
+        if (postTypeFilter === "offers" && post.post_type !== "offer")
+            return false;
+        if (postTypeFilter === "requests" && post.post_type !== "request")
+            return false;
+
+        if (
+            selectedCategories.length > 0 &&
+            !selectedCategories.includes(post.category)
+        )
+            return false;
+
+        if (textSearch.trim()) {
+            const searchTerm = textSearch.toLowerCase();
+            const searchableContent = [
+                post.description,
+                post.category,
+                post.pin_code || "",
+                post.user_name || "",
+            ]
+                .join(" ")
+                .toLowerCase();
+
+            if (!searchableContent.includes(searchTerm)) return false;
+        }
+
+        return true;
+    });
+
+    $: offerCount = filteredPosts.filter(
         (post) => post.post_type === "offer",
     ).length;
-    $: requestCount = userPosts.filter(
+    $: requestCount = filteredPosts.filter(
         (post) => post.post_type === "request",
     ).length;
-    $: completedCount = userPosts.filter((post) => post.completed).length;
+    $: completedCount = filteredPosts.filter((post) => post.completed).length;
 </script>
 
 <svelte:head>
@@ -179,7 +234,10 @@
                 <div class="stat bg-base-100 rounded-box">
                     <div class="stat-title">Total Posts</div>
                     <div class="stat-value text-primary">
-                        {userPosts.length}
+                        {filteredPosts.length} 
+                        {#if filteredPosts.length !== userPosts.length}
+                            <span class="text-sm text-base-content/60">of {userPosts.length}</span>
+                        {/if}
                     </div>
                 </div>
                 <div class="stat bg-base-100 rounded-box">
@@ -213,33 +271,272 @@
                 </div>
             {/if}
 
+            <div class="card bg-base-100 mb-6">
+                <div class="card-body">
+                    <h2 class="card-title text-lg mb-4">
+                        <FilterSvg />
+                        Filter Posts
+                    </h2>
+
+                    <!-- Mobile filters toggle -->
+                    <div class="lg:hidden mb-4">
+                        <button
+                            class="btn btn-soft btn-sm w-full gap-2"
+                            on:click={() => showMobileFilters = !showMobileFilters}
+                        >
+                            <FilterSvg />
+                            {showMobileFilters ? "Hide" : "Show"} Filters
+                            {#if selectedCategories.length > 0 || textSearch.trim() || postTypeFilter !== "both"}
+                                <div class="badge badge-xs">{
+                                    selectedCategories.length + 
+                                    (textSearch.trim() ? 1 : 0) + 
+                                    (postTypeFilter !== "both" ? 1 : 0)
+                                }</div>
+                            {/if}
+                        </button>
+                    </div>
+
+                    <!-- Filter controls -->
+                    <div class="space-y-4" class:hidden={!showMobileFilters} class:lg:block={true}>
+                        <!-- Text search -->
+                        <div class="form-control">
+                            <label class="label py-1" for="text-search">
+                                <span class="label-text text-sm">Search Posts</span>
+                            </label>
+                            <input
+                                id="text-search"
+                                class="input input-bordered input-sm"
+                                placeholder="Search descriptions, categories..."
+                                bind:value={textSearch}
+                            />
+                        </div>
+
+                        <!-- Category filter -->
+                        <div class="form-control">
+                            <div class="label py-1">
+                                <span class="label-text text-sm">
+                                    Categories ({selectedCategories.length} selected)
+                                </span>
+                            </div>
+                            <div class="dropdown w-full">
+                                <div
+                                    role="button"
+                                    class="btn btn-soft btn-sm w-full justify-start"
+                                    tabindex="0"
+                                >
+                                    Categories {selectedCategories.length > 0
+                                        ? `(${selectedCategories.length})`
+                                        : ""}
+                                </div>
+                                <div
+                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2 max-h-80 overflow-y-auto"
+                                >
+                                    <!-- Search Input -->
+                                    <div class="form-control mb-2">
+                                        <input
+                                            class="input input-bordered input-xs"
+                                            placeholder="Search categories..."
+                                            bind:value={categorySearch}
+                                        />
+                                    </div>
+
+                                    {#if selectedCategories.length > 0}
+                                        <div class="mb-2 p-2 bg-base-200 rounded">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <div class="text-xs font-semibold">Selected:</div>
+                                                <button
+                                                    class="btn btn-ghost btn-xs"
+                                                    on:click={() => (selectedCategories = [])}
+                                                    >Clear All</button
+                                                >
+                                            </div>
+                                            <div class="flex flex-wrap gap-1">
+                                                {#each selectedCategories as category}
+                                                    <div class="badge badge-primary badge-xs">
+                                                        {category}
+                                                        <button
+                                                            class="ml-1"
+                                                            on:click={() =>
+                                                                (selectedCategories =
+                                                                    selectedCategories.filter(
+                                                                        (c) => c !== category,
+                                                                    ))}>×</button
+                                                        >
+                                                    </div>
+                                                {/each}
+                                            </div>
+                                        </div>
+                                    {/if}
+
+                                    <ul class="menu max-h-40 overflow-y-auto">
+                                        {#each filteredCategories as category (category)}
+                                            <li>
+                                                <label
+                                                    class="cursor-pointer flex items-center gap-2 text-xs"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        class="checkbox checkbox-xs"
+                                                        checked={selectedCategories.includes(
+                                                            category,
+                                                        )}
+                                                        on:change={() =>
+                                                            toggleCategory(category)}
+                                                    />
+                                                    <span>{category}</span>
+                                                </label>
+                                            </li>
+                                        {/each}
+                                        {#if filteredCategories.length === 0}
+                                            <li>
+                                                <span class="text-xs opacity-50"
+                                                    >No categories found</span
+                                                >
+                                            </li>
+                                        {/if}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Post type filter -->
+                        <div class="form-control">
+                            <div class="label py-1">
+                                <span class="label-text text-sm">Post Type</span>
+                            </div>
+                            <div class="dropdown w-full">
+                                <div
+                                    role="button"
+                                    class="btn btn-soft btn-sm w-full justify-start"
+                                    tabindex="0"
+                                >
+                                    {postTypeFilter === "both"
+                                        ? "Both"
+                                        : postTypeFilter === "offers"
+                                            ? "Offers Only"
+                                            : "Requests Only"}
+                                </div>
+                                <ul
+                                    class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
+                                >
+                                    <li>
+                                        <label
+                                            class="cursor-pointer flex items-center gap-2"
+                                        >
+                                            <input
+                                                type="radio"
+                                                class="radio radio-sm"
+                                                bind:group={postTypeFilter}
+                                                value="both"
+                                            />
+                                            <span class="text-sm">Both</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label
+                                            class="cursor-pointer flex items-center gap-2"
+                                        >
+                                            <input
+                                                type="radio"
+                                                class="radio radio-sm"
+                                                bind:group={postTypeFilter}
+                                                value="offers"
+                                            />
+                                            <span class="text-sm">Offers Only</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label
+                                            class="cursor-pointer flex items-center gap-2"
+                                        >
+                                            <input
+                                                type="radio"
+                                                class="radio radio-sm"
+                                                bind:group={postTypeFilter}
+                                                value="requests"
+                                            />
+                                            <span class="text-sm">Requests Only</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Clear filters button -->
+                        <button
+                            class="btn btn-ghost btn-sm w-full"
+                            on:click={() => {
+                                textSearch = "";
+                                selectedCategories = [];
+                                postTypeFilter = "both";
+                                showMobileFilters = false;
+                            }}
+                        >
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="card bg-base-100">
                 <div class="card-body">
                     <h2 class="card-title text-xl mb-4">
                         <TasksSvg />
                         {isOwnProfile ? "My Posts" : `${profile.name}'s Posts`}
+                        {#if filteredPosts.length !== userPosts.length}
+                            <span class="text-sm text-base-content/60 font-normal">
+                                ({filteredPosts.length} of {userPosts.length} shown)
+                            </span>
+                        {/if}
                     </h2>
 
-                    {#if userPosts.length > 0}
+                    {#if filteredPosts.length > 0}
                         <div class="space-y-4">
-                            {#each userPosts as post}
+                            {#each filteredPosts as post}
                                 <div class="card card-compact bg-base-200">
                                     <div class="card-body">
                                         <div
                                             class="flex items-center justify-between text-xs text-base-content/60 mb-2"
                                         >
-                                            <span
-                                                class="badge badge-info"
-                                                >{post.post_type}</span
-                                            >
-                                            <span class="badge badge-ghost"
-                                                >{post.category}</span
-                                            >
+                                            <div class="flex gap-2">
+                                                <span
+                                                    class="badge badge-info"
+                                                    >{post.post_type}</span
+                                                >
+                                                <span class="badge badge-ghost"
+                                                    >{post.category}</span
+                                                >
+                                                {#if post.pin_code}
+                                                    <span class="badge badge-outline flex items-center gap-1">
+                                                        <PinSvg class="w-3 h-3" />
+                                                        {post.pin_code}
+                                                    </span>
+                                                {/if}
+                                            </div>
+                                            {#if post.completed}
+                                                <span class="badge badge-success">Completed</span>
+                                            {/if}
                                         </div>
                                         <p>{post.description}</p>
                                     </div>
                                 </div>
                             {/each}
+                        </div>
+                    {:else if userPosts.length > 0}
+                        <div class="text-center p-8 text-base-content/60">
+                            <h3 class="font-bold mb-2">No Posts Match Your Filters</h3>
+                            <p>Try adjusting your filters to see more posts.</p>
+                            <button
+                                class="btn btn-soft btn-sm mt-2"
+                                on:click={() => {
+                                    textSearch = "";
+                                    selectedCategories = [];
+                                    postTypeFilter = "both";
+                                    showMobileFilters = false;
+                                }}
+                            >
+                                Clear Filters
+                            </button>
                         </div>
                     {:else}
                         <div class="text-center p-8 text-base-content/60">
