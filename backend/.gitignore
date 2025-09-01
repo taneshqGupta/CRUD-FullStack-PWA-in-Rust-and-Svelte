@@ -7,5 +7,5 @@ target/
 
 .env
 
-.sqlx
+.sqlx/
 
