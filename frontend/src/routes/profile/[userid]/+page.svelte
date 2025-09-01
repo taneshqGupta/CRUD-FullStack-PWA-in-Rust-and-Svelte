@@ -516,7 +516,7 @@
                         <div class="lg:hidden space-y-4">
                             <!-- Text search -->
                             <div class="form-control">
-                                <label class="label py-1 px-4" for="mobile-text-search">
+                                <label class="label py-1" for="mobile-text-search">
                                     <span class="label-text text-xs">Search Posts</span>
                                 </label>
                                 <input
@@ -530,7 +530,7 @@
                             <!-- Category filter -->
                             <div class="form-control">
                                 <div class="label py-1">
-                                    <span class="label-text text-sm">
+                                    <span class="label-text text-xs">
                                         Categories ({selectedCategories.length} selected)
                                     </span>
                                 </div>
@@ -548,9 +548,9 @@
                                         class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2 max-h-80 overflow-y-auto"
                                     >
                                         <!-- Search Input -->
-                                        <div class="form-control mb-2">
+                                        <div class="form-control mb-2 w-full">
                                             <input
-                                                class="input input-bordered input-xs"
+                                                class="input input-bordered input-xs w-full"
                                                 placeholder="Search categories..."
                                                 bind:value={categorySearch}
                                             />
