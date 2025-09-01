@@ -231,8 +231,14 @@
 
             <div class="grid grid-cols-3 gap-1">
                 <div class="join join-horizontal">
-                    <div class="badge join-item badge-soft badge-outline font-black text-2xl">{userPosts.length}</div>
-                    <div class="badge join-item badge-soft badge-outline font-extrabold text-xl">
+                    <div
+                        class="badge join-item badge-soft badge-outline font-black text-2xl"
+                    >
+                        {userPosts.length}
+                    </div>
+                    <div
+                        class="badge join-item badge-soft badge-outline font-extrabold text-xl"
+                    >
                         Total Posts
                     </div>
                 </div>
@@ -255,16 +261,16 @@
                     <div class="card-body">
                         <div class="flex flex-wrap gap-3 justify-center">
                             <a href="/offer" class="btn btn-soft flex-1"
-                                >Offer New Skill</a
+                                >Offer-Skill</a
                             >
                             <a href="/request" class="btn btn-soft flex-1"
-                                >Request Help</a
+                                >Request-Help</a
                             >
                             <button
                                 class="btn btn-soft flex-1"
                                 on:click={handleLogout}
                             >
-                                <LogoutSvg /> Logout
+                                <LogoutSvg /> Log-Out
                             </button>
                         </div>
                     </div>
