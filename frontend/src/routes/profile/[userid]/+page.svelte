@@ -317,210 +317,380 @@
 
                     <!-- Filter controls -->
                     <div
-                        class="space-y-4"
+                        class="space-y-4 lg:space-y-3"
                         class:hidden={!showMobileFilters}
                         class:lg:block={true}
                     >
-                        <!-- Text search -->
-                        <div class="form-control">
-                            <label class="label py-1" for="text-search">
-                                <span class="label-text text-sm"
-                                    >Search Posts</span
-                                >
-                            </label>
-                            <input
-                                id="text-search"
-                                class="input input-bordered input-sm"
-                                placeholder="Search descriptions, categories..."
-                                bind:value={textSearch}
-                            />
-                        </div>
-
-                        <!-- Category filter -->
-                        <div class="form-control">
-                            <div class="label py-1">
-                                <span class="label-text text-sm">
-                                    Categories ({selectedCategories.length} selected)
-                                </span>
-                            </div>
-                            <div class="dropdown w-full">
-                                <div
-                                    role="button"
-                                    class="btn btn-soft btn-sm w-full justify-start"
-                                    tabindex="0"
-                                >
-                                    Categories {selectedCategories.length > 0
-                                        ? `(${selectedCategories.length})`
-                                        : ""}
+                        <!-- Desktop layout: compact horizontal arrangement -->
+                        <div class="hidden lg:block space-y-3">
+                            <!-- Top row: Search and Clear button -->
+                            <div class="flex items-end gap-4">
+                                <!-- Text search -->
+                                <div class="form-control flex-1">
+                                    <label class="label py-1" for="text-search">
+                                        <span class="label-text text-sm">Search Posts</span>
+                                    </label>
+                                    <input
+                                        id="text-search"
+                                        class="input input-bordered input-sm"
+                                        placeholder="Search descriptions, categories..."
+                                        bind:value={textSearch}
+                                    />
                                 </div>
-                                <div
-                                    class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2 max-h-80 overflow-y-auto"
-                                >
-                                    <!-- Search Input -->
-                                    <div class="form-control mb-2">
-                                        <input
-                                            class="input input-bordered input-xs"
-                                            placeholder="Search categories..."
-                                            bind:value={categorySearch}
-                                        />
-                                    </div>
 
-                                    {#if selectedCategories.length > 0}
+                                <!-- Clear filters button -->
+                                <div class="form-control">
+                                    <div class="label py-1">
+                                        <span class="label-text text-sm opacity-0">.</span>
+                                    </div>
+                                    <button
+                                        class="btn btn-ghost btn-sm"
+                                        on:click={() => {
+                                            textSearch = "";
+                                            selectedCategories = [];
+                                            postTypeFilter = "both";
+                                            showMobileFilters = false;
+                                        }}
+                                    >
+                                        Clear All Filters
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Bottom row: Categories and Post Type side by side -->
+                            <div class="flex gap-4">
+                                <!-- Category filter -->
+                                <div class="form-control flex-1">
+                                    <div class="label py-1">
+                                        <span class="label-text text-sm">
+                                            Categories ({selectedCategories.length} selected)
+                                        </span>
+                                    </div>
+                                    <div class="dropdown">
                                         <div
-                                            class="mb-2 p-2 bg-base-200 rounded"
+                                            role="button"
+                                            class="btn btn-soft btn-sm w-full justify-start"
+                                            tabindex="0"
                                         >
-                                            <div
-                                                class="flex items-center justify-between mb-1"
-                                            >
-                                                <div
-                                                    class="text-xs font-semibold"
-                                                >
-                                                    Selected:
-                                                </div>
-                                                <button
-                                                    class="btn btn-ghost btn-xs"
-                                                    on:click={() =>
-                                                        (selectedCategories =
-                                                            [])}
-                                                    >Clear All</button
-                                                >
+                                            Categories {selectedCategories.length > 0
+                                                ? `(${selectedCategories.length})`
+                                                : ""}
+                                        </div>
+                                        <div
+                                            class="dropdown-content bg-base-100 rounded-box z-[1] w-80 p-2 shadow mb-2 max-h-80 overflow-y-auto"
+                                        >
+                                            <!-- Search Input -->
+                                            <div class="form-control mb-2">
+                                                <input
+                                                    class="input input-bordered input-xs"
+                                                    placeholder="Search categories..."
+                                                    bind:value={categorySearch}
+                                                />
                                             </div>
-                                            <div class="flex flex-wrap gap-1">
-                                                {#each selectedCategories as category}
-                                                    <div
-                                                        class="badge badge-primary badge-xs"
-                                                    >
-                                                        {category}
+
+                                            {#if selectedCategories.length > 0}
+                                                <div class="mb-2 p-2 bg-base-200 rounded">
+                                                    <div class="flex items-center justify-between mb-1">
+                                                        <div class="text-xs font-semibold">Selected:</div>
                                                         <button
-                                                            class="ml-1"
-                                                            on:click={() =>
-                                                                (selectedCategories =
-                                                                    selectedCategories.filter(
-                                                                        (c) =>
-                                                                            c !==
-                                                                            category,
-                                                                    ))}
-                                                            >×</button
+                                                            class="btn btn-ghost btn-xs"
+                                                            on:click={() => (selectedCategories = [])}
+                                                            >Clear All</button
                                                         >
                                                     </div>
-                                                {/each}
-                                            </div>
-                                        </div>
-                                    {/if}
+                                                    <div class="flex flex-wrap gap-1">
+                                                        {#each selectedCategories as category}
+                                                            <div class="badge badge-primary badge-xs">
+                                                                {category}
+                                                                <button
+                                                                    class="ml-1"
+                                                                    on:click={() =>
+                                                                        (selectedCategories =
+                                                                            selectedCategories.filter(
+                                                                                (c) => c !== category,
+                                                                            ))}>×</button
+                                                                >
+                                                            </div>
+                                                        {/each}
+                                                    </div>
+                                                </div>
+                                            {/if}
 
-                                    <ul class="menu max-h-40 overflow-y-auto">
-                                        {#each filteredCategories as category (category)}
+                                            <ul class="menu max-h-40 overflow-y-auto">
+                                                {#each filteredCategories as category (category)}
+                                                    <li>
+                                                        <label
+                                                            class="cursor-pointer flex items-center gap-2 text-xs"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                class="checkbox checkbox-xs"
+                                                                checked={selectedCategories.includes(
+                                                                    category,
+                                                                )}
+                                                                on:change={() =>
+                                                                    toggleCategory(category)}
+                                                            />
+                                                            <span>{category}</span>
+                                                        </label>
+                                                    </li>
+                                                {/each}
+                                                {#if filteredCategories.length === 0}
+                                                    <li>
+                                                        <span class="text-xs opacity-50"
+                                                            >No categories found</span
+                                                        >
+                                                    </li>
+                                                {/if}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Post type filter -->
+                                <div class="form-control flex-1">
+                                    <div class="label py-1">
+                                        <span class="label-text text-sm">Post Type</span>
+                                    </div>
+                                    <div class="dropdown">
+                                        <div
+                                            role="button"
+                                            class="btn btn-soft btn-sm w-full justify-start"
+                                            tabindex="0"
+                                        >
+                                            {postTypeFilter === "both"
+                                                ? "Both"
+                                                : postTypeFilter === "offers"
+                                                  ? "Offers Only"
+                                                  : "Requests Only"}
+                                        </div>
+                                        <ul
+                                            class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
+                                        >
                                             <li>
                                                 <label
-                                                    class="cursor-pointer flex items-center gap-2 text-xs"
+                                                    class="cursor-pointer flex items-center gap-2"
                                                 >
                                                     <input
-                                                        type="checkbox"
-                                                        class="checkbox checkbox-xs"
-                                                        checked={selectedCategories.includes(
-                                                            category,
-                                                        )}
-                                                        on:change={() =>
-                                                            toggleCategory(
-                                                                category,
-                                                            )}
+                                                        type="radio"
+                                                        class="radio radio-sm"
+                                                        bind:group={postTypeFilter}
+                                                        value="both"
                                                     />
-                                                    <span>{category}</span>
+                                                    <span class="text-sm">Both</span>
                                                 </label>
                                             </li>
-                                        {/each}
-                                        {#if filteredCategories.length === 0}
                                             <li>
-                                                <span class="text-xs opacity-50"
-                                                    >No categories found</span
+                                                <label
+                                                    class="cursor-pointer flex items-center gap-2"
                                                 >
+                                                    <input
+                                                        type="radio"
+                                                        class="radio radio-sm"
+                                                        bind:group={postTypeFilter}
+                                                        value="offers"
+                                                    />
+                                                    <span class="text-sm">Offers Only</span>
+                                                </label>
                                             </li>
+                                            <li>
+                                                <label
+                                                    class="cursor-pointer flex items-center gap-2"
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        class="radio radio-sm"
+                                                        bind:group={postTypeFilter}
+                                                        value="requests"
+                                                    />
+                                                    <span class="text-sm">Requests Only</span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile layout: vertical stacking (preserved as is) -->
+                        <div class="lg:hidden space-y-4">
+                            <!-- Text search -->
+                            <div class="form-control">
+                                <label class="label py-1" for="mobile-text-search">
+                                    <span class="label-text text-sm">Search Posts</span>
+                                </label>
+                                <input
+                                    id="mobile-text-search"
+                                    class="input input-bordered input-sm"
+                                    placeholder="Search descriptions, categories..."
+                                    bind:value={textSearch}
+                                />
+                            </div>
+
+                            <!-- Category filter -->
+                            <div class="form-control">
+                                <div class="label py-1">
+                                    <span class="label-text text-sm">
+                                        Categories ({selectedCategories.length} selected)
+                                    </span>
+                                </div>
+                                <div class="dropdown w-full">
+                                    <div
+                                        role="button"
+                                        class="btn btn-soft btn-sm w-full justify-start"
+                                        tabindex="0"
+                                    >
+                                        Categories {selectedCategories.length > 0
+                                            ? `(${selectedCategories.length})`
+                                            : ""}
+                                    </div>
+                                    <div
+                                        class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2 max-h-80 overflow-y-auto"
+                                    >
+                                        <!-- Search Input -->
+                                        <div class="form-control mb-2">
+                                            <input
+                                                class="input input-bordered input-xs"
+                                                placeholder="Search categories..."
+                                                bind:value={categorySearch}
+                                            />
+                                        </div>
+
+                                        {#if selectedCategories.length > 0}
+                                            <div class="mb-2 p-2 bg-base-200 rounded">
+                                                <div class="flex items-center justify-between mb-1">
+                                                    <div class="text-xs font-semibold">Selected:</div>
+                                                    <button
+                                                        class="btn btn-ghost btn-xs"
+                                                        on:click={() => (selectedCategories = [])}
+                                                        >Clear All</button
+                                                    >
+                                                </div>
+                                                <div class="flex flex-wrap gap-1">
+                                                    {#each selectedCategories as category}
+                                                        <div class="badge badge-primary badge-xs">
+                                                            {category}
+                                                            <button
+                                                                class="ml-1"
+                                                                on:click={() =>
+                                                                    (selectedCategories =
+                                                                        selectedCategories.filter(
+                                                                            (c) => c !== category,
+                                                                        ))}>×</button
+                                                            >
+                                                        </div>
+                                                    {/each}
+                                                </div>
+                                            </div>
                                         {/if}
+
+                                        <ul class="menu max-h-40 overflow-y-auto">
+                                            {#each filteredCategories as category (category)}
+                                                <li>
+                                                    <label
+                                                        class="cursor-pointer flex items-center gap-2 text-xs"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            class="checkbox checkbox-xs"
+                                                            checked={selectedCategories.includes(
+                                                                category,
+                                                            )}
+                                                            on:change={() =>
+                                                                toggleCategory(category)}
+                                                        />
+                                                        <span>{category}</span>
+                                                    </label>
+                                                </li>
+                                            {/each}
+                                            {#if filteredCategories.length === 0}
+                                                <li>
+                                                    <span class="text-xs opacity-50"
+                                                        >No categories found</span
+                                                    >
+                                                </li>
+                                            {/if}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Post type filter -->
+                            <div class="form-control">
+                                <div class="label py-1">
+                                    <span class="label-text text-sm">Post Type</span>
+                                </div>
+                                <div class="dropdown w-full">
+                                    <div
+                                        role="button"
+                                        class="btn btn-soft btn-sm w-full justify-start"
+                                        tabindex="0"
+                                    >
+                                        {postTypeFilter === "both"
+                                            ? "Both"
+                                            : postTypeFilter === "offers"
+                                              ? "Offers Only"
+                                              : "Requests Only"}
+                                    </div>
+                                    <ul
+                                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
+                                    >
+                                        <li>
+                                            <label
+                                                class="cursor-pointer flex items-center gap-2"
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    class="radio radio-sm"
+                                                    bind:group={postTypeFilter}
+                                                    value="both"
+                                                />
+                                                <span class="text-sm">Both</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label
+                                                class="cursor-pointer flex items-center gap-2"
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    class="radio radio-sm"
+                                                    bind:group={postTypeFilter}
+                                                    value="offers"
+                                                />
+                                                <span class="text-sm">Offers Only</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label
+                                                class="cursor-pointer flex items-center gap-2"
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    class="radio radio-sm"
+                                                    bind:group={postTypeFilter}
+                                                    value="requests"
+                                                />
+                                                <span class="text-sm">Requests Only</span>
+                                            </label>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Post type filter -->
-                        <div class="form-control">
-                            <div class="label py-1">
-                                <span class="label-text text-sm">Post Type</span
-                                >
-                            </div>
-                            <div class="dropdown w-full">
-                                <div
-                                    role="button"
-                                    class="btn btn-soft btn-sm w-full justify-start"
-                                    tabindex="0"
-                                >
-                                    {postTypeFilter === "both"
-                                        ? "Both"
-                                        : postTypeFilter === "offers"
-                                          ? "Offers Only"
-                                          : "Requests Only"}
-                                </div>
-                                <ul
-                                    class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
-                                >
-                                    <li>
-                                        <label
-                                            class="cursor-pointer flex items-center gap-2"
-                                        >
-                                            <input
-                                                type="radio"
-                                                class="radio radio-sm"
-                                                bind:group={postTypeFilter}
-                                                value="both"
-                                            />
-                                            <span class="text-sm">Both</span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label
-                                            class="cursor-pointer flex items-center gap-2"
-                                        >
-                                            <input
-                                                type="radio"
-                                                class="radio radio-sm"
-                                                bind:group={postTypeFilter}
-                                                value="offers"
-                                            />
-                                            <span class="text-sm"
-                                                >Offers Only</span
-                                            >
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label
-                                            class="cursor-pointer flex items-center gap-2"
-                                        >
-                                            <input
-                                                type="radio"
-                                                class="radio radio-sm"
-                                                bind:group={postTypeFilter}
-                                                value="requests"
-                                            />
-                                            <span class="text-sm"
-                                                >Requests Only</span
-                                            >
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
+                            <!-- Clear filters button -->
+                            <button
+                                class="btn btn-ghost btn-sm w-full"
+                                on:click={() => {
+                                    textSearch = "";
+                                    selectedCategories = [];
+                                    postTypeFilter = "both";
+                                    showMobileFilters = false;
+                                }}
+                            >
+                                Clear All Filters
+                            </button>
                         </div>
-
-                        <!-- Clear filters button -->
-                        <button
-                            class="btn btn-ghost btn-sm w-full"
-                            on:click={() => {
-                                textSearch = "";
-                                selectedCategories = [];
-                                postTypeFilter = "both";
-                                showMobileFilters = false;
-                            }}
-                        >
-                            Clear All Filters
-                        </button>
                     </div>
                 </div>
             </div>
