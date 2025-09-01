@@ -230,22 +230,23 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-1 mb-2">
-                <div class="stat bg-base-100 rounded-box">
+            <div class="grid grid-cols-3 gap-1">
+                <div class="stat border border-base-200 bg-base-100">
                     <div class="stat-title font-black text-xl">Total Posts</div>
                     <div class="stat-value">
-                        {filteredPosts.length} 
-                        {#if filteredPosts.length !== userPosts.length}
-                            <span class="text-sm text-base-content/60">of {userPosts.length}</span>
-                        {/if}
+                        {userPosts.length}
                     </div>
                 </div>
-                <div class="stat bg-base-100 rounded-box">
-                    <div class="stat-title font-black text-md">Skills Offered</div>
+                <div class="stat border border-base-200 bg-base-100">
+                    <div class="stat-title font-black text-md">
+                        Skills Offered
+                    </div>
                     <div class="stat-value">{offerCount}</div>
                 </div>
-                <div class="stat bg-base-100 rounded-box">
-                    <div class="stat-title font-black text-sm">Help Requested</div>
+                <div class="stat border border-base-200 bg-base-100">
+                    <div class="stat-title font-black text-sm">
+                        Help Requested
+                    </div>
                     <div class="stat-value">{requestCount}</div>
                 </div>
             </div>
@@ -282,26 +283,33 @@
                     <div class="lg:hidden mb-4">
                         <button
                             class="btn btn-soft btn-sm w-full gap-2"
-                            on:click={() => showMobileFilters = !showMobileFilters}
+                            on:click={() =>
+                                (showMobileFilters = !showMobileFilters)}
                         >
                             <FilterSvg />
                             {showMobileFilters ? "Hide" : "Show"} Filters
                             {#if selectedCategories.length > 0 || textSearch.trim() || postTypeFilter !== "both"}
-                                <div class="badge badge-xs">{
-                                    selectedCategories.length + 
-                                    (textSearch.trim() ? 1 : 0) + 
-                                    (postTypeFilter !== "both" ? 1 : 0)
-                                }</div>
+                                <div class="badge badge-xs">
+                                    {selectedCategories.length +
+                                        (textSearch.trim() ? 1 : 0) +
+                                        (postTypeFilter !== "both" ? 1 : 0)}
+                                </div>
                             {/if}
                         </button>
                     </div>
 
                     <!-- Filter controls -->
-                    <div class="space-y-4" class:hidden={!showMobileFilters} class:lg:block={true}>
+                    <div
+                        class="space-y-4"
+                        class:hidden={!showMobileFilters}
+                        class:lg:block={true}
+                    >
                         <!-- Text search -->
                         <div class="form-control">
                             <label class="label py-1" for="text-search">
-                                <span class="label-text text-sm">Search Posts</span>
+                                <span class="label-text text-sm"
+                                    >Search Posts</span
+                                >
                             </label>
                             <input
                                 id="text-search"
@@ -341,26 +349,41 @@
                                     </div>
 
                                     {#if selectedCategories.length > 0}
-                                        <div class="mb-2 p-2 bg-base-200 rounded">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <div class="text-xs font-semibold">Selected:</div>
+                                        <div
+                                            class="mb-2 p-2 bg-base-200 rounded"
+                                        >
+                                            <div
+                                                class="flex items-center justify-between mb-1"
+                                            >
+                                                <div
+                                                    class="text-xs font-semibold"
+                                                >
+                                                    Selected:
+                                                </div>
                                                 <button
                                                     class="btn btn-ghost btn-xs"
-                                                    on:click={() => (selectedCategories = [])}
+                                                    on:click={() =>
+                                                        (selectedCategories =
+                                                            [])}
                                                     >Clear All</button
                                                 >
                                             </div>
                                             <div class="flex flex-wrap gap-1">
                                                 {#each selectedCategories as category}
-                                                    <div class="badge badge-primary badge-xs">
+                                                    <div
+                                                        class="badge badge-primary badge-xs"
+                                                    >
                                                         {category}
                                                         <button
                                                             class="ml-1"
                                                             on:click={() =>
                                                                 (selectedCategories =
                                                                     selectedCategories.filter(
-                                                                        (c) => c !== category,
-                                                                    ))}>×</button
+                                                                        (c) =>
+                                                                            c !==
+                                                                            category,
+                                                                    ))}
+                                                            >×</button
                                                         >
                                                     </div>
                                                 {/each}
@@ -381,7 +404,9 @@
                                                             category,
                                                         )}
                                                         on:change={() =>
-                                                            toggleCategory(category)}
+                                                            toggleCategory(
+                                                                category,
+                                                            )}
                                                     />
                                                     <span>{category}</span>
                                                 </label>
@@ -402,7 +427,8 @@
                         <!-- Post type filter -->
                         <div class="form-control">
                             <div class="label py-1">
-                                <span class="label-text text-sm">Post Type</span>
+                                <span class="label-text text-sm">Post Type</span
+                                >
                             </div>
                             <div class="dropdown w-full">
                                 <div
@@ -413,8 +439,8 @@
                                     {postTypeFilter === "both"
                                         ? "Both"
                                         : postTypeFilter === "offers"
-                                            ? "Offers Only"
-                                            : "Requests Only"}
+                                          ? "Offers Only"
+                                          : "Requests Only"}
                                 </div>
                                 <ul
                                     class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow mb-2"
@@ -442,7 +468,9 @@
                                                 bind:group={postTypeFilter}
                                                 value="offers"
                                             />
-                                            <span class="text-sm">Offers Only</span>
+                                            <span class="text-sm"
+                                                >Offers Only</span
+                                            >
                                         </label>
                                     </li>
                                     <li>
@@ -455,7 +483,9 @@
                                                 bind:group={postTypeFilter}
                                                 value="requests"
                                             />
-                                            <span class="text-sm">Requests Only</span>
+                                            <span class="text-sm"
+                                                >Requests Only</span
+                                            >
                                         </label>
                                     </li>
                                 </ul>
@@ -484,7 +514,9 @@
                         <TasksSvg />
                         {isOwnProfile ? "My Posts" : `${profile.name}'s Posts`}
                         {#if filteredPosts.length !== userPosts.length}
-                            <span class="text-sm text-base-content/60 font-normal">
+                            <span
+                                class="text-sm text-base-content/60 font-normal"
+                            >
                                 ({filteredPosts.length} of {userPosts.length} shown)
                             </span>
                         {/if}
@@ -499,22 +531,26 @@
                                             class="flex items-center justify-between text-xs text-base-content/60 mb-2"
                                         >
                                             <div class="flex gap-2">
-                                                <span
-                                                    class="badge badge-info"
+                                                <span class="badge badge-info"
                                                     >{post.post_type}</span
                                                 >
                                                 <span class="badge badge-ghost"
                                                     >{post.category}</span
                                                 >
                                                 {#if post.pin_code}
-                                                    <span class="badge badge-outline flex items-center gap-1">
+                                                    <span
+                                                        class="badge badge-outline flex items-center gap-1"
+                                                    >
                                                         <PinSvg />
                                                         {post.pin_code}
                                                     </span>
                                                 {/if}
                                             </div>
                                             {#if post.completed}
-                                                <span class="badge badge-success">Completed</span>
+                                                <span
+                                                    class="badge badge-success"
+                                                    >Completed</span
+                                                >
                                             {/if}
                                         </div>
                                         <p>{post.description}</p>
@@ -524,7 +560,9 @@
                         </div>
                     {:else if userPosts.length > 0}
                         <div class="text-center p-8 text-base-content/60">
-                            <h3 class="font-bold mb-2">No Posts Match Your Filters</h3>
+                            <h3 class="font-bold mb-2">
+                                No Posts Match Your Filters
+                            </h3>
                             <p>Try adjusting your filters to see more posts.</p>
                             <button
                                 class="btn btn-soft btn-sm mt-2"
