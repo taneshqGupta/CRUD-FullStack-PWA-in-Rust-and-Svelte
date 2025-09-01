@@ -303,7 +303,7 @@
 
             <div class="card bg-base-100 mb-6">
                 <div class="card-body">
-                    <div class="lg:hidden flex flex-wrap mb-4 p-3">
+                    <div class="lg:hidden flex flex-wrap mb-4 gap-3">
                         <button
                             class="btn btn-soft btn-sm w-full gap-2 flex-1"
                             on:click={() =>
