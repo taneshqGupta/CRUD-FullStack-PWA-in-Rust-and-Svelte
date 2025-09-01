@@ -789,19 +789,6 @@
                                     </ul>
                                 </div>
                             </div>
-
-                            <!-- Clear filters button -->
-                            <button
-                                class="btn btn-ghost btn-sm w-full"
-                                on:click={() => {
-                                    textSearch = "";
-                                    selectedCategories = [];
-                                    postTypeFilter = "both";
-                                    showMobileFilters = false;
-                                }}
-                            >
-                                Clear All Filters
-                            </button>
                         </div>
                     </div>
                 </div>
