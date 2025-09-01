@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO posts (description, completed, category, user_id, post_type, pin_code) \n         VALUES ($1, $2, $3, $4, $5, $6) \n         RETURNING id, description, completed, category, user_id, post_type, pin_code",
+  "query": "INSERT INTO posts (description, category, user_id, post_type, pin_code) \n         VALUES ($1, $2, $3, $4, $5) \n         RETURNING id, description, category, user_id, post_type, pin_code",
   "describe": {
     "columns": [
       {
@@ -15,26 +15,21 @@
       },
       {
         "ordinal": 2,
-        "name": "completed",
-        "type_info": "Bool"
-      },
-      {
-        "ordinal": 3,
         "name": "category",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 4,
+        "ordinal": 3,
         "name": "user_id",
         "type_info": "Int4"
       },
       {
-        "ordinal": 5,
+        "ordinal": 4,
         "name": "post_type",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 6,
+        "ordinal": 5,
         "name": "pin_code",
         "type_info": "Varchar"
       }
@@ -42,7 +37,6 @@
     "parameters": {
       "Left": [
         "Text",
-        "Bool",
         "Varchar",
         "Int4",
         "Varchar",
@@ -55,9 +49,8 @@
       false,
       false,
       false,
-      false,
       true
     ]
   },
-  "hash": "57f2ef3ccd98323d8440385da54e6cde8a899cbe671cf8585f0069b471e2e735"
+  "hash": "b41d4c76dc64034a9ee0b7cf376f9ada2411ac757539f43c04f3b9606e1b98e3"
 }

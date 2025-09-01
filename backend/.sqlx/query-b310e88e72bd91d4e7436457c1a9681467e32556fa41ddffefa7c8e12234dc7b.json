@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.user_id = $1 ORDER BY p.id DESC",
+  "query": "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.user_id = $1 ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -15,31 +15,26 @@
       },
       {
         "ordinal": 2,
-        "name": "completed",
-        "type_info": "Bool"
-      },
-      {
-        "ordinal": 3,
         "name": "category",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 4,
+        "ordinal": 3,
         "name": "user_id",
         "type_info": "Int4"
       },
       {
-        "ordinal": 5,
+        "ordinal": 4,
         "name": "post_type",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 6,
+        "ordinal": 5,
         "name": "pin_code",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 7,
+        "ordinal": 6,
         "name": "user_name",
         "type_info": "Varchar"
       }
@@ -55,10 +50,9 @@
       false,
       false,
       false,
-      false,
       true,
       true
     ]
   },
-  "hash": "548e3ed4b04eab094f0e1d1fa4a5aaff91638da248b7ef2df36f9f100e786a31"
+  "hash": "b310e88e72bd91d4e7436457c1a9681467e32556fa41ddffefa7c8e12234dc7b"
 }

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT p.id, p.description, p.completed, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.user_id = $1 AND p.post_type = 'offer' ORDER BY p.id",
+  "query": "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.post_type = 'offer' ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -15,42 +15,34 @@
       },
       {
         "ordinal": 2,
-        "name": "completed",
-        "type_info": "Bool"
-      },
-      {
-        "ordinal": 3,
         "name": "category",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 4,
+        "ordinal": 3,
         "name": "user_id",
         "type_info": "Int4"
       },
       {
-        "ordinal": 5,
+        "ordinal": 4,
         "name": "post_type",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 6,
+        "ordinal": 5,
         "name": "pin_code",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 7,
+        "ordinal": 6,
         "name": "user_name",
         "type_info": "Varchar"
       }
     ],
     "parameters": {
-      "Left": [
-        "Int4"
-      ]
+      "Left": []
     },
     "nullable": [
-      false,
       false,
       false,
       false,
@@ -60,5 +52,5 @@
       true
     ]
   },
-  "hash": "4ab1d153a9b52dc7adb479f7c33adbdd9d7f77473fa653a53ac0db37acef3552"
+  "hash": "646a54bc44fb7bf2b8bfb733c002387e54b4d1624e79bc2c266592aac911b656"
 }

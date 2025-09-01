@@ -828,12 +828,6 @@
                                                     </span>
                                                 {/if}
                                             </div>
-                                            {#if post.completed}
-                                                <span
-                                                    class="badge badge-success"
-                                                    >Completed</span
-                                                >
-                                            {/if}
                                         </div>
                                         <p>{post.description}</p>
                                     </div>

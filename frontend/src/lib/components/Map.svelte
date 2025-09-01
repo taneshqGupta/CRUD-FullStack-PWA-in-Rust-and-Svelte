@@ -2,7 +2,6 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import type { Post } from '$lib/types';
-    import { PinSvg } from '$lib/components/icons';
 
     export let posts: Post[] = [];
     export let center: [number, number] = [20.5937, 78.9629]; // Center of India
@@ -17,7 +16,6 @@
     let markers: any[] = [];
     let currentLocationMarker: any = null;
 
-    // Different marker colors for different post types
     const markerColors = {
         offer: '#10b981', // emerald-500
         request: '#f59e0b' // amber-500
@@ -25,13 +23,10 @@
 
     onMount(async () => {
         if (browser) {
-            // Dynamic import of Leaflet to avoid SSR issues
             L = await import('leaflet');
             
-            // Import default CSS
             await import('leaflet/dist/leaflet.css');
             
-            // Fix default markers (Leaflet issue with bundlers)
             delete (L.Icon.Default.prototype as any)._getIconUrl;
             L.Icon.Default.mergeOptions({
                 iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -51,7 +46,6 @@
     });
 
     function initializeMap() {
-        // Create map with scroll zoom disabled
         map = L.map(mapContainer, {
             scrollWheelZoom: false,
             doubleClickZoom: true,
@@ -60,33 +54,27 @@
             keyboard: true
         }).setView(center, zoom);
 
-        // Add beautiful OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);
 
-        // Add zoom control
         L.control.zoom({
             position: 'topright'
         }).addTo(map);
 
-        // Focus on user's pin code if provided
         if (userPinCode) {
             focusOnUserPinCode();
         }
 
-        // Add click handler for location selection
         if (onLocationSelect) {
             map.on('click', async (e: any) => {
                 const { lat, lng } = e.latlng;
                 
-                // Reverse geocode to get address
                 try {
                     const address = await reverseGeocode(lat, lng);
                     onLocationSelect(lat, lng, address || undefined);
                     
-                    // Add/update current location marker
                     if (currentLocationMarker) {
                         map.removeLayer(currentLocationMarker);
                     }
@@ -101,7 +89,6 @@
             });
         }
 
-        // Add posts as markers
         updateMarkers();
     }
 
@@ -121,7 +108,6 @@
                     const { latitude, longitude } = position.coords;
                     map.setView([latitude, longitude], 12);
                     
-                    // Add user location marker
                     L.marker([latitude, longitude])
                         .bindPopup('<b>Your Location</b>')
                         .addTo(map);
@@ -193,11 +179,9 @@
     async function updateMarkers() {
         if (!map || !L) return;
 
-        // Clear existing markers
         markers.forEach(marker => map.removeLayer(marker));
         markers = [];
 
-        // Group posts by pin code
         const postsByPinCode: { [pinCode: string]: Post[] } = {};
         posts.forEach(post => {
             if (post.pin_code) {
@@ -208,18 +192,14 @@
             }
         });
 
-        // Create markers for each pin code location
         for (const [pinCode, postsAtLocation] of Object.entries(postsByPinCode)) {
             const coordinates = await geocodePinCode(pinCode);
             if (coordinates) {
-                // Count offers and requests
                 const offerCount = postsAtLocation.filter(p => p.post_type === 'offer').length;
                 const requestCount = postsAtLocation.filter(p => p.post_type === 'request').length;
                 
-                // Create custom icon that shows both counts
                 const icon = createCombinedIcon(offerCount, requestCount);
                 
-                // Create popup content with all posts
                 const popupContent = `
                     <div class="p-3 max-w-sm">
                         <div class="flex items-center gap-2 mb-3">
@@ -237,7 +217,6 @@
                                     </div>
                                     <p class="text-sm">${post.description}</p>
                                     ${post.user_name ? `<p class="text-xs opacity-70 mt-1">By: ${post.user_name}</p>` : ''}
-                                    ${post.completed ? '<p class="text-xs text-success mt-1">Completed</p>' : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -302,7 +281,6 @@
                 if (coordinates) {
                     map.setView(coordinates, 14);
                     
-                    // Highlight the marker if it exists
                     const marker = markers.find(m => {
                         const pos = m.getLatLng();
                         return Math.abs(pos.lat - coordinates[0]) < 0.001 && 

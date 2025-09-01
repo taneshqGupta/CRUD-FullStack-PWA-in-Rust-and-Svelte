@@ -59,7 +59,6 @@ export type Category = typeof CATEGORIES[number];
 export interface Post {
     id: number;
     description: string;
-    completed: boolean;
     category: Category;
     user_id: number;
     post_type: PostType;

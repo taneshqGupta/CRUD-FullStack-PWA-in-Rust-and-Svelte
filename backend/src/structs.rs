@@ -20,15 +20,12 @@ impl std::fmt::Display for PostType {
 pub struct Post {
     pub id: i32,
     pub description: String,
-    pub completed: bool,
     pub category: String,
     pub user_id: i32,
     pub post_type: PostType,
     pub pin_code: Option<String>,
-    pub user_name: Option<String>, 
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
+    pub user_name: Option<String>,
+}#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NewPost {
     pub description: String,
     pub category: String,
