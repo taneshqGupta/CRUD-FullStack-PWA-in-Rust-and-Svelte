@@ -509,7 +509,7 @@
                                     <div class="label py-1">
                                         <span class="label-text text-xs">Offers/Requests</span>
                                     </div>
-                                    <div class="dropdown">
+                                    <div class="dropdown w-full">
                                         <div
                                             role="button"
                                             class="btn btn-soft btn-sm w-full justify-start"
