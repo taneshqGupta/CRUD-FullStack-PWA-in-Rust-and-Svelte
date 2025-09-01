@@ -557,7 +557,7 @@
                                         </div>
 
                                         {#if selectedCategories.length > 0}
-                                            <div class="mb-2 p-2 bg-base-200 rounded">
+                                            <div class="mb-2 bg-base-200 rounded w-full">
                                                 <div class="flex items-center justify-between mb-1">
                                                     <div class="text-xs font-semibold">Selected:</div>
                                                     <button
@@ -584,15 +584,15 @@
                                             </div>
                                         {/if}
 
-                                        <ul class="menu max-h-40 overflow-y-auto">
+                                        <ul class="menu max-h-40 overflow-y-auto w-full">
                                             {#each filteredCategories as category (category)}
-                                                <li>
+                                                <li class="w-full">
                                                     <label
-                                                        class="cursor-pointer flex items-center gap-2 text-xs"
+                                                        class="cursor-pointer flex items-center gap-2 text-xs w-full"
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            class="checkbox checkbox-xs"
+                                                            class="checkbox checkbox-xs w-full"
                                                             checked={selectedCategories.includes(
                                                                 category,
                                                             )}
@@ -604,8 +604,8 @@
                                                 </li>
                                             {/each}
                                             {#if filteredCategories.length === 0}
-                                                <li>
-                                                    <span class="text-xs opacity-50"
+                                                <li class="w-full">
+                                                    <span class="text-xs opacity-50 w-full"
                                                         >No categories found</span
                                                     >
                                                 </li>
