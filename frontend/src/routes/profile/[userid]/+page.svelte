@@ -353,8 +353,8 @@
                             <div class="flex items-end gap-4">
                                 <!-- Text search -->
                                 <div class="form-control flex-1">
-                                    <label class="label py-1" for="text-search">
-                                        <span class="label-text text-sm"
+                                    <label class="label py-1 px-2" for="text-search">
+                                        <span class="label-text text-xs"
                                             >Search Posts</span
                                         >
                                     </label>
