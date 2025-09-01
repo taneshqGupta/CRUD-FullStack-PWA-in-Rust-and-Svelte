@@ -64,6 +64,7 @@ export interface Post {
     post_type: PostType;
     pin_code?: string;
     user_name?: string;
+    profile_picture?: string;
 }
 
 export interface NewPost {

@@ -17,7 +17,7 @@ pub async fn list_my_posts(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 ORDER BY p.id DESC",
@@ -40,6 +40,7 @@ pub async fn list_my_posts(
             },
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -51,7 +52,7 @@ pub async fn list_user_posts(
     Path(userid): Path<i32>,
 ) -> Result<Json<Vec<Post>>, AppError> {
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 ORDER BY p.id DESC",
@@ -74,6 +75,7 @@ pub async fn list_user_posts(
             },
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -87,7 +89,7 @@ pub async fn list_offers(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 AND p.post_type = 'offer' ORDER BY p.id",
@@ -106,6 +108,7 @@ pub async fn list_offers(
             post_type: PostType::Offer,
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -119,7 +122,7 @@ pub async fn list_requests(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 AND p.post_type = 'request' ORDER BY p.id",
@@ -138,6 +141,7 @@ pub async fn list_requests(
             post_type: PostType::Request,
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -151,7 +155,7 @@ pub async fn list_community_posts(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          ORDER BY p.id DESC"
@@ -173,6 +177,7 @@ pub async fn list_community_posts(
             },
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -186,7 +191,7 @@ pub async fn list_community_offers(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.post_type = 'offer' ORDER BY p.id DESC"
@@ -204,6 +209,7 @@ pub async fn list_community_offers(
             post_type: PostType::Offer,
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -217,7 +223,7 @@ pub async fn list_community_requests(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name 
+        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.post_type = 'request' ORDER BY p.id DESC"
@@ -235,6 +241,7 @@ pub async fn list_community_requests(
             post_type: PostType::Request,
             pin_code: row.pin_code,
             user_name: row.user_name,
+            profile_picture: row.profile_picture,
         })
         .collect();
 
@@ -262,11 +269,10 @@ pub async fn create_post(
     .fetch_one(&pool)
     .await?;
 
-    let user_name = sqlx::query!("SELECT name FROM users WHERE id = $1", user_id)
+    let user = sqlx::query!("SELECT name, profile_picture FROM users WHERE id = $1", user_id)
         .fetch_one(&pool)
         .await
-        .map(|u| u.name)
-        .unwrap_or(None);
+        .ok();
 
     let created_post = Post {
         id: row.id,
@@ -275,7 +281,8 @@ pub async fn create_post(
         user_id: row.user_id,
         post_type: new_post.post_type,
         pin_code: row.pin_code,
-        user_name,
+        user_name: user.as_ref().and_then(|u| u.name.clone()),
+        profile_picture: user.as_ref().and_then(|u| u.profile_picture.clone()),
     };
 
     Ok(Json(created_post))

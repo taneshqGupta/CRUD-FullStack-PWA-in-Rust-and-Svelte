@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         ORDER BY p.id DESC",
+  "query": "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.post_type = 'offer' ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -37,6 +37,11 @@
         "ordinal": 6,
         "name": "user_name",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "profile_picture",
+        "type_info": "Text"
       }
     ],
     "parameters": {
@@ -49,8 +54,9 @@
       false,
       false,
       true,
+      true,
       true
     ]
   },
-  "hash": "4790f6410ed0a0314244478adf3be2e48abf535f255acadfecf08f6751e1681e"
+  "hash": "5a2a2056b17fa29a3865e848ab0709ac05f0bb8b8b5732d0597e9aabe4cf286f"
 }

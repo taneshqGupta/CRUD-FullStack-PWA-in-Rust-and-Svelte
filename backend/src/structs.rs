@@ -25,6 +25,7 @@ pub struct Post {
     pub post_type: PostType,
     pub pin_code: Option<String>,
     pub user_name: Option<String>,
+    pub profile_picture: Option<String>,
 }#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NewPost {
     pub description: String,

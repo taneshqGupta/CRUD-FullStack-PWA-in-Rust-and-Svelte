@@ -1,16 +1,19 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte';
-    import { browser } from '$app/environment';
-    import { mount } from 'svelte';
-    import type { Post } from '$lib/types';
-    import PopupContent from './PopupContent.svelte';
+    import { onMount, onDestroy } from "svelte";
+    import { browser } from "$app/environment";
+    import { mount } from "svelte";
+    import type { Post } from "$lib/types";
+    import PopupContent from "./PopupContent.svelte";
+    import MarkerIcon from "./MarkerIcon.svelte";
 
     export let posts: Post[] = [];
     export let center: [number, number] = [20.5937, 78.9629]; // Center of India
     export let zoom: number = 5;
-    export let height: string = '400px';
-    export let onLocationSelect: ((lat: number, lng: number, address?: string) => void) | null = null;
-    export let userPinCode: string = ''; // User's default pin code to auto-focus
+    export let height: string = "400px";
+    export let onLocationSelect:
+        | ((lat: number, lng: number, address?: string) => void)
+        | null = null;
+    export let userPinCode: string = ""; // User's default pin code to auto-focus
 
     let mapContainer: HTMLDivElement;
     let map: any = null;
@@ -18,22 +21,20 @@
     let markers: any[] = [];
     let currentLocationMarker: any = null;
 
-    const markerColors = {
-        offer: '#10b981', // emerald-500
-        request: '#f59e0b' // amber-500
-    };
-
     onMount(async () => {
         if (browser) {
-            L = await import('leaflet');
-            
-            await import('leaflet/dist/leaflet.css');
-            
+            L = await import("leaflet");
+
+            await import("leaflet/dist/leaflet.css");
+
             delete (L.Icon.Default.prototype as any)._getIconUrl;
             L.Icon.Default.mergeOptions({
-                iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+                iconRetinaUrl:
+                    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+                iconUrl:
+                    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+                shadowUrl:
+                    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
             });
 
             initializeMap();
@@ -53,39 +54,44 @@
             doubleClickZoom: true,
             touchZoom: true,
             boxZoom: true,
-            keyboard: true
+            keyboard: true,
         }).setView(center, zoom);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+                '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
         }).addTo(map);
 
-        L.control.zoom({
-            position: 'topright'
-        }).addTo(map);
+        L.control
+            .zoom({
+                position: "topright",
+            })
+            .addTo(map);
 
         if (userPinCode) {
             focusOnUserPinCode();
         }
 
         if (onLocationSelect) {
-            map.on('click', async (e: any) => {
+            map.on("click", async (e: any) => {
                 const { lat, lng } = e.latlng;
-                
+
                 try {
                     const address = await reverseGeocode(lat, lng);
                     onLocationSelect(lat, lng, address || undefined);
-                    
+
                     if (currentLocationMarker) {
                         map.removeLayer(currentLocationMarker);
                     }
-                    
+
                     currentLocationMarker = L.marker([lat, lng])
-                        .bindPopup(`<b>Selected Location</b><br>${address || `${lat.toFixed(4)}, ${lng.toFixed(4)}`}`)
+                        .bindPopup(
+                            `<b>Selected Location</b><br>${address || `${lat.toFixed(4)}, ${lng.toFixed(4)}`}`,
+                        )
                         .addTo(map);
                 } catch (error) {
-                    console.error('Error getting address:', error);
+                    console.error("Error getting address:", error);
                     onLocationSelect(lat, lng);
                 }
             });
@@ -109,83 +115,83 @@
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     map.setView([latitude, longitude], 12);
-                    
+
                     L.marker([latitude, longitude])
-                        .bindPopup('<b>Your Location</b>')
+                        .bindPopup("<b>Your Location</b>")
                         .addTo(map);
                 },
                 (error) => {
-                    console.log('Geolocation not available or denied');
-                }
+                    console.log("Geolocation not available or denied");
+                },
             );
         }
     }
 
-    async function geocodePinCode(pinCode: string): Promise<[number, number] | null> {
+    async function geocodePinCode(
+        pinCode: string,
+    ): Promise<[number, number] | null> {
         try {
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&postalcode=${pinCode}&limit=1`
+                `https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&postalcode=${pinCode}&limit=1`,
             );
             const data = await response.json();
-            
+
             if (data && data.length > 0) {
                 return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
             }
         } catch (error) {
-            console.error('Error geocoding pin code:', error);
+            console.error("Error geocoding pin code:", error);
         }
         return null;
     }
 
-    async function reverseGeocode(lat: number, lng: number): Promise<string | null> {
+    async function reverseGeocode(
+        lat: number,
+        lng: number,
+    ): Promise<string | null> {
         try {
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
             );
             const data = await response.json();
-            
+
             if (data && data.display_name) {
                 return data.display_name;
             }
         } catch (error) {
-            console.error('Error reverse geocoding:', error);
+            console.error("Error reverse geocoding:", error);
         }
         return null;
     }
 
-    function createCustomIcon(postType: 'offer' | 'request') {
-        const color = markerColors[postType];
-        const icon = postType === 'offer' ? '' : '';
-        
+    function createCombinedIcon(offerCount: number, requestCount: number) {
+        // Create a temporary container to render the MarkerIcon component
+        const tempContainer = document.createElement("div");
+        const iconComponent = mount(MarkerIcon, {
+            target: tempContainer,
+            props: {
+                offerCount,
+                requestCount,
+            },
+        });
+
         return L.divIcon({
-            className: 'custom-marker',
-            html: `
-                <div style="
-                    background-color: ${color};
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 2px solid white;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-                    font-size: 14px;
-                ">${icon}</div>
-            `,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
+            className: "custom-marker",
+            html: tempContainer.innerHTML,
+            iconSize: [32, 32], // w-8 h-8 = 2rem = 32px
+            iconAnchor: [16, 16], // center = half of size
+            popupAnchor: [0, -16], // popup appears above center
         });
     }
 
     async function updateMarkers() {
         if (!map || !L) return;
 
-        markers.forEach(marker => map.removeLayer(marker));
+        markers.forEach((marker) => map.removeLayer(marker));
         markers = [];
 
         const postsByPinCode: { [pinCode: string]: Post[] } = {};
-        posts.forEach(post => {
+        posts.forEach((post) => {
             if (post.pin_code) {
                 if (!postsByPinCode[post.pin_code]) {
                     postsByPinCode[post.pin_code] = [];
@@ -194,70 +200,37 @@
             }
         });
 
-        for (const [pinCode, postsAtLocation] of Object.entries(postsByPinCode)) {
+        for (const [pinCode, postsAtLocation] of Object.entries(
+            postsByPinCode,
+        )) {
             const coordinates = await geocodePinCode(pinCode);
             if (coordinates) {
-                const offerCount = postsAtLocation.filter(p => p.post_type === 'offer').length;
-                const requestCount = postsAtLocation.filter(p => p.post_type === 'request').length;
-                
+                const offerCount = postsAtLocation.filter(
+                    (p) => p.post_type === "offer",
+                ).length;
+                const requestCount = postsAtLocation.filter(
+                    (p) => p.post_type === "request",
+                ).length;
+
                 const icon = createCombinedIcon(offerCount, requestCount);
-                
+
                 // Create a temporary container to render the Svelte component
-                const tempContainer = document.createElement('div');
+                const tempContainer = document.createElement("div");
                 const popupComponent = mount(PopupContent, {
                     target: tempContainer,
                     props: {
                         pinCode: pinCode,
-                        posts: postsAtLocation
-                    }
+                        posts: postsAtLocation,
+                    },
                 });
-                
+
                 const marker = L.marker(coordinates, { icon })
                     .bindPopup(tempContainer.innerHTML)
                     .addTo(map);
-                
+
                 markers.push(marker);
             }
         }
-    }
-
-    function createCombinedIcon(offerCount: number, requestCount: number) {
-        const size = Math.min(Math.max(20 + (offerCount + requestCount) * 2, 25), 40);
-        
-        return L.divIcon({
-            className: 'combined-marker',
-            html: `
-                <div style="
-                    width: ${size}px;
-                    height: ${size}px;
-                    border-radius: 50%;
-                    border: 2px solid #fff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: ${Math.max(10, size * 0.3)}px;
-                    font-weight: bold;
-                    color: white;
-                    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-                    background: ${offerCount > requestCount ? 
-                        'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)' : 
-                        requestCount > offerCount ?
-                        'linear-gradient(135deg, #059669 0%, #0d9488 100%)' :
-                        'linear-gradient(135deg, #dc2626 0%, #ea580c 100%)'
-                    };
-                    position: relative;
-                " title="${offerCount} offers, ${requestCount} requests">
-                    <span style="position: absolute; top: -2px; left: 50%; transform: translateX(-50%); font-size: 8px;">
-                        ${offerCount > 0 ? '' : ''}${requestCount > 0 ? '' : ''}
-                    </span>
-                    <span style="margin-top: 4px;">${offerCount + requestCount}</span>
-                </div>
-            `,
-            iconSize: [size, size],
-            iconAnchor: [size/2, size/2],
-            popupAnchor: [0, -size/2]
-        });
     }
 
     $: if (map && posts) {
@@ -266,16 +239,18 @@
 
     export function focusOnPinCode(pinCode: string) {
         if (map && pinCode) {
-            geocodePinCode(pinCode).then(coordinates => {
+            geocodePinCode(pinCode).then((coordinates) => {
                 if (coordinates) {
                     map.setView(coordinates, 14);
-                    
-                    const marker = markers.find(m => {
+
+                    const marker = markers.find((m) => {
                         const pos = m.getLatLng();
-                        return Math.abs(pos.lat - coordinates[0]) < 0.001 && 
-                               Math.abs(pos.lng - coordinates[1]) < 0.001;
+                        return (
+                            Math.abs(pos.lat - coordinates[0]) < 0.001 &&
+                            Math.abs(pos.lng - coordinates[1]) < 0.001
+                        );
                     });
-                    
+
                     if (marker) {
                         marker.openPopup();
                     }
@@ -285,25 +260,24 @@
     }
 </script>
 
-<div bind:this={mapContainer} style="height: {height}; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></div>
+<div
+    bind:this={mapContainer}
+    class="w-full overflow-hidden shadow-md bg-base-100"
+    style="height: {height};"
+></div>
 
 <style>
-    :global(.custom-marker) {
-        background: none !important;
-        border: none !important;
-    }
-    
     :global(.leaflet-popup-content-wrapper) {
-        border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        background-color: hsl(var(--b1)) !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
     }
     
     :global(.leaflet-popup-content) {
-        margin: 8px 12px;
-        font-family: inherit;
+        margin: 0 !important;
     }
     
     :global(.leaflet-popup-tip) {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: hsl(var(--b1)) !important;
     }
 </style>
