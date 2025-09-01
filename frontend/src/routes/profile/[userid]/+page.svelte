@@ -297,7 +297,7 @@
                                 >Request-Help</a
                             >
                             <button
-                                class="btn btn-soft btn-block flex-1 sm:hidden"
+                                class="btn btn-soft btn-block flex-1 lg:visible md:visible sm:hidden"
                                 on:click={handleLogout}
                             >
                                 <LogoutSvg /> Log-Out
