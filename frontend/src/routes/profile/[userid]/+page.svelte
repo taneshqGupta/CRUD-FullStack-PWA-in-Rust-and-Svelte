@@ -303,9 +303,9 @@
 
             <div class="card bg-base-100 mb-6">
                 <div class="card-body">
-                    <div class="lg:hidden mb-4">
+                    <div class="lg:hidden flex flex-wrap mb-4">
                         <button
-                            class="btn btn-soft btn-sm w-full gap-2"
+                            class="btn btn-soft btn-sm w-full gap-2 flex-1"
                             on:click={() =>
                                 (showMobileFilters = !showMobileFilters)}
                         >
@@ -320,7 +320,7 @@
                             {/if}
                         </button>
                         <button
-                            class="btn btn-soft btn-sm w-full gap-2"
+                            class="btn btn-soft btn-sm w-full gap-2 flex-1"
                             on:click={() => {
                                 textSearch = "";
                                 selectedCategories = [];
