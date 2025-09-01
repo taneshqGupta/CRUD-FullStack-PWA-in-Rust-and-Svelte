@@ -230,9 +230,9 @@
             </div>
 
             <div class="grid grid-cols-3 gap-1">
-                <div class="join">
-                    <div class="badge badge-soft badge-outline font-black text-2xl">{userPosts.length}</div>
-                    <div class="badge badge-soft badge-outline font-extrabold text-xl">
+                <div class="join join-horizontal">
+                    <div class="badge join-item badge-soft badge-outline font-black text-2xl">{userPosts.length}</div>
+                    <div class="badge join-item badge-soft badge-outline font-extrabold text-xl">
                         Total Posts
                     </div>
                 </div>
