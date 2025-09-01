@@ -516,7 +516,7 @@
                         <div class="lg:hidden space-y-4">
                             <!-- Text search -->
                             <div class="form-control">
-                                <label class="label py-1" for="mobile-text-search">
+                                <label class="label py-1 px-2" for="mobile-text-search">
                                     <span class="label-text text-xs">Search Posts</span>
                                 </label>
                                 <input
