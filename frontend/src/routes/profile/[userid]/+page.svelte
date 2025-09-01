@@ -252,7 +252,7 @@
             </div>
 
             {#if isOwnProfile}
-                <div class="card bg-base-100 mb-6">
+                <div class="card bg-base-100 mb-2">
                     <div class="card-body">
                         <div class="flex flex-wrap gap-3 justify-center">
                             <a href="/offer" class="btn btn-soft flex-1"
@@ -274,12 +274,6 @@
 
             <div class="card bg-base-100 mb-6">
                 <div class="card-body">
-                    <h2 class="card-title text-lg mb-4">
-                        <FilterSvg />
-                        Filter Posts
-                    </h2>
-
-                    <!-- Mobile filters toggle -->
                     <div class="lg:hidden mb-4">
                         <button
                             class="btn btn-soft btn-sm w-full gap-2"
