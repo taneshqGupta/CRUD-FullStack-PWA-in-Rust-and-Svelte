@@ -394,7 +394,8 @@
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
                                         <span class="label-text text-xs">
-                                            Categories ({selectedCategories.length} selected)
+                                            Categories ({selectedCategories.length}
+                                            selected)
                                         </span>
                                     </div>
                                     <div class="dropdown w-full">
@@ -403,7 +404,8 @@
                                             class="btn btn-soft btn-sm w-full justify-start"
                                             tabindex="0"
                                         >
-                                            Categories {selectedCategories.length > 0
+                                            Categories {selectedCategories.length >
+                                            0
                                                 ? `(${selectedCategories.length})`
                                                 : ""}
                                         </div>
@@ -507,14 +509,15 @@
                                 <!-- Post type filter -->
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
-                                        <span class="label-text text-xs">Offers/Requests</span>
+                                        <span class="label-text text-xs"
+                                            >Offers/Requests</span
+                                        >
                                     </div>
                                     <div class="dropdown w-full">
                                         <div
                                             role="button"
                                             class="btn btn-soft btn-sm w-full justify-start"
                                             tabindex="0"
-                                        >
                                         >
                                             {postTypeFilter === "both"
                                                 ? "Both"
