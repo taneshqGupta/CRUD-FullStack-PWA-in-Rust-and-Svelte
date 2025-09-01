@@ -228,6 +228,12 @@
                                     Click profile picture to change
                                 </p>
                             {/if}
+                            <button
+                                class="btn btn-soft btn-sm flex items-center justify-center lg:hidden md:hidden"
+                                on:click={handleLogout}
+                            >
+                                <LogoutSvg /> Log-Out
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -291,7 +297,7 @@
                                 >Request-Help</a
                             >
                             <button
-                                class="btn btn-soft btn-block flex-1"
+                                class="btn btn-soft btn-block flex-1 sm:hidden"
                                 on:click={handleLogout}
                             >
                                 <LogoutSvg /> Log-Out
