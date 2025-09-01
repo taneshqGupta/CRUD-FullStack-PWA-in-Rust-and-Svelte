@@ -233,36 +233,36 @@
                 <div class="flex flex-wrap gap-3 justify-center w-full">
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full p-4"
                         >
                             {userPosts.length}
                         </div>
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full p-4"
                         >
                             Total Posts
                         </div>
                     </div>
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full p-4"
                         >
                             {offerCount}
                         </div>
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full p-4"
                         >
                             Skills Offered
                         </div>
                     </div>
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full p-4"
                         >
                             {requestCount}
                         </div>
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full p-4"
                         >
                             Help Requests
                         </div>
