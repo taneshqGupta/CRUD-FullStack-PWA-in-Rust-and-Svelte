@@ -6,6 +6,3 @@ target/
 .cargo/
 
 .env
-
-.sqlx/
-
