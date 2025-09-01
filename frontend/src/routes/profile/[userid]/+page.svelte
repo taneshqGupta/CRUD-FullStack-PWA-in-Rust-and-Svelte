@@ -230,7 +230,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-3 gap-1 mb-2">
                 <div class="stat bg-base-100 rounded-box">
                     <div class="stat-title">Total Posts</div>
                     <div class="stat-value text-primary">
