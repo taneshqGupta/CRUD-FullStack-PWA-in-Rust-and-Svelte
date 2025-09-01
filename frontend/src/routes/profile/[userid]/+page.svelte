@@ -230,10 +230,10 @@
             </div>
 
             <div class="grid grid-cols-3 gap-1">
-                <div class="badge badge-lg border border-base-200 bg-base-100">
-                    <div class="stat-title font-black text-xl">Total Posts</div>
-                    <div class="stat-value">
-                        {userPosts.length}
+                <div class="join">
+                    <div class="badge badge-soft badge-outline font-black text-2xl">{userPosts.length}</div>
+                    <div class="badge badge-soft badge-outline font-extrabold text-xl">
+                        Total Posts
                     </div>
                 </div>
                 <div class="badge badge-lg border border-base-200 bg-base-100">
