@@ -517,7 +517,7 @@
                             <!-- Text search -->
                             <div class="form-control">
                                 <label class="label py-1" for="mobile-text-search">
-                                    <span class="label-text text-sm">Search Posts</span>
+                                    <span class="label-text text-xs">Search Posts</span>
                                 </label>
                                 <input
                                     id="mobile-text-search"
