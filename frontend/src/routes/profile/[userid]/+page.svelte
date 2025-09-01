@@ -229,7 +229,7 @@
                                 </p>
                             {/if}
                             <div
-                                class="flex items-center justify-center lg:hidden md:hidden"
+                                class="flex items-center justify-center lg:hidden"
                             >
                                 <button
                                     class="btn btn-soft btn-sm flex items-center justify-center"
