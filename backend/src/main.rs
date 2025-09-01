@@ -42,10 +42,13 @@ async fn main() -> Result<(), AppError> {
     tracing::info!("Successfully connected to database.");
 
     let cors = CorsLayer::new()
-        .allow_origin([std::env::var("FRONTEND_URL")
-            .unwrap_or("http://localhost:3000/".to_string())
-            .parse()
-            .unwrap()])
+        .allow_origin([
+            "http://localhost:3000".parse().unwrap(),
+            "http://localhost:5173".parse().unwrap(),
+            "http://127.0.0.1:3000".parse().unwrap(),
+            "http://172.16.8.148:3000".parse().unwrap(),
+            std::env::var("FRONTEND_URL").unwrap().parse().unwrap(),
+        ])
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_headers([
             HeaderName::from_static("content-type"),
