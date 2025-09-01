@@ -450,7 +450,7 @@
                                 <!-- Post type filter -->
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
-                                        <span class="label-text text-sm">Post Type</span>
+                                        <span class="label-text text-sm">Offers/Requests</span>
                                     </div>
                                     <div class="dropdown">
                                         <div
