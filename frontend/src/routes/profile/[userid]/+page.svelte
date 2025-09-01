@@ -352,15 +352,15 @@
                             <!-- Top row: Search and Clear button -->
                             <div class="flex items-end gap-4">
                                 <!-- Text search -->
-                                <div class="form-control flex-1">
-                                    <label class="label py-1 px-2" for="text-search">
+                                <div class="form-control flex-1 w-full">
+                                    <label class="label py-1" for="text-search">
                                         <span class="label-text text-xs"
                                             >Search Posts</span
                                         >
                                     </label>
                                     <input
                                         id="text-search"
-                                        class="input input-bordered input-sm"
+                                        class="input input-bordered input-sm px-4 w-full"
                                         placeholder="Search descriptions, categories..."
                                         bind:value={textSearch}
                                     />
