@@ -220,7 +220,7 @@
                                 </p>
                             {/if}
                             {#if isOwnProfile}
-                                <p class="text-xs text-base-content/50 justify-center lg:justify-start mt-2">
+                                <p class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2">
                                     Click profile picture to change
                                 </p>
                             {/if}
