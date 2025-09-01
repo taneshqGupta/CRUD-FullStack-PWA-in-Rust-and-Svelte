@@ -2,7 +2,6 @@
     import {
         getUserProfile,
         getUserPosts,
-        getMyPosts,
         updateProfilePicture,
     } from "$lib/api";
     import { page } from "$app/stores";
@@ -16,9 +15,7 @@
         PinSvg,
         TasksSvg,
         LogoutSvg,
-        SearchSvg,
         FilterSvg,
-        CrossSvg,
     } from "$lib/components/icons";
 
     let loading = true;
