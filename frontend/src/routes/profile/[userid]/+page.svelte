@@ -233,12 +233,12 @@
                 <div class="flex flex-wrap gap-3 justify-center w-full">
                     <div class="join join-horizontal flex-1 w-full">
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full p-2.5"
+                            class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full"
                         >
                             {userPosts.length}
                         </div>
                         <div
-                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full p-2.5"
+                            class="badge join-item badge-soft badge-xl badge-outline font-semibold text-sm w-full"
                         >
                             Total Posts
                         </div>
