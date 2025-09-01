@@ -18,7 +18,7 @@ use http::{HeaderName, Method};
 use partitioned_cookies::add_partitioned_attribute;
 use posts::{
     create_post, delete_post, list_community_offers, list_community_posts, list_community_requests,
-    list_offers, list_my_posts, list_requests, update_post,
+    list_my_posts, list_offers, list_requests, update_post,
 };
 use sqlx::PgPool;
 use std::net::SocketAddr;
@@ -27,7 +27,6 @@ use tower_http::cors::CorsLayer;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 use crate::posts::list_user_posts;
-
 
 #[tokio::main]
 async fn main() -> Result<(), AppError> {
@@ -43,7 +42,10 @@ async fn main() -> Result<(), AppError> {
     tracing::info!("Successfully connected to database.");
 
     let cors = CorsLayer::new()
-        .allow_origin([std::env::var("FRONTEND_URL").unwrap().parse().unwrap()])
+        .allow_origin([std::env::var("FRONTEND_URL")
+            .unwrap_or("http://localhost:3000/".to_string())
+            .parse()
+            .unwrap()])
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
         .allow_headers([
             HeaderName::from_static("content-type"),
