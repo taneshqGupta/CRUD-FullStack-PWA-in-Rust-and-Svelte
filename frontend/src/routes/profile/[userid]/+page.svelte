@@ -304,7 +304,7 @@
                                 class="btn btn-soft btn-block flex-1 hidden lg:block md:block"
                                 on:click={handleLogout}
                             >
-                                <LogoutSvg /> Log-Out
+                                <LogoutSvg/> Log-Out
                             </button>
                         </div>
                     </div>
