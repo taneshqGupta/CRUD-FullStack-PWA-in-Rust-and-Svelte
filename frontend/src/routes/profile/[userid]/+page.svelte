@@ -383,7 +383,7 @@
                                             showMobileFilters = false;
                                         }}
                                     >
-                                        Clear All Filters
+                                        Clear Filters
                                     </button>
                                 </div>
                             </div>
