@@ -193,7 +193,7 @@
             </div>
 
             {#if isOwnProfile}
-                <div class="card bg-base-100 shadow-xl mb-6">
+                <div class="card bg-base-100 mb-6">
                     <div class="card-body">
                         <div class="flex flex-wrap gap-3 justify-center">
                             <a href="/offer" class="btn btn-soft flex-1"
