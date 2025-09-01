@@ -26,7 +26,6 @@
 
     let currentID: string | null = null;
 
-    // Filter state variables
     let textSearch = "";
     let selectedCategories: Category[] = [];
     let categorySearch = "";
