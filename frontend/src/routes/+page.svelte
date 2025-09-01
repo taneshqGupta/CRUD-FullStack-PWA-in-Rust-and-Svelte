@@ -4,13 +4,10 @@
 	import { authStore } from "$lib/auth";
 	import { onMount } from "svelte";
 	import type { Post } from "$lib/types";
-	import { CATEGORIES, type Category, type PostType } from "$lib/types";
+	import { CATEGORIES, type Category} from "$lib/types";
 	import { goto } from "$app/navigation";
 	import {
 		SearchSvg,
-		PinSvg,
-		MembersSvg,
-		CrossSvg,
 		FilterSvg
 	} from "$lib/components/icons";
 
