@@ -229,7 +229,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-1">
+            <div class="flex flex-wrap gap-3 justify-center">
                 <div class="join join-horizontal">
                     <div
                         class="badge join-item badge-soft badge-outline font-black text-2xl"
@@ -242,17 +242,29 @@
                         Total Posts
                     </div>
                 </div>
-                <div class="badge badge-lg border border-base-200 bg-base-100">
-                    <div class="stat-title font-black text-md">
+                <div class="join join-horizontal">
+                    <div
+                        class="badge join-item badge-soft badge-outline font-black text-2xl"
+                    >
+                        {offerCount}
+                    </div>
+                    <div
+                        class="badge join-item badge-soft badge-outline font-extrabold text-xl"
+                    >
                         Skills Offered
                     </div>
-                    <div class="stat-value">{offerCount}</div>
                 </div>
-                <div class="badge badge-lg border-base-200 bg-base-100">
-                    <div class="stat-title font-black text-sm">
-                        Help Requested
+                <div class="join join-horizontal">
+                    <div
+                        class="badge join-item badge-soft badge-outline font-black text-2xl"
+                    >
+                        {requestCount}
                     </div>
-                    <div class="stat-value">{requestCount}</div>
+                    <div
+                        class="badge join-item badge-soft badge-outline font-extrabold text-xl"
+                    >
+                        Help Requests
+                    </div>
                 </div>
             </div>
 
