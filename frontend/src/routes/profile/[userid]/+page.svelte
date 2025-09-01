@@ -599,7 +599,7 @@
                                                             on:change={() =>
                                                                 toggleCategory(category)}
                                                         />
-                                                        <span>{category}</span>
+                                                        <span class="w-full">{category}</span>
                                                     </label>
                                                 </li>
                                             {/each}
@@ -618,7 +618,7 @@
                             <!-- Post type filter -->
                             <div class="form-control">
                                 <div class="label py-1">
-                                    <span class="label-text text-sm">Offer/Request</span>
+                                    <span class="label-text text-xs">Offer/Request</span>
                                 </div>
                                 <div class="dropdown w-full">
                                     <div
