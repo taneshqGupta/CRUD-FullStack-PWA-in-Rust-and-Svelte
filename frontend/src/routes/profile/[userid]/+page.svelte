@@ -269,17 +269,17 @@
             </div>
 
             {#if isOwnProfile}
-                <div class="card bg-base-100 mb-2">
-                    <div class="card-body">
-                        <div class="flex flex-wrap gap-3 justify-center">
-                            <a href="/offer" class="btn btn-soft flex-1"
+                <div class="card bg-base-100 mb-2 w-full">
+                    <div class="card-body w-full">
+                        <div class="flex flex-wrap gap-3 justify-center w-full">
+                            <a href="/offer" class="btn btn-soft  btn-blockflex-1"
                                 >Offer-Skill</a
                             >
-                            <a href="/request" class="btn btn-soft flex-1"
+                            <a href="/request" class="btn btn-soft btn-block flex-1"
                                 >Request-Help</a
                             >
                             <button
-                                class="btn btn-soft flex-1"
+                                class="btn btn-soft btn-block flex-1"
                                 on:click={handleLogout}
                             >
                                 <LogoutSvg /> Log-Out
