@@ -232,7 +232,7 @@
             <div class="flex flex-wrap gap-3 justify-center w-full">
                 <div class="join join-horizontal flex-1 w-full">
                     <div
-                        class="badge join-item badge-soft  badge-lg badge-outline font-bold text-2xl w-full p-2.5"
+                        class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full p-2.5"
                     >
                         {userPosts.length}
                     </div>
@@ -272,10 +272,14 @@
                 <div class="card bg-base-100 mb-2 w-full">
                     <div class="card-body w-full">
                         <div class="flex flex-wrap gap-3 justify-center w-full">
-                            <a href="/offer" class="btn btn-soft  btn-blockflex-1"
+                            <a
+                                href="/offer"
+                                class="btn btn-soft btn-block flex-1"
                                 >Offer-Skill</a
                             >
-                            <a href="/request" class="btn btn-soft btn-block flex-1"
+                            <a
+                                href="/request"
+                                class="btn btn-soft btn-block flex-1"
                                 >Request-Help</a
                             >
                             <button
