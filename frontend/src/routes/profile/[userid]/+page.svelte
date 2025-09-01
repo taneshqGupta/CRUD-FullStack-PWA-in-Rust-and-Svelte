@@ -508,7 +508,7 @@
                                                 >
                                                 {#if post.pin_code}
                                                     <span class="badge badge-outline flex items-center gap-1">
-                                                        <PinSvg class="w-3 h-3" />
+                                                        <PinSvg />
                                                         {post.pin_code}
                                                     </span>
                                                 {/if}
