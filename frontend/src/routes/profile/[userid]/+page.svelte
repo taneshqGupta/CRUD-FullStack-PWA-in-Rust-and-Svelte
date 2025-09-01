@@ -223,7 +223,7 @@
                             {/if}
                             {#if isOwnProfile}
                                 <p
-                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2 mb-2"
+                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2 mb-4"
                                 >
                                     Click profile picture to change
                                 </p>
