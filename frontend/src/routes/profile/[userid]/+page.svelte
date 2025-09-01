@@ -203,7 +203,9 @@
                         </div>
 
                         <div class="text-center md:text-left">
-                            <h1 class="card-title text-2xl mb-2 items-center justify-center lg:justify-start">
+                            <h1
+                                class="card-title text-2xl mb-2 items-center justify-center lg:justify-start"
+                            >
                                 {profile.name || "User"}
                             </h1>
                             <p
@@ -220,7 +222,9 @@
                                 </p>
                             {/if}
                             {#if isOwnProfile}
-                                <p class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2">
+                                <p
+                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2"
+                                >
                                     Click profile picture to change
                                 </p>
                             {/if}
@@ -230,7 +234,9 @@
             </div>
 
             <div class="card bg-base-100 mb-2 w-full p-6">
-                <div class="flex flex-col lg:flex-row flex-wrap gap-3 justify-center w-full">
+                <div
+                    class="flex flex-col lg:flex-row flex-wrap gap-3 justify-center w-full"
+                >
                     <div class="join join-horizontal flex-1 w-full">
                         <div
                             class="badge join-item badge-soft badge-xl badge-outline font-semibold text-2xl w-full p-4"
@@ -313,6 +319,16 @@
                                 </div>
                             {/if}
                         </button>
+                        <button
+                            class="btn btn-soft btn-sm w-full gap-2"
+                            on:click={() => {
+                                textSearch = "";
+                                selectedCategories = [];
+                                postTypeFilter = "both";
+                                showMobileFilters = false;
+                            }}
+                            >Clear Filters
+                        </button>
                     </div>
 
                     <!-- Filter controls -->
@@ -328,7 +344,9 @@
                                 <!-- Text search -->
                                 <div class="form-control flex-1">
                                     <label class="label py-1" for="text-search">
-                                        <span class="label-text text-sm">Search Posts</span>
+                                        <span class="label-text text-sm"
+                                            >Search Posts</span
+                                        >
                                     </label>
                                     <input
                                         id="text-search"
@@ -341,7 +359,10 @@
                                 <!-- Clear filters button -->
                                 <div class="form-control">
                                     <div class="label py-1">
-                                        <span class="label-text text-sm opacity-0">.</span>
+                                        <span
+                                            class="label-text text-sm opacity-0"
+                                            >.</span
+                                        >
                                     </div>
                                     <button
                                         class="btn btn-ghost btn-sm"
@@ -363,7 +384,8 @@
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
                                         <span class="label-text text-sm">
-                                            Categories ({selectedCategories.length} selected)
+                                            Categories ({selectedCategories.length}
+                                            selected)
                                         </span>
                                     </div>
                                     <div class="dropdown">
@@ -372,7 +394,8 @@
                                             class="btn btn-soft btn-sm w-full justify-start"
                                             tabindex="0"
                                         >
-                                            Categories {selectedCategories.length > 0
+                                            Categories {selectedCategories.length >
+                                            0
                                                 ? `(${selectedCategories.length})`
                                                 : ""}
                                         </div>
@@ -389,26 +412,45 @@
                                             </div>
 
                                             {#if selectedCategories.length > 0}
-                                                <div class="mb-2 p-2 bg-base-200 rounded">
-                                                    <div class="flex items-center justify-between mb-1">
-                                                        <div class="text-xs font-semibold">Selected:</div>
+                                                <div
+                                                    class="mb-2 p-2 bg-base-200 rounded"
+                                                >
+                                                    <div
+                                                        class="flex items-center justify-between mb-1"
+                                                    >
+                                                        <div
+                                                            class="text-xs font-semibold"
+                                                        >
+                                                            Selected:
+                                                        </div>
                                                         <button
                                                             class="btn btn-ghost btn-xs"
-                                                            on:click={() => (selectedCategories = [])}
+                                                            on:click={() =>
+                                                                (selectedCategories =
+                                                                    [])}
                                                             >Clear All</button
                                                         >
                                                     </div>
-                                                    <div class="flex flex-wrap gap-1">
+                                                    <div
+                                                        class="flex flex-wrap gap-1"
+                                                    >
                                                         {#each selectedCategories as category}
-                                                            <div class="badge badge-primary badge-xs">
+                                                            <div
+                                                                class="badge badge-primary badge-xs"
+                                                            >
                                                                 {category}
                                                                 <button
                                                                     class="ml-1"
                                                                     on:click={() =>
                                                                         (selectedCategories =
                                                                             selectedCategories.filter(
-                                                                                (c) => c !== category,
-                                                                            ))}>×</button
+                                                                                (
+                                                                                    c,
+                                                                                ) =>
+                                                                                    c !==
+                                                                                    category,
+                                                                            ))}
+                                                                    >×</button
                                                                 >
                                                             </div>
                                                         {/each}
@@ -416,7 +458,9 @@
                                                 </div>
                                             {/if}
 
-                                            <ul class="menu max-h-40 overflow-y-auto">
+                                            <ul
+                                                class="menu max-h-40 overflow-y-auto"
+                                            >
                                                 {#each filteredCategories as category (category)}
                                                     <li>
                                                         <label
@@ -429,15 +473,20 @@
                                                                     category,
                                                                 )}
                                                                 on:change={() =>
-                                                                    toggleCategory(category)}
+                                                                    toggleCategory(
+                                                                        category,
+                                                                    )}
                                                             />
-                                                            <span>{category}</span>
+                                                            <span
+                                                                >{category}</span
+                                                            >
                                                         </label>
                                                     </li>
                                                 {/each}
                                                 {#if filteredCategories.length === 0}
                                                     <li>
-                                                        <span class="text-xs opacity-50"
+                                                        <span
+                                                            class="text-xs opacity-50"
                                                             >No categories found</span
                                                         >
                                                     </li>
@@ -450,7 +499,9 @@
                                 <!-- Post type filter -->
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
-                                        <span class="label-text text-sm">Offers/Requests</span>
+                                        <span class="label-text text-sm"
+                                            >Offers/Requests</span
+                                        >
                                     </div>
                                     <div class="dropdown">
                                         <div
@@ -474,10 +525,14 @@
                                                     <input
                                                         type="radio"
                                                         class="radio radio-sm"
-                                                        bind:group={postTypeFilter}
+                                                        bind:group={
+                                                            postTypeFilter
+                                                        }
                                                         value="both"
                                                     />
-                                                    <span class="text-sm">Both</span>
+                                                    <span class="text-sm"
+                                                        >Both</span
+                                                    >
                                                 </label>
                                             </li>
                                             <li>
@@ -487,10 +542,14 @@
                                                     <input
                                                         type="radio"
                                                         class="radio radio-sm"
-                                                        bind:group={postTypeFilter}
+                                                        bind:group={
+                                                            postTypeFilter
+                                                        }
                                                         value="offers"
                                                     />
-                                                    <span class="text-sm">Offers Only</span>
+                                                    <span class="text-sm"
+                                                        >Offers Only</span
+                                                    >
                                                 </label>
                                             </li>
                                             <li>
@@ -500,10 +559,14 @@
                                                     <input
                                                         type="radio"
                                                         class="radio radio-sm"
-                                                        bind:group={postTypeFilter}
+                                                        bind:group={
+                                                            postTypeFilter
+                                                        }
                                                         value="requests"
                                                     />
-                                                    <span class="text-sm">Requests Only</span>
+                                                    <span class="text-sm"
+                                                        >Requests Only</span
+                                                    >
                                                 </label>
                                             </li>
                                         </ul>
@@ -516,8 +579,13 @@
                         <div class="lg:hidden space-y-4">
                             <!-- Text search -->
                             <div class="form-control">
-                                <label class="label py-1" for="mobile-text-search">
-                                    <span class="label-text text-xs">Search Posts</span>
+                                <label
+                                    class="label py-1"
+                                    for="mobile-text-search"
+                                >
+                                    <span class="label-text text-xs"
+                                        >Search Posts</span
+                                    >
                                 </label>
                                 <input
                                     id="mobile-text-search"
@@ -540,7 +608,8 @@
                                         class="btn btn-soft btn-sm w-full justify-start"
                                         tabindex="0"
                                     >
-                                        Categories {selectedCategories.length > 0
+                                        Categories {selectedCategories.length >
+                                        0
                                             ? `(${selectedCategories.length})`
                                             : ""}
                                     </div>
@@ -557,26 +626,45 @@
                                         </div>
 
                                         {#if selectedCategories.length > 0}
-                                            <div class="mb-2 bg-base-200 rounded w-full">
-                                                <div class="flex items-center justify-between mb-1">
-                                                    <div class="text-xs font-semibold">Selected:</div>
+                                            <div
+                                                class="mb-2 bg-base-200 rounded w-full"
+                                            >
+                                                <div
+                                                    class="flex items-center justify-between mb-1"
+                                                >
+                                                    <div
+                                                        class="text-xs font-semibold"
+                                                    >
+                                                        Selected:
+                                                    </div>
                                                     <button
                                                         class="btn btn-ghost btn-xs"
-                                                        on:click={() => (selectedCategories = [])}
+                                                        on:click={() =>
+                                                            (selectedCategories =
+                                                                [])}
                                                         >Clear All</button
                                                     >
                                                 </div>
-                                                <div class="flex flex-wrap gap-1">
+                                                <div
+                                                    class="flex flex-wrap gap-1"
+                                                >
                                                     {#each selectedCategories as category}
-                                                        <div class="badge badge-primary badge-xs">
+                                                        <div
+                                                            class="badge badge-primary badge-xs"
+                                                        >
                                                             {category}
                                                             <button
                                                                 class="ml-1"
                                                                 on:click={() =>
                                                                     (selectedCategories =
                                                                         selectedCategories.filter(
-                                                                            (c) => c !== category,
-                                                                        ))}>×</button
+                                                                            (
+                                                                                c,
+                                                                            ) =>
+                                                                                c !==
+                                                                                category,
+                                                                        ))}
+                                                                >×</button
                                                             >
                                                         </div>
                                                     {/each}
@@ -584,7 +672,9 @@
                                             </div>
                                         {/if}
 
-                                        <ul class="menu max-h-40 overflow-y-auto w-full">
+                                        <ul
+                                            class="menu max-h-40 overflow-y-auto w-full"
+                                        >
                                             {#each filteredCategories as category (category)}
                                                 <li class="w-full">
                                                     <label
@@ -597,15 +687,20 @@
                                                                 category,
                                                             )}
                                                             on:change={() =>
-                                                                toggleCategory(category)}
+                                                                toggleCategory(
+                                                                    category,
+                                                                )}
                                                         />
-                                                        <span class="w-full">{category}</span>
+                                                        <span class="w-full"
+                                                            >{category}</span
+                                                        >
                                                     </label>
                                                 </li>
                                             {/each}
                                             {#if filteredCategories.length === 0}
                                                 <li class="w-full">
-                                                    <span class="text-xs opacity-50 w-full"
+                                                    <span
+                                                        class="text-xs opacity-50 w-full"
                                                         >No categories found</span
                                                     >
                                                 </li>
@@ -618,7 +713,9 @@
                             <!-- Post type filter -->
                             <div class="form-control">
                                 <div class="label py-1">
-                                    <span class="label-text text-xs">Offer/Request</span>
+                                    <span class="label-text text-xs"
+                                        >Offer/Request</span
+                                    >
                                 </div>
                                 <div class="dropdown w-full">
                                     <div
@@ -645,7 +742,8 @@
                                                     bind:group={postTypeFilter}
                                                     value="both"
                                                 />
-                                                <span class="text-sm">Both</span>
+                                                <span class="text-sm">Both</span
+                                                >
                                             </label>
                                         </li>
                                         <li>
@@ -658,7 +756,9 @@
                                                     bind:group={postTypeFilter}
                                                     value="offers"
                                                 />
-                                                <span class="text-sm">Offers Only</span>
+                                                <span class="text-sm"
+                                                    >Offers Only</span
+                                                >
                                             </label>
                                         </li>
                                         <li>
@@ -671,7 +771,9 @@
                                                     bind:group={postTypeFilter}
                                                     value="requests"
                                                 />
-                                                <span class="text-sm">Requests Only</span>
+                                                <span class="text-sm"
+                                                    >Requests Only</span
+                                                >
                                             </label>
                                         </li>
                                     </ul>
