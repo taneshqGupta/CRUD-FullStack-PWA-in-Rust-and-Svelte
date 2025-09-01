@@ -223,17 +223,21 @@
                             {/if}
                             {#if isOwnProfile}
                                 <p
-                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2"
+                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2 mb-2"
                                 >
                                     Click profile picture to change
                                 </p>
                             {/if}
-                            <button
-                                class="btn btn-soft btn-sm flex items-center justify-center lg:hidden md:hidden"
-                                on:click={handleLogout}
+                            <div
+                                class="flex items-center justify-center lg:hidden md:hidden"
                             >
-                                <LogoutSvg /> Log-Out
-                            </button>
+                                <button
+                                    class="btn btn-soft btn-sm flex items-center justify-center lg:hidden md:hidden"
+                                    on:click={handleLogout}
+                                >
+                                    <LogoutSvg /> Log-Out
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
