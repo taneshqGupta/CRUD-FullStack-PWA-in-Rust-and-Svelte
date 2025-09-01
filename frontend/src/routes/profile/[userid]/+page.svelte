@@ -301,7 +301,7 @@
                                 >Request-Help</a
                             >
                             <button
-                                class="btn btn-soft btn-block flex-1 hidden lg:block"
+                                class="btn btn-soft btn-block flex-1 hidden lg:block md:block"
                                 on:click={handleLogout}
                             >
                                 <LogoutSvg /> Log-Out
@@ -339,14 +339,6 @@
                             }}
                             >Clear Filters
                         </button>
-                        {#if isOwnProfile}
-                            <button
-                                class="btn btn-soft btn-sm w-full gap-2"
-                                on:click={handleLogout}
-                            >
-                                <LogoutSvg /> Logout
-                            </button>
-                        {/if}
                     </div>
 
                     <!-- Filter controls -->
