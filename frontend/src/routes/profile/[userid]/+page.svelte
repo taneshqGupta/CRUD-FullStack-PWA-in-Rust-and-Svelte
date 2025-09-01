@@ -389,13 +389,12 @@
                             </div>
 
                             <!-- Bottom row: Categories and Post Type side by side -->
-                            <div class="flex gap-4">
+                            <div class="flex gap-4 items-end">
                                 <!-- Category filter -->
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
-                                        <span class="label-text text-sm">
-                                            Categories ({selectedCategories.length}
-                                            selected)
+                                        <span class="label-text text-xs">
+                                            Categories ({selectedCategories.length} selected)
                                         </span>
                                     </div>
                                     <div class="dropdown">
@@ -404,8 +403,7 @@
                                             class="btn btn-soft btn-sm w-full justify-start"
                                             tabindex="0"
                                         >
-                                            Categories {selectedCategories.length >
-                                            0
+                                            Categories {selectedCategories.length > 0
                                                 ? `(${selectedCategories.length})`
                                                 : ""}
                                         </div>
@@ -509,15 +507,14 @@
                                 <!-- Post type filter -->
                                 <div class="form-control flex-1">
                                     <div class="label py-1">
-                                        <span class="label-text text-sm"
-                                            >Offers/Requests</span
-                                        >
+                                        <span class="label-text text-xs">Offers/Requests</span>
                                     </div>
                                     <div class="dropdown">
                                         <div
                                             role="button"
                                             class="btn btn-soft btn-sm w-full justify-start"
                                             tabindex="0"
+                                        >
                                         >
                                             {postTypeFilter === "both"
                                                 ? "Both"
