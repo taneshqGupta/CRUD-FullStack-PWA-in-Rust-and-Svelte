@@ -1,7 +1,9 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
+    import { mount } from 'svelte';
     import type { Post } from '$lib/types';
+    import PopupContent from './PopupContent.svelte';
 
     export let posts: Post[] = [];
     export let center: [number, number] = [20.5937, 78.9629]; // Center of India
@@ -200,31 +202,18 @@
                 
                 const icon = createCombinedIcon(offerCount, requestCount);
                 
-                const popupContent = `
-                    <div class="p-3 max-w-sm">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="badge badge-outline badge-sm"><div class="inline-flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Pin Code: ${pinCode}</div></span>
-                            <span class="text-xs">${offerCount} offers, ${requestCount} requests</span>
-                        </div>
-                        <div class="space-y-2 max-h-60 overflow-y-auto">
-                            ${postsAtLocation.map(post => `
-                                <div class="border border-base-300 rounded-lg p-2">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <span class="badge ${post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-xs">
-                                            <div class="badge badge-ghost">${post.post_type === 'offer' ? 'Offer' : 'Request'}</div>
-                                        </span>
-                                        <span class="text-xs font-medium">${post.category}</span>
-                                    </div>
-                                    <p class="text-sm">${post.description}</p>
-                                    ${post.user_name ? `<p class="text-xs opacity-70 mt-1">By: ${post.user_name}</p>` : ''}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                // Create a temporary container to render the Svelte component
+                const tempContainer = document.createElement('div');
+                const popupComponent = mount(PopupContent, {
+                    target: tempContainer,
+                    props: {
+                        pinCode: pinCode,
+                        posts: postsAtLocation
+                    }
+                });
                 
                 const marker = L.marker(coordinates, { icon })
-                    .bindPopup(popupContent)
+                    .bindPopup(tempContainer.innerHTML)
                     .addTo(map);
                 
                 markers.push(marker);
