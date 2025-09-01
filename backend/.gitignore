@@ -1,15 +1,11 @@
-# IDE settings
 .idea/
 .vscode/
 
-# Rust
 target/
 **/*.rs.bk
 .cargo/
 
-# Env files
 .env
 
-# sqlx
-!.sqlx
+.sqlx
 
