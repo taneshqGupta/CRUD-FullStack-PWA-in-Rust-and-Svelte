@@ -592,7 +592,7 @@
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            class="checkbox checkbox-xs w-full"
+                                                            class="checkbox checkbox-xs"
                                                             checked={selectedCategories.includes(
                                                                 category,
                                                             )}
@@ -618,7 +618,7 @@
                             <!-- Post type filter -->
                             <div class="form-control">
                                 <div class="label py-1">
-                                    <span class="label-text text-sm">Post Type</span>
+                                    <span class="label-text text-sm">Offer/Request</span>
                                 </div>
                                 <div class="dropdown w-full">
                                     <div
