@@ -203,18 +203,18 @@
                         </div>
 
                         <div class="text-center md:text-left">
-                            <h1 class="card-title text-2xl mb-2 items-center justify-center">
+                            <h1 class="card-title text-2xl mb-2 items-center justify-center lg:justify-start">
                                 {profile.name || "User"}
                             </h1>
                             <p
-                                class="text-base-content/70 mb-2 flex items-center justify-center md:justify-start gap-2"
+                                class="text-base-content/70 mb-2 flex items-center justify-center lg:justify-start gap-2"
                             >
                                 <MailSvg />
                                 {profile.email}
                             </p>
                             {#if profile.pin_code}
                                 <p
-                                    class="text-base-content/70 flex items-center justify-center md:justify-start gap-2"
+                                    class="text-base-content/70 flex items-center justify-center lg:justify-start gap-2"
                                 >
                                     <PinSvg /> Pin Code: {profile.pin_code}
                                 </p>
