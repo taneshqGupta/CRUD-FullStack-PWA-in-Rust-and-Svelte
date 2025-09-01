@@ -180,8 +180,8 @@
         {:else if profile}
             <div class="card bg-base-100 mb-6">
                 <div class="card-body">
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="relative">
+                    <div class="flex flex-col lg:flex-row items-center gap-6">
+                        <div class="relative flex-shrink-0">
                             <ProfilePicture
                                 profilePicture={profile.profile_picture}
                                 name={profile.name || "User"}
@@ -203,7 +203,7 @@
                         </div>
 
                         <div class="text-center md:text-left">
-                            <h1 class="card-title text-2xl mb-2">
+                            <h1 class="card-title text-2xl mb-2 items-center justify-center">
                                 {profile.name || "User"}
                             </h1>
                             <p
@@ -230,7 +230,7 @@
             </div>
 
             <div class="card bg-base-100 mb-2 w-full p-6">
-                <div class="flex flex-wrap gap-3 justify-center w-full">
+                <div class="flex flex-col lg:flex-row flex-wrap gap-3 justify-center w-full">
                     <div class="join join-horizontal flex-1 w-full">
                         <div
                             class="badge join-item badge-soft badge-xl badge-outline font-bold text-2xl w-full p-4"
