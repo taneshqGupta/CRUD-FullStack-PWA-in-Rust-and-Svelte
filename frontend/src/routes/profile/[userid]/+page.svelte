@@ -229,7 +229,7 @@
                 </div>
             </div>
 
-            <div class="card bg-base-100 mb-2 w-full p-2">
+            <div class="card bg-base-100 mb-2 w-full p-6">
                 <div class="flex flex-wrap gap-3 justify-center w-full">
                     <div class="join join-horizontal flex-1 w-full">
                         <div
