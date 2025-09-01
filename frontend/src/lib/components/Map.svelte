@@ -292,7 +292,6 @@
         });
     }
 
-    // Reactive statement to update markers when posts change
     $: if (map && posts) {
         updateMarkers();
     }
