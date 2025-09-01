@@ -233,7 +233,7 @@
             <div class="grid grid-cols-3 gap-1 mb-2">
                 <div class="stat bg-base-100 rounded-box">
                     <div class="stat-title font-black text-xl">Total Posts</div>
-                    <div class="stat-value text-primary">
+                    <div class="stat-value">
                         {filteredPosts.length} 
                         {#if filteredPosts.length !== userPosts.length}
                             <span class="text-sm text-base-content/60">of {userPosts.length}</span>
@@ -242,11 +242,11 @@
                 </div>
                 <div class="stat bg-base-100 rounded-box">
                     <div class="stat-title font-black text-md">Skills Offered</div>
-                    <div class="stat-value text-primary">{offerCount}</div>
+                    <div class="stat-value">{offerCount}</div>
                 </div>
                 <div class="stat bg-base-100 rounded-box">
                     <div class="stat-title font-black text-sm">Help Requested</div>
-                    <div class="stat-value text-primary">{requestCount}</div>
+                    <div class="stat-value">{requestCount}</div>
                 </div>
             </div>
 
