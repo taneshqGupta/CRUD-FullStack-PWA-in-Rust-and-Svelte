@@ -229,41 +229,43 @@
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-3 justify-center w-full">
-                <div class="join join-horizontal flex-1 w-full">
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full p-2.5"
-                    >
-                        {userPosts.length}
+            <div class="card bg-base-100 mb-2 w-full">
+                <div class="flex flex-wrap gap-3 justify-center w-full">
+                    <div class="join join-horizontal flex-1 w-full">
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full p-2.5"
+                        >
+                            {userPosts.length}
+                        </div>
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full p-2.5"
+                        >
+                            Total Posts
+                        </div>
                     </div>
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full p-2.5"
-                    >
-                        Total Posts
+                    <div class="join join-horizontal flex-1 w-full">
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full"
+                        >
+                            {offerCount}
+                        </div>
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full"
+                        >
+                            Skills Offered
+                        </div>
                     </div>
-                </div>
-                <div class="join join-horizontal flex-1 w-full">
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full"
-                    >
-                        {offerCount}
-                    </div>
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full"
-                    >
-                        Skills Offered
-                    </div>
-                </div>
-                <div class="join join-horizontal flex-1 w-full">
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full"
-                    >
-                        {requestCount}
-                    </div>
-                    <div
-                        class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full"
-                    >
-                        Help Requests
+                    <div class="join join-horizontal flex-1 w-full">
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-bold text-2xl w-full"
+                        >
+                            {requestCount}
+                        </div>
+                        <div
+                            class="badge join-item badge-soft badge-lg badge-outline font-semibold text-sm w-full"
+                        >
+                            Help Requests
+                        </div>
                     </div>
                 </div>
             </div>
