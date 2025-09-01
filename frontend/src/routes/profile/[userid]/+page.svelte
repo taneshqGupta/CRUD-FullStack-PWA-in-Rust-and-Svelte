@@ -375,7 +375,7 @@
                                         >
                                     </div>
                                     <button
-                                        class="btn btn-ghost btn-sm"
+                                        class="btn btn-soft btn-sm"
                                         on:click={() => {
                                             textSearch = "";
                                             selectedCategories = [];
