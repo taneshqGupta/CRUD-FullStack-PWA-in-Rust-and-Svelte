@@ -152,13 +152,12 @@
         return true;
     });
 
-    $: offerCount = filteredPosts.filter(
+    $: offerCount = userPosts.filter(
         (post) => post.post_type === "offer",
     ).length;
-    $: requestCount = filteredPosts.filter(
+    $: requestCount = userPosts.filter(
         (post) => post.post_type === "request",
     ).length;
-    $: completedCount = filteredPosts.filter((post) => post.completed).length;
 </script>
 
 <svelte:head>
@@ -231,19 +230,19 @@
             </div>
 
             <div class="grid grid-cols-3 gap-1">
-                <div class="stat border border-base-200 bg-base-100">
+                <div class="badge badge-lg border border-base-200 bg-base-100">
                     <div class="stat-title font-black text-xl">Total Posts</div>
                     <div class="stat-value">
                         {userPosts.length}
                     </div>
                 </div>
-                <div class="stat border border-base-200 bg-base-100">
+                <div class="badge badge-lg border border-base-200 bg-base-100">
                     <div class="stat-title font-black text-md">
                         Skills Offered
                     </div>
                     <div class="stat-value">{offerCount}</div>
                 </div>
-                <div class="stat border border-base-200 bg-base-100">
+                <div class="badge badge-lg border-base-200 bg-base-100">
                     <div class="stat-title font-black text-sm">
                         Help Requested
                     </div>
