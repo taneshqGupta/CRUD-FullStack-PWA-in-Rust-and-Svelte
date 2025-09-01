@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Post } from "$lib/types";
+    import { goto } from "$app/navigation";
 
     export let pinCode: string;
     export let posts: Post[];
@@ -8,57 +9,70 @@
     $: requestCount = posts.filter((p) => p.post_type === "request").length;
 
     function goToProfile(userId: number) {
-        window.location.href = `/profile/${userId}`;
+        goto(`/profile/${userId}`);
     }
 </script>
 
-<div class="card card-compact bg-base-100 w-80 max-w-sm">
+<div class="card card-compact bg-base-200 w-80 max-w-sm">
     <div class="card-body">
         <div class="flex items-center justify-between mb-3">
-            <div class="badge badge-outline badge-sm">
-                📍 Pin Code: {pinCode}
+            <div class="font-medium text-sm">
+                Pin Code: {pinCode}
             </div>
-            <div class="text-xs text-neutral">
+            <div class="font-extrabold text-md">
                 {offerCount} offers, {requestCount} requests
             </div>
         </div>
 
         <div class="space-y-3 max-h-60 overflow-y-auto">
             {#each posts as post}
-                <div class="card card-compact bg-base-100 border border-base-300">
+                <div
+                    class="card card-compact bg-base-100 border border-base-300"
+                >
                     <div class="card-body">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="badge {post.post_type === 'offer' ? 'badge-primary' : 'badge-secondary'} badge-sm">
-                                {post.post_type === "offer" ? "Offer" : "Request"}
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="badge badge-ghost">
+                                {post.post_type === "offer"
+                                    ? "Offer"
+                                    : "Request"}
                             </div>
-                            <div class="badge badge-ghost badge-xs text-neutral">
+                            <div class="badge badge-ghost">
                                 {post.category}
                             </div>
                         </div>
-                        
-                        <p class="text-sm text-neutral mb-3">{post.description}</p>
-                        
+
+                        <p class="mb-1">{post.description}</p>
+
                         {#if post.user_name}
-                            <div class="card-actions justify-end">
-                                <button 
-                                    class="btn btn-ghost btn-xs gap-2"
-                                    on:click={() => goToProfile(post.user_id)}
+                            <div class="card-actions justify-center">
+                                <a
+                                    href="/profile/{post.user_id}"
+                                    class="btn btn-soft btn-block gap-2"
                                 >
                                     {#if post.profile_picture}
                                         <div class="avatar">
-                                            <div class="w-4 h-4 rounded-full">
-                                                <img src={post.profile_picture} alt={post.user_name} />
+                                            <div class="w-8 h-8 rounded-full">
+                                                <img
+                                                    src={post.profile_picture}
+                                                    alt={post.user_name}
+                                                />
                                             </div>
                                         </div>
                                     {:else}
                                         <div class="avatar placeholder">
-                                            <div class="bg-neutral-focus text-neutral-content rounded-full w-4 h-4">
-                                                <span class="text-xs">{post.user_name.charAt(0).toUpperCase()}</span>
+                                            <div
+                                                class="bg-neutral-focus text-neutral-content rounded-full w-4 h-4"
+                                            >
+                                                <span class="text-xs"
+                                                    >{post.user_name
+                                                        .charAt(0)
+                                                        .toUpperCase()}</span
+                                                >
                                             </div>
                                         </div>
                                     {/if}
-                                    <span class="text-neutral">{post.user_name}</span>
-                                </button>
+                                    <span>By: {post.user_name}</span>
+                                </a>
                             </div>
                         {/if}
                     </div>

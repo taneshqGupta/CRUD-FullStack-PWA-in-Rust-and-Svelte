@@ -178,9 +178,9 @@
         return L.divIcon({
             className: "custom-marker",
             html: tempContainer.innerHTML,
-            iconSize: [32, 32], // w-8 h-8 = 2rem = 32px
-            iconAnchor: [16, 16], // center = half of size
-            popupAnchor: [0, -16], // popup appears above center
+            iconSize: [32, 32], 
+            iconAnchor: [16, 16], 
+            popupAnchor: [0, -16], 
         });
     }
 
@@ -269,12 +269,18 @@
 <style>
     :global(.leaflet-popup-content-wrapper) {
         background-color: hsl(var(--b1)) !important;
-        border-radius: 1rem !important;
+        border-radius: 0.25rem !important;
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+        color: hsl(var(--nc)) !important;
     }
     
     :global(.leaflet-popup-content) {
         margin: 0 !important;
+        color: hsl(var(--nc)) !important;
+    }
+    
+    :global(.leaflet-popup-content *) {
+        color: inherit !important;
     }
     
     :global(.leaflet-popup-tip) {
