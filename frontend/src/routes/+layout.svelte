@@ -99,10 +99,10 @@
     <footer
         class="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4"
     >
-        <aside class="grid-flow-col items-center">
+        <!-- <aside class="grid-flow-col items-center">
             <SquirrelSvg />
             <a href="/about" class="link link-hover">About This Template</a>
-        </aside>
+        </aside> -->
         <nav
             class="grid-flow-col gap-4 md:place-self-center md:justify-self-end"
         >
