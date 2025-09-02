@@ -224,6 +224,7 @@
                                     Click profile picture to change
                                 </p>
                             {/if}
+                            {#if isOwnProfile}
                             <div
                                 class="flex items-center justify-center lg:hidden mt-4"
                             >
@@ -234,6 +235,7 @@
                                     <LogoutSvg /> Log-Out
                                 </button>
                             </div>
+                            {/if}
                         </div>
                     </div>
                 </div>
