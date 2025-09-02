@@ -13,45 +13,57 @@
     }
 </script>
 
-<div class="card card-compact bg-base-200 w-80 max-w-sm">
-    <div class="card-body">
-        <div class="flex items-center justify-between mb-3">
-            <div class="font-medium text-sm">
+<div class="card card-compact bg-base-200 w-80 max-w-sm text-neutral-content">
+    <div class="card-body text-neutral-content">
+        <div
+            class="flex items-center justify-between mb-3 text-neutral-content"
+        >
+            <div class="font-medium text-sm text-neutral-content">
                 Pin Code: {pinCode}
             </div>
-            <div class="font-extrabold text-md">
+            <div class="font-extrabold text-md text-neutral-content">
                 {offerCount} offers, {requestCount} requests
             </div>
         </div>
 
-        <div class="space-y-3 max-h-60 overflow-y-auto">
+        <div class="space-y-3 max-h-60 overflow-y-auto text-neutral-content">
             {#each posts as post}
                 <div
-                    class="card card-compact bg-base-100 border border-base-300"
+                    class="card card-compact bg-base-100 border border-base-300 text-neutral-content"
                 >
-                    <div class="card-body">
-                        <div class="flex items-center justify-between mb-1">
-                            <div class="badge badge-ghost">
+                    <div class="card-body text-neutral-content">
+                        <div
+                            class="flex items-center justify-between mb-1 text-neutral-content"
+                        >
+                            <div class="badge badge-ghost text-neutral-content">
                                 {post.post_type === "offer"
                                     ? "Offer"
                                     : "Request"}
                             </div>
-                            <div class="badge badge-ghost">
+                            <div class="badge badge-ghost text-neutral-content">
                                 {post.category}
                             </div>
                         </div>
 
-                        <p class="mb-1">{post.description}</p>
+                        <p class="mb-1 text-neutral-content">
+                            {post.description}
+                        </p>
 
                         {#if post.user_name}
-                            <div class="card-actions justify-center">
+                            <div
+                                class="card-actions justify-center text-neutral-content"
+                            >
                                 <a
                                     href="/profile/{post.user_id}"
                                     class="btn btn-soft btn-block gap-2"
                                 >
                                     {#if post.profile_picture}
-                                        <div class="avatar">
-                                            <div class="w-8 h-8 rounded-full">
+                                        <div
+                                            class="avatar text-neutral-content"
+                                        >
+                                            <div
+                                                class="w-8 h-8 rounded-full text-neutral-content"
+                                            >
                                                 <img
                                                     src={post.profile_picture}
                                                     alt={post.user_name}
@@ -59,9 +71,11 @@
                                             </div>
                                         </div>
                                     {:else}
-                                        <div class="avatar placeholder">
+                                        <div
+                                            class="avatar placeholder text-neutral-content"
+                                        >
                                             <div
-                                                class="bg-neutral-focus text-neutral-content rounded-full w-4 h-4"
+                                                class="text-neutral-content-focus text-neutral-content-content rounded-full w-4 h-4"
                                             >
                                                 <span class="text-xs"
                                                     >{post.user_name
@@ -71,7 +85,9 @@
                                             </div>
                                         </div>
                                     {/if}
-                                    <span>By: {post.user_name}</span>
+                                    <span class="text-neutral-content"
+                                        >By: {post.user_name}</span
+                                    >
                                 </a>
                             </div>
                         {/if}

@@ -219,13 +219,13 @@
                             {/if}
                             {#if isOwnProfile}
                                 <p
-                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2 mb-4"
+                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2"
                                 >
                                     Click profile picture to change
                                 </p>
                             {/if}
                             <div
-                                class="flex items-center justify-center lg:hidden"
+                                class="flex items-center justify-center lg:hidden mt-4"
                             >
                                 <button
                                     class="btn btn-soft btn-sm flex items-center justify-center"
