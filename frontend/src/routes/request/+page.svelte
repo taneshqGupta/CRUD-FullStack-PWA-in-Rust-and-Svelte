@@ -219,9 +219,9 @@
 						</div>
 					</div>
 
-					<div class="flex justify-center items-center pt-4">
+					<div class="flex flex-col gap-3 pt-4">
 						<button
-							type="submit"
+							type="button"
 							class="btn btn-soft btn-block"
 							on:click={handleCreatePost}
 						>
@@ -233,6 +233,11 @@
 								Request Help
 							{/if}
 						</button>
+						<button
+							type="button"
+							class="btn btn-soft btn-block"
+							on:click={() => goto("/")}>Cancel</button
+						>
 					</div>
 				</form>
 			</div>
