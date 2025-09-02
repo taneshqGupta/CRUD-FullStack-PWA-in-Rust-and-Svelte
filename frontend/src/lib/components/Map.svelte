@@ -13,7 +13,7 @@
     export let onLocationSelect:
         | ((lat: number, lng: number, address?: string) => void)
         | null = null;
-    export let userPinCode: string = ""; // User's default pin code to auto-focus
+    export let userPinCode: string = ""; 
 
     let mapContainer: HTMLDivElement;
     let map: any = null;
@@ -88,7 +88,6 @@
         const themeType = getThemeType();
 
         if (themeType === "dark") {
-            // Dark theme (forest) - use light tiles with dark theme color overlay
             currentTileLayer = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
@@ -99,7 +98,6 @@
                 },
             );
         } else if (themeType === "dim") {
-            // Dim theme - use light tiles with dim theme background overlay
             currentTileLayer = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
@@ -110,7 +108,6 @@
                 },
             );
         } else if (themeType === "retro") {
-            // Retro theme - warm vintage colors
             currentTileLayer = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
@@ -121,7 +118,6 @@
                 },
             );
         } else if (themeType === "valentine") {
-            // Valentine theme - romantic pink/red tones
             currentTileLayer = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
@@ -132,7 +128,6 @@
                 },
             );
         } else {
-            // Light theme
             currentTileLayer = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
@@ -155,6 +150,8 @@
             touchZoom: true,
             boxZoom: true,
             keyboard: true,
+            zoomControl: false, 
+            attributionControl: false, 
         }).setView(center, zoom);
 
         updateTileLayer();
@@ -163,6 +160,14 @@
             .zoom({
                 position: "topright",
             })
+            .addTo(map);
+
+        L.control
+            .attribution({
+                position: "bottomright",
+                prefix: false, 
+            })
+            .addAttribution('© <a href="https://osm.org/copyright">OSM</a>')
             .addTo(map);
 
         if (userPinCode) {
@@ -261,7 +266,6 @@
     }
 
     function createCombinedIcon(offerCount: number, requestCount: number) {
-        // Create a temporary container to render the MarkerIcon component
         const tempContainer = document.createElement("div");
         const iconComponent = mount(MarkerIcon, {
             target: tempContainer,
@@ -310,7 +314,6 @@
 
                 const icon = createCombinedIcon(offerCount, requestCount);
 
-                // Create a temporary container to render the Svelte component
                 const tempContainer = document.createElement("div");
                 const popupComponent = mount(PopupContent, {
                     target: tempContainer,
@@ -385,31 +388,82 @@
         background-color: hsl(var(--b1)) !important;
     }
 
-    /* Dark theme map filter - match DaisyUI forest/dark themes */
     :global(.dark-map-filter) {
         filter: sepia(0.2) hue-rotate(90deg) brightness(0.25) contrast(1.3)
             saturate(0.7) !important;
         mix-blend-mode: multiply !important;
     }
 
-    /* Dim theme map filter - match DaisyUI dim bg-base-100 */
     :global(.dim-map-filter) {
         filter: sepia(0.1) hue-rotate(200deg) brightness(0.4) contrast(1.1)
             saturate(0.9) !important;
         mix-blend-mode: multiply !important;
     }
 
-    /* Retro theme map filter - warm vintage colors */
     :global(.retro-map-filter) {
         filter: sepia(0.6) hue-rotate(15deg) brightness(0.85) contrast(1.1)
             saturate(1.2) !important;
         mix-blend-mode: multiply !important;
     }
 
-    /* Valentine theme map filter - romantic pink/red tones */
     :global(.valentine-map-filter) {
         filter: sepia(0.4) hue-rotate(310deg) brightness(0.9) contrast(1.05)
             saturate(1.3) !important;
         mix-blend-mode: multiply !important;
+    }
+
+    :global(.leaflet-control-zoom) {
+        background-color: hsl(var(--b1)) !important;
+        border: 1px solid hsl(var(--b3)) !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+    }
+
+    :global(.leaflet-control-zoom a) {
+        background-color: hsl(var(--b1)) !important;
+        color: hsl(var(--nc)) !important;
+        border: none !important;
+        border-radius: 0.5rem !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        line-height: 26px !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+    }
+
+    :global(.leaflet-control-zoom a:hover) {
+        background-color: hsl(var(--b2)) !important;
+        color: hsl(var(--pc)) !important;
+        transform: scale(1.05) !important;
+    }
+
+    :global(.leaflet-control-zoom a:first-child) {
+        border-top-left-radius: 0.5rem !important;
+        border-top-right-radius: 0.5rem !important;
+        border-bottom: 1px solid hsl(var(--b3)) !important;
+    }
+
+    :global(.leaflet-control-zoom a:last-child) {
+        border-bottom-left-radius: 0.5rem !important;
+        border-bottom-right-radius: 0.5rem !important;
+    }
+
+    :global(.leaflet-control-attribution) {
+        background-color: hsl(var(--b1) / 0.8) !important;
+        border: 1px solid hsl(var(--b3)) !important;
+        border-radius: 0.25rem !important;
+        color: hsl(var(--nc)) !important;
+        font-size: 11px !important;
+        padding: 2px 5px !important;
+        backdrop-filter: blur(8px) !important;
+    }
+
+    :global(.leaflet-control-attribution a) {
+        color: hsl(var(--pc)) !important;
+        text-decoration: underline !important;
+    }
+
+    :global(.leaflet-control-attribution a:hover) {
+        color: hsl(var(--ac)) !important;
     }
 </style>
