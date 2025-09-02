@@ -45,7 +45,10 @@
             // Watch for theme changes
             themeObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                    if (
+                        mutation.type === "attributes" &&
+                        mutation.attributeName === "data-theme"
+                    ) {
                         updateTileLayer();
                     }
                 });
@@ -53,7 +56,7 @@
 
             themeObserver.observe(document.documentElement, {
                 attributes: true,
-                attributeFilter: ['data-theme']
+                attributeFilter: ["data-theme"],
             });
         }
     });
@@ -69,58 +72,78 @@
 
     let currentTileLayer: any = null;
 
-    function getThemeType(): 'light' | 'dim' | 'dark' | 'retro' | 'valentine' {
-        const theme = document.documentElement.getAttribute('data-theme');
-        if (theme === 'forest') return 'dark';
-        if (theme === 'dim') return 'dim';
-        if (theme === 'retro') return 'retro';
-        if (theme === 'valentine') return 'valentine';
-        return 'light';
+    function getThemeType(): "light" | "dim" | "dark" | "retro" | "valentine" {
+        const theme = document.documentElement.getAttribute("data-theme");
+        if (theme === "forest") return "dark";
+        if (theme === "dim") return "dim";
+        if (theme === "retro") return "retro";
+        if (theme === "valentine") return "valentine";
+        return "light";
     }
 
     function updateTileLayer() {
         if (map && currentTileLayer) {
             map.removeLayer(currentTileLayer);
         }
-        
+
         const themeType = getThemeType();
-        
-        if (themeType === 'dark') {
+
+        if (themeType === "dark") {
             // Dark theme (forest) - use light tiles with dark theme color overlay
-            currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 20,
-                className: 'dark-map-filter'
-            });
-        } else if (themeType === 'dim') {
+            currentTileLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 20,
+                    className: "dark-map-filter",
+                },
+            );
+        } else if (themeType === "dim") {
             // Dim theme - use light tiles with dim theme background overlay
-            currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 20,
-                className: 'dim-map-filter'
-            });
-        } else if (themeType === 'retro') {
+            currentTileLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 20,
+                    className: "dim-map-filter",
+                },
+            );
+        } else if (themeType === "retro") {
             // Retro theme - warm vintage colors
-            currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 20,
-                className: 'retro-map-filter'
-            });
-        } else if (themeType === 'valentine') {
+            currentTileLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 20,
+                    className: "retro-map-filter",
+                },
+            );
+        } else if (themeType === "valentine") {
             // Valentine theme - romantic pink/red tones
-            currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 20,
-                className: 'valentine-map-filter'
-            });
+            currentTileLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 20,
+                    className: "valentine-map-filter",
+                },
+            );
         } else {
             // Light theme
-            currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 20
-            });
+            currentTileLayer = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 20,
+                },
+            );
         }
-        
+
         if (map) {
             currentTileLayer.addTo(map);
         }
@@ -253,9 +276,9 @@
         return L.divIcon({
             className: "custom-marker",
             html: tempContainer.innerHTML,
-            iconSize: [32, 32], 
-            iconAnchor: [16, 16], 
-            popupAnchor: [0, -16], 
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16],
         });
     }
 
@@ -343,42 +366,52 @@
 
 <style>
     :global(.leaflet-popup-content-wrapper) {
-        background: transparent !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        padding: 0 !important;
+        background-color: hsl(var(--b1)) !important;
+        border-radius: 0.25rem !important;
+        box-shadow:
+            0 10px 15px -3px rgb(0 0 0 / 0.1),
+            0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+        color: hsl(var(--nc)) !important;
     }
 
     :global(.leaflet-popup-content) {
         margin: 0 !important;
-        line-height: 1 !important;
+        color: hsl(var(--nc)) !important;
+    }
+
+    :global(.leaflet-popup-content *) {
+        color: inherit !important;
     }
 
     :global(.leaflet-popup-tip) {
-        display: none !important;
+        background-color: hsl(var(--b1)) !important;
     }
 
     /* Dark theme map filter - match DaisyUI forest/dark themes */
     :global(.dark-map-filter) {
-        filter: sepia(0.2) hue-rotate(90deg) brightness(0.25) contrast(1.3) saturate(0.7) !important;
+        filter: sepia(0.2) hue-rotate(90deg) brightness(0.25) contrast(1.3)
+            saturate(0.7) !important;
         mix-blend-mode: multiply !important;
     }
 
     /* Dim theme map filter - match DaisyUI dim bg-base-100 */
     :global(.dim-map-filter) {
-        filter: sepia(0.1) hue-rotate(200deg) brightness(0.4) contrast(1.1) saturate(0.9) !important;
+        filter: sepia(0.1) hue-rotate(200deg) brightness(0.4) contrast(1.1)
+            saturate(0.9) !important;
         mix-blend-mode: multiply !important;
     }
 
     /* Retro theme map filter - warm vintage colors */
     :global(.retro-map-filter) {
-        filter: sepia(0.6) hue-rotate(15deg) brightness(0.85) contrast(1.1) saturate(1.2) !important;
+        filter: sepia(0.6) hue-rotate(15deg) brightness(0.85) contrast(1.1)
+            saturate(1.2) !important;
         mix-blend-mode: multiply !important;
     }
 
     /* Valentine theme map filter - romantic pink/red tones */
     :global(.valentine-map-filter) {
-        filter: sepia(0.4) hue-rotate(310deg) brightness(0.9) contrast(1.05) saturate(1.3) !important;
+        filter: sepia(0.4) hue-rotate(310deg) brightness(0.9) contrast(1.05)
+            saturate(1.3) !important;
         mix-blend-mode: multiply !important;
     }
 </style>
