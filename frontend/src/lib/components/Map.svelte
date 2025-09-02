@@ -424,9 +424,11 @@
         color: hsl(var(--nc)) !important;
         border: none !important;
         border-radius: 0.5rem !important;
-        font-size: 18px !important;
+        font-size: 28px !important;
         font-weight: bold !important;
-        line-height: 26px !important;
+        line-height: 40px !important;
+        width: 40px !important;
+        height: 40px !important;
         text-decoration: none !important;
         transition: all 0.2s ease !important;
     }
