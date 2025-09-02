@@ -185,7 +185,8 @@
 										{/each}
 										{#if filteredCategories.length === 0}
 											<li class="w-full">
-												<span class="text-xs opacity-50 w-full"
+												<span
+													class="text-xs opacity-50 w-full"
 													>No categories found</span
 												>
 											</li>
@@ -217,7 +218,7 @@
 						</div>
 					</div>
 
-					<div class="flex justify-center items-center pt-4">
+					<div class="flex flex-col gap-3 pt-4">
 						<button
 							type="button"
 							class="btn btn-soft btn-block"
@@ -231,6 +232,11 @@
 								Offer Skill
 							{/if}
 						</button>
+						<button
+							type="button"
+							class="btn btn-soft btn-block"
+							on:click={() => goto("/")}>Cancel</button
+						>
 					</div>
 				</form>
 			</div>

@@ -13,8 +13,8 @@
     }
 </script>
 
-<div class="card card-compact bg-base-200 w-80 max-w-sm">
-    <div class="card-body">
+<div class="card card-compact bg-base-200 w-80 max-w-sm p-1.5">
+    <!-- <div class="card-body"> -->
         <div class="flex items-center justify-between mb-3">
             <div class="font-medium text-sm">
                 Pin Code: {pinCode}
@@ -79,5 +79,5 @@
                 </div>
             {/each}
         </div>
-    </div>
+    <!-- </div> -->
 </div>

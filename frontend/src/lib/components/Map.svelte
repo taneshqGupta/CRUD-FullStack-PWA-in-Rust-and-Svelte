@@ -42,7 +42,6 @@
             initializeMap();
             getUserLocation();
 
-            // Watch for theme changes
             themeObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (
@@ -158,7 +157,6 @@
             keyboard: true,
         }).setView(center, zoom);
 
-        // Initialize with the appropriate tile layer based on current theme
         updateTileLayer();
 
         L.control
@@ -323,7 +321,7 @@
                 });
 
                 const marker = L.marker(coordinates, { icon })
-                    .bindPopup(tempContainer.innerHTML)
+                    .bindPopup(tempContainer.innerHTML, { closeButton: false })
                     .addTo(map);
 
                 markers.push(marker);
