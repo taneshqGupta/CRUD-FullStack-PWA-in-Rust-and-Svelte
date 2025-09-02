@@ -17,7 +17,7 @@ pub async fn list_my_posts(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 ORDER BY p.id DESC",
@@ -31,7 +31,7 @@ pub async fn list_my_posts(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: match row.post_type.as_str() {
                 "offer" => PostType::Offer,
@@ -52,7 +52,7 @@ pub async fn list_user_posts(
     Path(userid): Path<i32>,
 ) -> Result<Json<Vec<Post>>, AppError> {
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 ORDER BY p.id DESC",
@@ -66,7 +66,7 @@ pub async fn list_user_posts(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: match row.post_type.as_str() {
                 "offer" => PostType::Offer,
@@ -89,7 +89,7 @@ pub async fn list_offers(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 AND p.post_type = 'offer' ORDER BY p.id",
@@ -103,7 +103,7 @@ pub async fn list_offers(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: PostType::Offer,
             pin_code: row.pin_code,
@@ -122,7 +122,7 @@ pub async fn list_requests(
     let user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.user_id = $1 AND p.post_type = 'request' ORDER BY p.id",
@@ -136,7 +136,7 @@ pub async fn list_requests(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: PostType::Request,
             pin_code: row.pin_code,
@@ -155,7 +155,7 @@ pub async fn list_community_posts(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          ORDER BY p.id DESC"
@@ -168,7 +168,7 @@ pub async fn list_community_posts(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: match row.post_type.as_str() {
                 "offer" => PostType::Offer,
@@ -191,7 +191,7 @@ pub async fn list_community_offers(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.post_type = 'offer' ORDER BY p.id DESC"
@@ -204,7 +204,7 @@ pub async fn list_community_offers(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: PostType::Offer,
             pin_code: row.pin_code,
@@ -223,7 +223,7 @@ pub async fn list_community_requests(
     let _user_id = get_my_user_id(session).await?.0;
 
     let rows = sqlx::query!(
-        "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
+        "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture 
          FROM posts p 
          LEFT JOIN users u ON p.user_id = u.id 
          WHERE p.post_type = 'request' ORDER BY p.id DESC"
@@ -236,7 +236,7 @@ pub async fn list_community_requests(
         .map(|row| Post {
             id: row.id,
             description: row.description,
-            category: row.category,
+            categories: row.categories,
             user_id: row.user_id,
             post_type: PostType::Request,
             pin_code: row.pin_code,
@@ -257,11 +257,11 @@ pub async fn create_post(
     let post_type_str = new_post.post_type.to_string();
 
     let row = sqlx::query!(
-        "INSERT INTO posts (description, category, user_id, post_type, pin_code) 
+        "INSERT INTO posts (description, categories, user_id, post_type, pin_code) 
          VALUES ($1, $2, $3, $4, $5) 
-         RETURNING id, description, category, user_id, post_type, pin_code",
+         RETURNING id, description, categories, user_id, post_type, pin_code",
         new_post.description,
-        new_post.category,
+        &new_post.categories,
         user_id,
         post_type_str,
         new_post.pin_code
@@ -277,7 +277,7 @@ pub async fn create_post(
     let created_post = Post {
         id: row.id,
         description: row.description,
-        category: row.category,
+        categories: row.categories,
         user_id: row.user_id,
         post_type: new_post.post_type,
         pin_code: row.pin_code,
@@ -326,9 +326,9 @@ pub async fn update_post(
     let post_type_str = post.post_type.to_string();
 
     let result = sqlx::query!(
-        "UPDATE posts SET description = $1, category = $2, post_type = $3, pin_code = $4 WHERE id = $5 AND user_id = $6", 
+        "UPDATE posts SET description = $1, categories = $2, post_type = $3, pin_code = $4 WHERE id = $5 AND user_id = $6", 
         post.description,
-        post.category,
+        &post.categories,
         post_type_str,
         post.pin_code,
         post.id,

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT p.id, p.description, p.category, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.user_id = $1 ORDER BY p.id DESC",
+  "query": "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.post_type = 'request' ORDER BY p.id DESC",
   "describe": {
     "columns": [
       {
@@ -15,8 +15,8 @@
       },
       {
         "ordinal": 2,
-        "name": "category",
-        "type_info": "Varchar"
+        "name": "categories",
+        "type_info": "TextArray"
       },
       {
         "ordinal": 3,
@@ -45,9 +45,7 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int4"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
@@ -60,5 +58,5 @@
       true
     ]
   },
-  "hash": "46f700c353c2372259d3d97fee0ade4234f0e83fc09ffb1dfc58535aa443c19c"
+  "hash": "57127f4d2151fd3741e0b8faebf19de20fbca20fd76145436d4a0625796d88fd"
 }

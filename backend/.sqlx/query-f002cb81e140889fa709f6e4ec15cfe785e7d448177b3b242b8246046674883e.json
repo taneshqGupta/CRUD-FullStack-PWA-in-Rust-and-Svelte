@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO posts (description, category, user_id, post_type, pin_code) \n         VALUES ($1, $2, $3, $4, $5) \n         RETURNING id, description, category, user_id, post_type, pin_code",
+  "query": "SELECT p.id, p.description, p.categories, p.user_id, p.post_type, p.pin_code, u.name as user_name, u.profile_picture \n         FROM posts p \n         LEFT JOIN users u ON p.user_id = u.id \n         WHERE p.user_id = $1 AND p.post_type = 'offer' ORDER BY p.id",
   "describe": {
     "columns": [
       {
@@ -15,8 +15,8 @@
       },
       {
         "ordinal": 2,
-        "name": "category",
-        "type_info": "Varchar"
+        "name": "categories",
+        "type_info": "TextArray"
       },
       {
         "ordinal": 3,
@@ -32,15 +32,21 @@
         "ordinal": 5,
         "name": "pin_code",
         "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "user_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "profile_picture",
+        "type_info": "Text"
       }
     ],
     "parameters": {
       "Left": [
-        "Text",
-        "Varchar",
-        "Int4",
-        "Varchar",
-        "Varchar"
+        "Int4"
       ]
     },
     "nullable": [
@@ -49,8 +55,10 @@
       false,
       false,
       false,
+      true,
+      true,
       true
     ]
   },
-  "hash": "b41d4c76dc64034a9ee0b7cf376f9ada2411ac757539f43c04f3b9606e1b98e3"
+  "hash": "f002cb81e140889fa709f6e4ec15cfe785e7d448177b3b242b8246046674883e"
 }
