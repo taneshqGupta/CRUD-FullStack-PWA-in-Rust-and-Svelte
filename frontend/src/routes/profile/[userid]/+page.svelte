@@ -3,6 +3,8 @@
         getUserProfile,
         getUserPosts,
         updateProfilePicture,
+        updatePost,
+        deletePost,
     } from "$lib/api";
     import { page } from "$app/stores";
     import { authStore, logout } from "$lib/auth";
@@ -16,6 +18,7 @@
         TasksSvg,
         LogoutSvg,
         FilterSvg,
+        CrossSvg,
     } from "$lib/components/icons";
 
     let loading = true;
@@ -31,6 +34,15 @@
     let categorySearch = "";
     let postTypeFilter: "both" | "offers" | "requests" = "both";
     let showMobileFilters = false;
+
+    // Edit/Delete post state
+    let editingPost: Post | null = null;
+    let editDescription = "";
+    let editCategories: Category[] = [];
+    let editPinCode = "";
+    let editCategorySearch = "";
+    let editLoading = false;
+    let deleteLoading = false;
 
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
 
@@ -154,6 +166,84 @@
     $: requestCount = userPosts.filter(
         (post) => post.post_type === "request",
     ).length;
+
+    function startEditPost(post: Post) {
+        editingPost = post;
+        editDescription = post.description;
+        editCategories = [...post.categories];
+        editPinCode = post.pin_code || "";
+        editCategorySearch = "";
+    }
+
+    function cancelEdit() {
+        editingPost = null;
+        editDescription = "";
+        editCategories = [];
+        editPinCode = "";
+        editCategorySearch = "";
+    }
+
+    async function saveEdit() {
+        if (!editingPost || !editDescription.trim()) return;
+
+        try {
+            editLoading = true;
+            error = "";
+
+            const updatedPost = {
+                ...editingPost,
+                description: editDescription.trim(),
+                categories: editCategories,
+                pin_code: editPinCode.trim() || undefined,
+            };
+
+            await updatePost(updatedPost);
+
+            // Update the post in the local array
+            userPosts = userPosts.map((p) =>
+                p.id === editingPost?.id ? updatedPost : p,
+            );
+
+            cancelEdit();
+        } catch (err) {
+            error =
+                err instanceof Error ? err.message : "Failed to update post";
+        } finally {
+            editLoading = false;
+        }
+    }
+
+    async function handleDeletePost(postId: number) {
+        if (!confirm("Are you sure you want to delete this post?")) return;
+
+        try {
+            deleteLoading = true;
+            error = "";
+
+            await deletePost(postId);
+
+            // Remove the post from the local array
+            userPosts = userPosts.filter((p) => p.id !== postId);
+        } catch (err) {
+            error =
+                err instanceof Error ? err.message : "Failed to delete post";
+        } finally {
+            deleteLoading = false;
+        }
+    }
+
+    function toggleEditCategory(category: Category) {
+        if (editCategories.includes(category)) {
+            editCategories = editCategories.filter((c) => c !== category);
+        } else {
+            editCategories = [...editCategories, category];
+        }
+        editCategorySearch = "";
+    }
+
+    $: editFilteredCategories = CATEGORIES.filter((category) =>
+        category.toLowerCase().includes(editCategorySearch.toLowerCase()),
+    );
 </script>
 
 <svelte:head>
@@ -166,10 +256,9 @@
 <div class="h-full overflow-y-auto bg-base-100 p-4">
     <div class="max-w-4xl mx-auto">
         {#if loading}
-            <!-- <div class="flex justify-center items-center h-full w-full">
-                <span class="loading loading-infinity loading-xl"></span>
-            </div> -->
-            <div class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"></div>
+            <div
+                class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"
+            ></div>
         {:else if error}
             <div class="alert alert-error">
                 <span>{error}</span>
@@ -192,7 +281,9 @@
                                 <div
                                     class="absolute inset-0 bg-base-200 rounded-full flex items-center justify-center"
                                 >
-                                    <div class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"></div>
+                                    <div
+                                        class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"
+                                    ></div>
                                 </div>
                             {/if}
                         </div>
@@ -810,45 +901,299 @@
                             {#each filteredPosts as post}
                                 <div class="card card-compact bg-base-200">
                                     <div class="card-body">
-                                        <div
-                                            class="flex items-center justify-between text-xs text-base-content/60 mb-2"
-                                        >
-                                            <div class="flex gap-2">
-                                                {#if post.post_type == "offer"}
-                                                    <span
-                                                        class="badge badge-primary font-black"
-                                                        >Offer</span
-                                                    >
-                                                {:else}
-                                                    <span
-                                                        class="badge badge-accent font-black"
-                                                        >Request</span
-                                                    >
-                                                {/if}
-                                                {#if post.pin_code}
-                                                    <span
-                                                        class="badge badge-outline flex items-center gap-1"
-                                                    >
-                                                        <PinSvg />
-                                                        {post.pin_code}
-                                                    </span>
-                                                {/if}
-                                            </div>
-                                        </div>
-
-                                        <p class="mb-3">{post.description}</p>
-
-                                        <!-- Categories as soft small badges -->
-                                        {#if post.categories && post.categories.length > 0}
-                                            <div class="flex flex-wrap gap-1">
-                                                {#each post.categories as category}
+                                        {#if editingPost?.id === post.id}
+                                            <div class="w-full">
+                                                <div
+                                                    class="join join-horizontal w-full"
+                                                >
                                                     <div
-                                                        class="badge badge-soft badge-md"
+                                                        class="join-item w-full form-control mr-7"
                                                     >
-                                                        {category}
+                                                        <fieldset
+                                                            class="fieldset"
+                                                        >
+                                                            <legend
+                                                                class="fieldset-legend"
+                                                                >Description</legend
+                                                            >
+                                                            <textarea
+                                                                class="input textarea h-29.5 w-full"
+                                                                placeholder="Edit your post description .."
+                                                                bind:value={
+                                                                    editDescription
+                                                                }
+                                                                required
+                                                            ></textarea>
+                                                        </fieldset>
                                                     </div>
-                                                {/each}
+                                                    <div
+                                                        class="join-item w-full"
+                                                    >
+                                                        <div
+                                                            class="join join-vertical w-full"
+                                                        >
+                                                            <div
+                                                                class="join-item form-control"
+                                                            >
+                                                                <fieldset
+                                                                    class="fieldset"
+                                                                >
+                                                                    <legend
+                                                                        class="fieldset-legend"
+                                                                        >Categories
+                                                                        ({editCategories.length}
+                                                                        selected)</legend
+                                                                    >
+                                                                </fieldset>
+                                                            </div>
+
+                                                            {#if editCategories.length > 0}
+                                                                <div
+                                                                    class="join-item flex flex-wrap gap-2 mb-3 max-h-16 overflow-y-auto rounded"
+                                                                >
+                                                                    {#each editCategories as category}
+                                                                        <div
+                                                                            class="join"
+                                                                        >
+                                                                            <div
+                                                                                class="join-item badge badge-soft badge-lg textarea-xs"
+                                                                            >
+                                                                                {category}
+                                                                            </div>
+                                                                            <button
+                                                                                class="join-item btn btn-ghost btn-circle btn-xs ml-1 mt-0.25"
+                                                                                on:click={() =>
+                                                                                    toggleEditCategory(
+                                                                                        category,
+                                                                                    )}
+                                                                            >
+                                                                                <CrossSvg
+                                                                                />
+                                                                            </button>
+                                                                        </div>
+                                                                    {/each}
+                                                                </div>
+                                                            {/if}
+
+                                                            <div
+                                                                class="join-item dropdown dropdown-bottom w-full"
+                                                            >
+                                                                <div
+                                                                    role="button"
+                                                                    class="btn btn-soft btn-block justify-start"
+                                                                    tabindex="0"
+                                                                >
+                                                                    Select
+                                                                </div>
+                                                                <div
+                                                                    class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow w-full max-h-60 overflow-y-auto"
+                                                                >
+                                                                    <div
+                                                                        class="form-control mb-2"
+                                                                    >
+                                                                        <input
+                                                                            class="input input-bordered input-sm"
+                                                                            placeholder="Search categories..."
+                                                                            bind:value={
+                                                                                editCategorySearch
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                    <ul
+                                                                        class="menu w-full"
+                                                                    >
+                                                                        {#each editFilteredCategories as category}
+                                                                            <li>
+                                                                                <button
+                                                                                    type="button"
+                                                                                    class="text-left text-sm {editCategories.includes(
+                                                                                        category,
+                                                                                    )
+                                                                                        ? 'active'
+                                                                                        : ''}"
+                                                                                    on:click={() =>
+                                                                                        toggleEditCategory(
+                                                                                            category,
+                                                                                        )}
+                                                                                >
+                                                                                    <span
+                                                                                        class="flex items-center gap-2"
+                                                                                        ><input
+                                                                                            type="checkbox"
+                                                                                            checked={editCategories.includes(
+                                                                                                category,
+                                                                                            )}
+                                                                                            class="checkbox checkbox-xs"
+                                                                                            readonly
+                                                                                        />
+                                                                                        {category}
+                                                                                    </span>
+                                                                                </button>
+                                                                            </li>
+                                                                        {/each}
+                                                                        {#if filteredCategories.length === 0}
+                                                                            <li
+                                                                                class="w-full"
+                                                                            >
+                                                                                <span
+                                                                                    class="text-xs opacity-50 w-full"
+                                                                                    >No
+                                                                                    categories
+                                                                                    found</span
+                                                                                >
+                                                                            </li>
+                                                                        {/if}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    class="join join-horizontal w-full gap-7"
+                                                >
+                                                    <fieldset
+                                                        class="join-item fieldset"
+                                                    >
+                                                        <legend
+                                                            class="fieldset-legend"
+                                                            >Pin Code</legend
+                                                        >
+                                                        <input
+                                                            id="edit-pincode-{post.id}"
+                                                            class="input input-bordered w-full"
+                                                            type="text"
+                                                            placeholder="Pin Code (optional)"
+                                                            bind:value={
+                                                                editPinCode
+                                                            }
+                                                            maxlength="10"
+                                                        />
+                                                    </fieldset>
+                                                    <fieldset
+                                                        class="join-item fieldset"
+                                                    >
+                                                        <legend
+                                                            class="fieldset-legend m-4.5"
+                                                            ></legend
+                                                        >
+                                                        <button
+                                                            class="btn btn-soft btn-block"
+                                                            on:click={saveEdit}
+                                                            disabled={editLoading ||
+                                                                !editDescription.trim() ||
+                                                                editCategories.length ===
+                                                                    0}
+                                                        >
+                                                            {#if editLoading}
+                                                                <span
+                                                                    class="loading loading-infinity loading-xs"
+                                                                ></span>
+                                                            {:else}
+                                                                Save
+                                                            {/if}
+                                                        </button>
+                                                    </fieldset>
+                                                    <fieldset
+                                                        class="join-item fieldset"
+                                                    >
+                                                        <legend
+                                                            class="fieldset-legend mb-3.5"
+                                                            ></legend
+                                                        >
+                                                        <button
+                                                            class="btn btn-soft btn-block"
+                                                            on:click={cancelEdit}
+                                                            disabled={editLoading}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </fieldset>
+                                                </div>
                                             </div>
+                                        {:else}
+                                            <!-- Display Mode -->
+                                            <div
+                                                class="flex items-center justify-between text-xs text-base-content/60 mb-2"
+                                            >
+                                                <div class="flex gap-2">
+                                                    {#if post.post_type == "offer"}
+                                                        <span
+                                                            class="badge badge-primary font-black"
+                                                            >Offer</span
+                                                        >
+                                                    {:else}
+                                                        <span
+                                                            class="badge badge-accent font-black"
+                                                            >Request</span
+                                                        >
+                                                    {/if}
+                                                    {#if post.pin_code}
+                                                        <span
+                                                            class="badge badge-outline flex items-center gap-1"
+                                                        >
+                                                            <PinSvg />
+                                                            {post.pin_code}
+                                                        </span>
+                                                    {/if}
+                                                </div>
+
+                                                {#if isOwnProfile}
+                                                    <div class="flex gap-1">
+                                                        <button
+                                                            class="btn btn-ghost btn-xs"
+                                                            on:click={() =>
+                                                                startEditPost(
+                                                                    post,
+                                                                )}
+                                                            disabled={editingPost !==
+                                                                null ||
+                                                                deleteLoading}
+                                                            title="Edit post"
+                                                        >
+                                                            📝
+                                                        </button>
+                                                        <button
+                                                            class="btn btn-ghost btn-xs text-error hover:bg-error hover:text-error-content"
+                                                            on:click={() =>
+                                                                handleDeletePost(
+                                                                    post.id,
+                                                                )}
+                                                            disabled={editingPost !==
+                                                                null ||
+                                                                deleteLoading}
+                                                            title="Delete post"
+                                                        >
+                                                            {#if deleteLoading}
+                                                                <span
+                                                                    class="loading loading-spinner loading-xs"
+                                                                ></span>
+                                                            {:else}
+                                                                <CrossSvg />
+                                                            {/if}
+                                                        </button>
+                                                    </div>
+                                                {/if}
+                                            </div>
+
+                                            <p class="mb-3">
+                                                {post.description}
+                                            </p>
+
+                                            {#if post.categories && post.categories.length > 0}
+                                                <div
+                                                    class="flex flex-wrap gap-1"
+                                                >
+                                                    {#each post.categories as category}
+                                                        <div
+                                                            class="badge badge-soft badge-md"
+                                                        >
+                                                            {category}
+                                                        </div>
+                                                    {/each}
+                                                </div>
+                                            {/if}
                                         {/if}
                                     </div>
                                 </div>

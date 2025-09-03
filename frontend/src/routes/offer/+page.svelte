@@ -293,7 +293,6 @@
 
 					<div class="flex flex-col gap-3 pt-4">
 						<button
-							type="button"
 							class="btn btn-soft btn-block"
 							on:click={handleCreatePost}
 						>
