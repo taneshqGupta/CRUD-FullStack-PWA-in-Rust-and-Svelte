@@ -926,7 +926,7 @@
                                                             ></textarea>
                                                         </fieldset>
                                                     </div>
-                                                    <div
+                                                    <!-- <div
                                                         class="join-item w-full"
                                                     >
                                                         <div
@@ -1047,6 +1047,26 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div> -->
+                                                    <div class="join-item w-40">
+                                                        <fieldset
+                                                            class="fieldset"
+                                                        >
+                                                            <legend
+                                                                class="fieldset-legend"
+                                                                >Pin Code</legend
+                                                            >
+                                                            <input
+                                                                id="edit-pincode-{post.id}"
+                                                                class="input input-bordered w-full"
+                                                                type="text"
+                                                                placeholder="Pin Code (optional)"
+                                                                bind:value={
+                                                                    editPinCode
+                                                                }
+                                                                maxlength="10"
+                                                            />
+                                                        </fieldset>
                                                     </div>
                                                 </div>
 
@@ -1076,8 +1096,7 @@
                                                     >
                                                         <legend
                                                             class="fieldset-legend m-4.5"
-                                                            ></legend
-                                                        >
+                                                        ></legend>
                                                         <button
                                                             class="btn btn-soft btn-block"
                                                             on:click={saveEdit}
@@ -1100,8 +1119,7 @@
                                                     >
                                                         <legend
                                                             class="fieldset-legend mb-3.5"
-                                                            ></legend
-                                                        >
+                                                        ></legend>
                                                         <button
                                                             class="btn btn-soft btn-block"
                                                             on:click={cancelEdit}
