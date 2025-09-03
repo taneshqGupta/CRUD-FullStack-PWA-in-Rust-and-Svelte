@@ -127,7 +127,7 @@
 
         if (
             selectedCategories.length > 0 &&
-            !selectedCategories.includes(post.category)
+            !selectedCategories.some((cat) => post.categories?.includes(cat))
         )
             return false;
 
@@ -135,7 +135,7 @@
             const searchTerm = textSearch.toLowerCase();
             const searchableContent = [
                 post.description,
-                post.category,
+                ...(post.categories || []),
                 post.pin_code || "",
                 post.user_name || "",
             ]
@@ -166,9 +166,10 @@
 <div class="h-full overflow-y-auto bg-base-100 p-4">
     <div class="max-w-4xl mx-auto">
         {#if loading}
-            <div class="flex justify-center items-center h-full w-full">
+            <!-- <div class="flex justify-center items-center h-full w-full">
                 <span class="loading loading-infinity loading-xl"></span>
-            </div>
+            </div> -->
+            <div class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"></div>
         {:else if error}
             <div class="alert alert-error">
                 <span>{error}</span>
@@ -191,9 +192,7 @@
                                 <div
                                     class="absolute inset-0 bg-base-200 rounded-full flex items-center justify-center"
                                 >
-                                    <span
-                                        class="loading loading-infinity loading-md text-primary"
-                                    ></span>
+                                    <div class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"></div>
                                 </div>
                             {/if}
                         </div>
@@ -225,16 +224,16 @@
                                 </p>
                             {/if}
                             {#if isOwnProfile}
-                            <div
-                                class="flex items-center justify-center lg:hidden mt-4"
-                            >
-                                <button
-                                    class="btn btn-soft btn-sm flex items-center justify-center"
-                                    on:click={handleLogout}
+                                <div
+                                    class="flex items-center justify-center lg:hidden mt-4"
                                 >
-                                    <LogoutSvg /> Log-Out
-                                </button>
-                            </div>
+                                    <button
+                                        class="btn btn-soft btn-sm flex items-center justify-center"
+                                        on:click={handleLogout}
+                                    >
+                                        <LogoutSvg /> Log-Out
+                                    </button>
+                                </div>
                             {/if}
                         </div>
                     </div>
@@ -815,12 +814,17 @@
                                             class="flex items-center justify-between text-xs text-base-content/60 mb-2"
                                         >
                                             <div class="flex gap-2">
-                                                <span class="badge badge-info"
-                                                    >{post.post_type}</span
-                                                >
-                                                <span class="badge badge-ghost"
-                                                    >{post.category}</span
-                                                >
+                                                {#if post.post_type == "offer"}
+                                                    <span
+                                                        class="badge badge-primary"
+                                                        >Offer</span
+                                                    >
+                                                {:else}
+                                                    <span
+                                                        class="badge badge-accent"
+                                                        >Request</span
+                                                    >
+                                                {/if}
                                                 {#if post.pin_code}
                                                     <span
                                                         class="badge badge-outline flex items-center gap-1"
@@ -831,7 +835,21 @@
                                                 {/if}
                                             </div>
                                         </div>
-                                        <p>{post.description}</p>
+
+                                        <p class="mb-3">{post.description}</p>
+
+                                        <!-- Categories as soft small badges -->
+                                        {#if post.categories && post.categories.length > 0}
+                                            <div class="flex flex-wrap gap-1">
+                                                {#each post.categories as category}
+                                                    <div
+                                                        class="badge badge-soft badge-md"
+                                                    >
+                                                        {category}
+                                                    </div>
+                                                {/each}
+                                            </div>
+                                        {/if}
                                     </div>
                                 </div>
                             {/each}

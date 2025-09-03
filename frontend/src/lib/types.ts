@@ -59,7 +59,7 @@ export type Category = typeof CATEGORIES[number];
 export interface Post {
     id: number;
     description: string;
-    category: Category;
+    categories: Category[];
     user_id: number;
     post_type: PostType;
     pin_code?: string;
@@ -69,7 +69,7 @@ export interface Post {
 
 export interface NewPost {
     description: string;
-    category: Category;
+    categories: Category[];
     post_type: PostType;
     pin_code?: string;
 }

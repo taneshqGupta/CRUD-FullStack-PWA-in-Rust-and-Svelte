@@ -37,6 +37,14 @@ pub struct NewPost {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct NewPostForm {
+    pub description: String,
+    pub categories: String, // JSON string that will be parsed to Vec<String>
+    pub post_type: PostType,
+    pub pin_code: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DeleteResponse {
     pub success: bool,
     pub id: i32,

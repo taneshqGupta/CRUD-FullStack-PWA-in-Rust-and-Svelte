@@ -116,7 +116,7 @@
 
 		if (
 			selectedCategories.length > 0 &&
-			!selectedCategories.includes(post.category)
+			!selectedCategories.some(cat => post.categories?.includes(cat))
 		)
 			return false;
 
@@ -131,7 +131,7 @@
 			const searchTerm = textSearch.toLowerCase();
 			const searchableContent = [
 				post.description,
-				post.category,
+				...(post.categories || []),
 				post.pin_code,
 				post.user_name || "",
 			]

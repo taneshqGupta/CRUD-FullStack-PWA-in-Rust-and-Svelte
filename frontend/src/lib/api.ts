@@ -1,10 +1,12 @@
 import { PUBLIC_BACKEND_URL } from '$env/static/public';
-import type { Post, NewPost, AuthResponse, LoginRequest, UserProfile } from '$lib/types';
+import type { Post, NewPost, AuthResponse, LoginRequest, UserProfile, Category } from '$lib/types';
 
-export async function createPost(description: string, category: string, post_type: 'offer' | 'request', pin_code?: string): Promise<Post> {
+export async function createPost(description: string, categories: Category[], post_type: 'offer' | 'request', pin_code?: string): Promise<Post> {
     const formData = new URLSearchParams();
     formData.append('description', description);
-    formData.append('category', category);
+    
+    // Send categories as JSON string since FormData doesn't handle arrays well
+    formData.append('categories', JSON.stringify(categories));
     formData.append('post_type', post_type);
     if (pin_code) formData.append('pin_code', pin_code);
 

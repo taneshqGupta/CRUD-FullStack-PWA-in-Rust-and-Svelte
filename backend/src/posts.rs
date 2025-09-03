@@ -1,6 +1,6 @@
 use crate::auth::get_my_user_id;
 use crate::error;
-use crate::structs::{DeleteResponse, NewPost, Post, PostType};
+use crate::structs::{DeleteResponse, NewPost, NewPostForm, Post, PostType};
 use axum::{
     Form, Json,
     extract::{Path, State},
@@ -251,9 +251,21 @@ pub async fn list_community_requests(
 pub async fn create_post(
     State(pool): State<PgPool>,
     session: Session,
-    Form(new_post): Form<NewPost>,
+    Form(form_data): Form<NewPostForm>,
 ) -> Result<Json<Post>, AppError> {
     let user_id = get_my_user_id(session).await?.0;
+    
+    // Parse the categories JSON string
+    let categories: Vec<String> = serde_json::from_str(&form_data.categories)
+        .map_err(|e| AppError::HttpError(StatusCode::BAD_REQUEST, anyhow::anyhow!("Invalid categories format: {}", e)))?;
+    
+    let new_post = NewPost {
+        description: form_data.description,
+        categories,
+        post_type: form_data.post_type,
+        pin_code: form_data.pin_code,
+    };
+    
     let post_type_str = new_post.post_type.to_string();
 
     let row = sqlx::query!(
