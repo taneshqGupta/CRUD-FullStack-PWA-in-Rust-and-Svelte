@@ -903,30 +903,102 @@
                                     <div class="card-body">
                                         {#if editingPost?.id === post.id}
                                             <div class="w-full">
-                                                <div
-                                                    class="join join-horizontal w-full"
-                                                >
-                                                    <div
-                                                        class="join-item w-full form-control mr-7"
-                                                    >
-                                                        <fieldset
-                                                            class="fieldset"
+                                                <div class="join join-vertical">
+                                                    <div class="join-item">
+                                                        <div
+                                                            class="join join-horizontal w-full"
                                                         >
-                                                            <legend
-                                                                class="fieldset-legend"
-                                                                >Description</legend
+                                                            <div
+                                                                class="join-item w-full form-control mr-7"
                                                             >
-                                                            <textarea
-                                                                class="input textarea h-29.5 w-full"
-                                                                placeholder="Edit your post description .."
-                                                                bind:value={
-                                                                    editDescription
-                                                                }
-                                                                required
-                                                            ></textarea>
-                                                        </fieldset>
+                                                                <fieldset
+                                                                    class="fieldset"
+                                                                >
+                                                                    <legend
+                                                                        class="fieldset-legend"
+                                                                        >Description</legend
+                                                                    >
+                                                                    <textarea
+                                                                        class="input textarea h-39.5 w-full text-wrap"
+                                                                        placeholder="Edit your post description .."
+                                                                        bind:value={
+                                                                            editDescription
+                                                                        }
+                                                                        required
+                                                                    ></textarea>
+                                                                </fieldset>
+                                                            </div>
+                                                            <div
+                                                                class="join-item w-40"
+                                                            >
+                                                                <div
+                                                                    class="join join-vertical"
+                                                                >
+                                                                    <fieldset
+                                                                        class="fieldset"
+                                                                    >
+                                                                        <legend
+                                                                            class="fieldset-legend"
+                                                                            >Pin
+                                                                            Code</legend
+                                                                        >
+                                                                        <input
+                                                                            id="edit-pincode-{post.id}"
+                                                                            class="input input-bordered w-full"
+                                                                            type="text"
+                                                                            placeholder="Pin Code (optional)"
+                                                                            bind:value={
+                                                                                editPinCode
+                                                                            }
+                                                                            maxlength="10"
+                                                                        />
+                                                                    </fieldset>
+                                                                    <fieldset
+                                                                        class="join-item fieldset"
+                                                                    >
+                                                                        <legend
+                                                                            class="fieldset-legend"
+
+                                                                        ></legend>
+                                                                        <button
+                                                                            class="btn btn-success btn-block"
+                                                                            on:click={saveEdit}
+                                                                            disabled={editLoading ||
+                                                                                !editDescription.trim() ||
+                                                                                editCategories.length ===
+                                                                                    0}
+                                                                        >
+                                                                            {#if editLoading}
+                                                                                <span
+                                                                                    class="loading loading-infinity loading-xs"
+
+                                                                                ></span>
+                                                                            {:else}
+                                                                                Save
+                                                                            {/if}
+                                                                        </button>
+                                                                    </fieldset>
+                                                                    <fieldset
+                                                                        class="join-item fieldset"
+                                                                    >
+                                                                        <legend
+                                                                            class="fieldset-legend"
+
+                                                                        ></legend>
+                                                                        <button
+                                                                            class="btn btn-error btn-block"
+                                                                            on:click={cancelEdit}
+                                                                            disabled={editLoading}
+                                                                        >
+                                                                            Cancel
+                                                                        </button>
+                                                                    </fieldset>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <!-- <div
+
+                                                    <div
                                                         class="join-item w-full"
                                                     >
                                                         <div
@@ -949,27 +1021,31 @@
 
                                                             {#if editCategories.length > 0}
                                                                 <div
-                                                                    class="join-item flex flex-wrap gap-2 mb-3 max-h-16 overflow-y-auto rounded"
+                                                                    class="join-item flex flex-wrap gap-2 mb-3 max-h-32 overflow-y-auto rounded"
                                                                 >
                                                                     {#each editCategories as category}
                                                                         <div
-                                                                            class="join"
+                                                                            class="join gap-1"
                                                                         >
                                                                             <div
-                                                                                class="join-item badge badge-soft badge-lg textarea-xs"
+                                                                                class="join-item badge badge-primary badge-lg textarea-md"
                                                                             >
                                                                                 {category}
                                                                             </div>
-                                                                            <button
-                                                                                class="join-item btn btn-ghost btn-circle btn-xs ml-1 mt-0.25"
-                                                                                on:click={() =>
-                                                                                    toggleEditCategory(
-                                                                                        category,
-                                                                                    )}
+                                                                            <div
+                                                                                class="pt-0.25"
                                                                             >
-                                                                                <CrossSvg
-                                                                                />
-                                                                            </button>
+                                                                                <button
+                                                                                    class="join-item btn btn-error btn-circle btn-xs"
+                                                                                    on:click={() =>
+                                                                                        toggleEditCategory(
+                                                                                            category,
+                                                                                        )}
+                                                                                >
+                                                                                    <CrossSvg
+                                                                                    />
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     {/each}
                                                                 </div>
@@ -980,10 +1056,10 @@
                                                             >
                                                                 <div
                                                                     role="button"
-                                                                    class="btn btn-soft btn-block justify-start"
+                                                                    class="btn btn-outline btn-block justify-start"
                                                                     tabindex="0"
                                                                 >
-                                                                    Select
+                                                                    Select Categories
                                                                 </div>
                                                                 <div
                                                                     class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow w-full max-h-60 overflow-y-auto"
@@ -1047,88 +1123,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div> -->
-                                                    <div class="join-item w-40">
-                                                        <fieldset
-                                                            class="fieldset"
-                                                        >
-                                                            <legend
-                                                                class="fieldset-legend"
-                                                                >Pin Code</legend
-                                                            >
-                                                            <input
-                                                                id="edit-pincode-{post.id}"
-                                                                class="input input-bordered w-full"
-                                                                type="text"
-                                                                placeholder="Pin Code (optional)"
-                                                                bind:value={
-                                                                    editPinCode
-                                                                }
-                                                                maxlength="10"
-                                                            />
-                                                        </fieldset>
                                                     </div>
                                                 </div>
 
                                                 <div
                                                     class="join join-horizontal w-full gap-7"
-                                                >
-                                                    <fieldset
-                                                        class="join-item fieldset"
-                                                    >
-                                                        <legend
-                                                            class="fieldset-legend"
-                                                            >Pin Code</legend
-                                                        >
-                                                        <input
-                                                            id="edit-pincode-{post.id}"
-                                                            class="input input-bordered w-full"
-                                                            type="text"
-                                                            placeholder="Pin Code (optional)"
-                                                            bind:value={
-                                                                editPinCode
-                                                            }
-                                                            maxlength="10"
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset
-                                                        class="join-item fieldset"
-                                                    >
-                                                        <legend
-                                                            class="fieldset-legend m-4.5"
-                                                        ></legend>
-                                                        <button
-                                                            class="btn btn-soft btn-block"
-                                                            on:click={saveEdit}
-                                                            disabled={editLoading ||
-                                                                !editDescription.trim() ||
-                                                                editCategories.length ===
-                                                                    0}
-                                                        >
-                                                            {#if editLoading}
-                                                                <span
-                                                                    class="loading loading-infinity loading-xs"
-                                                                ></span>
-                                                            {:else}
-                                                                Save
-                                                            {/if}
-                                                        </button>
-                                                    </fieldset>
-                                                    <fieldset
-                                                        class="join-item fieldset"
-                                                    >
-                                                        <legend
-                                                            class="fieldset-legend mb-3.5"
-                                                        ></legend>
-                                                        <button
-                                                            class="btn btn-soft btn-block"
-                                                            on:click={cancelEdit}
-                                                            disabled={editLoading}
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </fieldset>
-                                                </div>
+                                                ></div>
                                             </div>
                                         {:else}
                                             <!-- Display Mode -->
