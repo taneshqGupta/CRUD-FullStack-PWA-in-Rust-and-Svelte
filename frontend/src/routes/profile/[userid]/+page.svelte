@@ -1167,7 +1167,7 @@
                                                 {#if isOwnProfile}
                                                     <div class="flex gap-1">
                                                         <button
-                                                            class="btn btn-ghost btn-xs"
+                                                            class="btn btn-ghost btn-circle"
                                                             on:click={() =>
                                                                 startEditPost(
                                                                     post,
@@ -1180,7 +1180,7 @@
                                                             <EditSvg />
                                                         </button>
                                                         <button
-                                                            class="btn btn-ghost btn-xs"
+                                                            class="btn btn-ghost btn-circle"
                                                             on:click={() =>
                                                                 handleDeletePost(
                                                                     post.id,
