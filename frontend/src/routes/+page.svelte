@@ -4,12 +4,9 @@
 	import { authStore } from "$lib/auth";
 	import { onMount } from "svelte";
 	import type { Post } from "$lib/types";
-	import { CATEGORIES, type Category} from "$lib/types";
+	import { CATEGORIES, type Category } from "$lib/types";
 	import { goto } from "$app/navigation";
-	import {
-		SearchSvg,
-		FilterSvg
-	} from "$lib/components/icons";
+	import { SearchSvg, FilterSvg } from "$lib/components/icons";
 
 	let allPosts: Post[] = [];
 	let loading = true;
@@ -116,7 +113,7 @@
 
 		if (
 			selectedCategories.length > 0 &&
-			!selectedCategories.some(cat => post.categories?.includes(cat))
+			!selectedCategories.some((cat) => post.categories?.includes(cat))
 		)
 			return false;
 
@@ -169,42 +166,66 @@
 		<span class="loading loading-infinity loading-xl"></span>
 	</div>
 {:else if $authStore.isAuthenticated}
-	<div class="h-full flex flex-col bg-base-100">
-		<div class="flex-none bg-base-100 border-b border-base-100 shadow-sm">
-			<div class="xl:hidden p-3">
-				<div class="flex items-center justify-between mb-3">
-					<div class="flex items-center gap-2">
-						<div class="join">
-							<input
-								class="input input-bordered join-item input-sm text-xs"
-								placeholder="Pin code"
-								bind:value={searchPinCode}
-								on:keydown={(e) =>
-									e.key === "Enter" && searchByPinCode()}
-							/>
+	<div class="h-full w-full flex flex-col bg-base-100">
+		<div
+			class="flex-none w-full bg-base-100 border-b border-base-100 shadow-sm"
+		>
+			<div class="xl:hidden p-3 w-full">
+				<div class="flex items-center justify-between mb-3 w-full">
+					<div class="join w-full">
+						<div class="join-item">
+							<div class="join">
+								<input
+									class="input input-bordered join-item input-sm w-25 rounded-full text-xs"
+									placeholder="Pin code"
+									bind:value={searchPinCode}
+									on:keydown={(e) =>
+										e.key === "Enter" && searchByPinCode()}
+								/>
+								<button
+									class="btn btn-soft btn-circle ml-1 join-item btn-sm"
+									on:click={searchByPinCode}
+								>
+									<SearchSvg />
+								</button>
+							</div>
+						</div>
+
+						<div class="join-item w-full"></div>
+
+						<div class="join-item">
 							<button
-								class="btn btn-soft join-item btn-sm"
-								on:click={searchByPinCode}
+								class="btn btn-outline btn-sm w-29 mr-2"
+								on:click={() => {
+									textSearch = "";
+									selectedCategories = [];
+									postTypeFilter = "both";
+									userNameSearch = "";
+									showMobileFilters = false;
+								}}
 							>
-								<SearchSvg />
+								Clear Filters
+							</button>
+						</div>
+
+						<div class="join-item">
+							<button
+								class="btn btn-soft btn-sm gap-2 w-full"
+								on:click={() =>
+									(showMobileFilters = !showMobileFilters)}
+							>
+								<FilterSvg /> Filters
+								{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
+									<div class="badge badge-xs">
+										{selectedCategories.length +
+											(textSearch.trim() ? 1 : 0) +
+											(userNameSearch.trim() ? 1 : 0) +
+											(postTypeFilter !== "both" ? 1 : 0)}
+									</div>
+								{/if}
 							</button>
 						</div>
 					</div>
-					
-					<button
-						class="btn btn-soft btn-sm gap-2"
-						on:click={() => showMobileFilters = !showMobileFilters}
-					>
-						<FilterSvg />
-						{#if selectedCategories.length > 0 || textSearch.trim() || userNameSearch.trim() || postTypeFilter !== "both"}
-							<div class="badge badge-xs">{
-								selectedCategories.length + 
-								(textSearch.trim() ? 1 : 0) + 
-								(userNameSearch.trim() ? 1 : 0) + 
-								(postTypeFilter !== "both" ? 1 : 0)
-							}</div>
-						{/if}
-					</button>
 				</div>
 
 				<div class="flex gap-2 mb-3">
@@ -217,14 +238,16 @@
 				</div>
 
 				{#if showMobileFilters}
-					<div class="bg-base-200 rounded-lg p-3 space-y-3">
-						<div class="form-control">
+					<div class="bg-base-200 rounded-lg p-3 space-y-3 w-full">
+						<div class="form-control w-full">
 							<label class="label py-1" for="mobile-text-search">
-								<span class="label-text text-xs">Full Text Search</span>
+								<span class="label-text text-xs w-full"
+									>Full Text Search</span
+								>
 							</label>
 							<input
 								id="mobile-text-search"
-								class="input input-bordered input-sm"
+								class="input input-bordered input-sm w-full"
 								placeholder="Search posts, names, categories..."
 								bind:value={textSearch}
 							/>
@@ -259,26 +282,41 @@
 									</div>
 
 									{#if selectedCategories.length > 0}
-										<div class="mb-2 p-2 bg-base-200 rounded">
-											<div class="flex items-center justify-between mb-1">
-												<div class="text-xs font-semibold">Selected:</div>
+										<div
+											class="mb-2 p-2 bg-base-200 rounded"
+										>
+											<div
+												class="flex items-center justify-between mb-1"
+											>
+												<div
+													class="text-xs font-semibold"
+												>
+													Selected:
+												</div>
 												<button
 													class="btn btn-ghost btn-xs"
-													on:click={() => (selectedCategories = [])}
+													on:click={() =>
+														(selectedCategories =
+															[])}
 													>Clear All</button
 												>
 											</div>
 											<div class="flex flex-wrap gap-1">
 												{#each selectedCategories as category}
-													<div class="badge badge-primary badge-xs">
+													<div
+														class="badge badge-primary badge-xs"
+													>
 														{category}
 														<button
 															class="ml-1"
 															on:click={() =>
 																(selectedCategories =
 																	selectedCategories.filter(
-																		(c) => c !== category,
-																	))}>×</button
+																		(c) =>
+																			c !==
+																			category,
+																	))}
+															>×</button
 														>
 													</div>
 												{/each}
@@ -299,7 +337,9 @@
 															category,
 														)}
 														on:change={() =>
-															toggleCategory(category)}
+															toggleCategory(
+																category,
+															)}
 													/>
 													<span>{category}</span>
 												</label>
@@ -319,7 +359,9 @@
 
 						<div class="form-control">
 							<div class="label py-1">
-								<span class="label-text text-xs">Offer/Request</span>
+								<span class="label-text text-xs"
+									>Offer/Request</span
+								>
 							</div>
 							<div class="dropdown dropdown-top w-full">
 								<div
@@ -359,7 +401,9 @@
 												bind:group={postTypeFilter}
 												value="offers"
 											/>
-											<span class="text-sm">Offers Only</span>
+											<span class="text-sm"
+												>Offers Only</span
+											>
 										</label>
 									</li>
 									<li>
@@ -372,7 +416,9 @@
 												bind:group={postTypeFilter}
 												value="requests"
 											/>
-											<span class="text-sm">Requests Only</span>
+											<span class="text-sm"
+												>Requests Only</span
+											>
 										</label>
 									</li>
 								</ul>
@@ -381,7 +427,9 @@
 
 						<div class="form-control">
 							<label class="label py-1" for="mobile-user-search">
-								<span class="label-text text-xs">Filter by User</span>
+								<span class="label-text text-xs"
+									>Filter by User</span
+								>
 							</label>
 							<input
 								id="mobile-user-search"
@@ -390,19 +438,6 @@
 								bind:value={userNameSearch}
 							/>
 						</div>
-
-						<button
-							class="btn btn-ghost btn-sm w-full"
-							on:click={() => {
-								textSearch = "";
-								selectedCategories = [];
-								postTypeFilter = "both";
-								userNameSearch = "";
-								showMobileFilters = false;
-							}}
-						>
-							Clear Filters
-						</button>
 					</div>
 				{/if}
 			</div>
@@ -413,7 +448,9 @@
 				>
 					<div class="flex flex-wrap gap-3 items-center">
 						<label class="label" for="text-search">
-							<span class="label-text text-xs">Pin Code Search</span>
+							<span class="label-text text-xs"
+								>Pin Code Search</span
+							>
 						</label>
 						<div class="join">
 							<input
@@ -486,17 +523,22 @@
 									</div>
 
 									{#if selectedCategories.length > 0}
-										<div class="mb-2 p-2 bg-base-200 rounded">
+										<div
+											class="mb-2 p-2 bg-base-200 rounded"
+										>
 											<div
 												class="flex items-center justify-between mb-1"
 											>
-												<div class="text-xs font-semibold">
+												<div
+													class="text-xs font-semibold"
+												>
 													Selected:
 												</div>
 												<button
 													class="btn btn-ghost btn-xs"
 													on:click={() =>
-														(selectedCategories = [])}
+														(selectedCategories =
+															[])}
 													>Clear All</button
 												>
 											</div>
@@ -514,7 +556,8 @@
 																		(c) =>
 																			c !==
 																			category,
-																	))}>×</button
+																	))}
+															>×</button
 														>
 													</div>
 												{/each}
@@ -557,7 +600,8 @@
 
 						<div class="form-control">
 							<div class="label">
-								<span class="label-text text-xs">Offer/Request</span
+								<span class="label-text text-xs"
+									>Offer/Request</span
 								>
 							</div>
 							<div class="dropdown dropdown-bottom">
@@ -598,7 +642,9 @@
 												bind:group={postTypeFilter}
 												value="offers"
 											/>
-											<span class="text-sm">Offers Only</span>
+											<span class="text-sm"
+												>Offers Only</span
+											>
 										</label>
 									</li>
 									<li>
@@ -636,7 +682,9 @@
 
 						<div class="form-control">
 							<div class="label">
-								<span class="label-text text-xs opacity-0">.</span>
+								<span class="label-text text-xs opacity-0"
+									>.</span
+								>
 							</div>
 							<button
 								class="btn btn-soft btn-sm text-xs"
