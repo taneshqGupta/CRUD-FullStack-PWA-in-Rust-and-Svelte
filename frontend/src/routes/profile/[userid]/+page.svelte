@@ -12,6 +12,7 @@
     import type { Post, UserProfile, Category } from "$lib/types";
     import { CATEGORIES } from "$lib/types";
     import ProfilePicture from "$lib/components/ProfilePicture.svelte";
+    import Map from "$lib/components/Map.svelte";
     import {
         MailSvg,
         PinSvg,
@@ -37,7 +38,6 @@
     let postTypeFilter: "both" | "offers" | "requests" = "both";
     let showMobileFilters = false;
 
-    // Edit/Delete post state
     let editingPost: Post | null = null;
     let editDescription = "";
     let editCategories: Category[] = [];
@@ -45,6 +45,8 @@
     let editCategorySearch = "";
     let editLoading = false;
     let deleteLoading = false;
+
+    let mapCenter: [number, number] = [20.5937, 78.9629]; // Default center of India
 
     $: isOwnProfile = $authStore.user_id === Number($page.params.userid);
 
@@ -246,6 +248,37 @@
     $: editFilteredCategories = CATEGORIES.filter((category) =>
         category.toLowerCase().includes(editCategorySearch.toLowerCase()),
     );
+
+    // Function to get coordinates for pin code
+    async function getCoordinatesFromPinCode(pinCode: string): Promise<[number, number] | null> {
+        try {
+            const response = await fetch(
+                `https://api.postalpincode.in/pincode/${pinCode}`
+            );
+            const data = await response.json();
+            
+            if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice) {
+                const postOffice = data[0].PostOffice[0];
+                // For Indian pin codes, we can approximate coordinates
+                // You might want to use a better geocoding service
+                const lat = parseFloat(postOffice.Latitude) || 20.5937;
+                const lng = parseFloat(postOffice.Longitude) || 78.9629;
+                return [lat, lng];
+            }
+        } catch (error) {
+            console.error("Error fetching coordinates for pin code:", error);
+        }
+        return null;
+    }
+
+    // Update map center when profile loads or changes
+    $: if (profile?.pin_code) {
+        getCoordinatesFromPinCode(profile.pin_code).then(coords => {
+            if (coords) {
+                mapCenter = coords;
+            }
+        });
+    }
 </script>
 
 <svelte:head>
@@ -255,8 +288,22 @@
     <meta name="description" content="View a user's SkillSwap profile" />
 </svelte:head>
 
-<div class="h-full overflow-y-auto bg-base-100 p-4">
-    <div class="max-w-4xl mx-auto">
+<div class="h-full overflow-y-auto bg-base-100 p-4 relative">
+    <!-- Map Background -->
+    {#if profile?.pin_code}
+        <div class="fixed top-13 left-0 right-0 bottom-13 z-0">
+            <Map 
+                posts={filteredPosts} 
+                center={mapCenter}
+                zoom={6}
+                height="100%"
+                userPinCode={profile.pin_code}
+            />
+        </div>
+    {/if}
+    
+    <!-- Content Overlay -->
+    <div class="max-w-4xl mx-auto my-0 relative z-10">
         {#if loading}
             <div
                 class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"

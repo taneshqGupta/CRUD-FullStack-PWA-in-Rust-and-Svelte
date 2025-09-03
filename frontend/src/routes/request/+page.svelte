@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import { CrossSvg } from "$lib/components/icons";
 	import { CATEGORIES } from "$lib/types";
+	import Map from "$lib/components/Map.svelte";
 
 	let newPostDescription = "";
 	let newPostCategories: Category[] = [];
@@ -16,6 +17,8 @@
 	let success = "";
 	let error = "";
 	let categorySearch = "";
+
+	let mapCenter: [number, number] = [20.5937, 78.9629]; // Default center of India
 
 	$: filteredCategories = CATEGORIES.filter((cat) =>
 		cat.toLowerCase().includes(categorySearch.toLowerCase()),
@@ -36,6 +39,43 @@
 			}
 		}
 	});
+
+	async function getCoordinatesFromPinCode(
+		pinCode: string,
+	): Promise<[number, number] | null> {
+		try {
+			const response = await fetch(
+				`https://api.postalpincode.in/pincode/${pinCode}`,
+			);
+			const data = await response.json();
+
+			if (
+				data &&
+				data[0] &&
+				data[0].Status === "Success" &&
+				data[0].PostOffice
+			) {
+				const postOffice = data[0].PostOffice[0];
+				const lat = parseFloat(postOffice.Latitude) || 20.5937;
+				const lng = parseFloat(postOffice.Longitude) || 78.9629;
+				return [lat, lng];
+			}
+		} catch (error) {
+			console.error("Error fetching coordinates for pin code:", error);
+		}
+		return null;
+	}
+
+	$: if (newPinCode || userDefaultPinCode) {
+		const pinCode = newPinCode || userDefaultPinCode;
+		if (pinCode) {
+			getCoordinatesFromPinCode(pinCode).then((coords) => {
+				if (coords) {
+					mapCenter = coords;
+				}
+			});
+		}
+	}
 
 	async function handleCreatePost() {
 		if (!newPostDescription.trim()) {
@@ -80,11 +120,23 @@
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
+	{#if newPinCode || userDefaultPinCode}
+		<div class="fixed top-13 left-0 right-0 bottom-13 z-0">
+			<Map
+				posts={[]}
+				center={mapCenter}
+				zoom={6}
+				height="100%"
+				userPinCode={newPinCode || userDefaultPinCode}
+			/>
+		</div>
+	{/if}
+
 	<div
-		class="min-h-full overflow-y-auto p-4 flex items-center justify-center"
+		class="min-h-full overflow-y-auto p-4 flex items-center justify-center relative z-10 pointer-events-none"
 	>
 		<div
-			class="card card-border w-full max-w-md bg-base-100 shadow-2xl my-4"
+			class="card card-border w-full max-w-md bg-base-100 shadow-2xl my-4 pointer-events-auto"
 		>
 			<div class="card-body">
 				<div class="text-center mb-8">
