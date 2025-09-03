@@ -19,6 +19,8 @@
         LogoutSvg,
         FilterSvg,
         CrossSvg,
+        EditSvg,
+        DeleteSvg,
     } from "$lib/components/icons";
 
     let loading = true;
@@ -903,8 +905,12 @@
                                     <div class="card-body">
                                         {#if editingPost?.id === post.id}
                                             <div class="w-full">
-                                                <div class="join join-vertical">
-                                                    <div class="join-item">
+                                                <div
+                                                    class="join join-vertical w-full"
+                                                >
+                                                    <div
+                                                        class="join-item w-full"
+                                                    >
                                                         <div
                                                             class="join join-horizontal w-full"
                                                         >
@@ -1036,14 +1042,18 @@
                                                                                 class="pt-0.25"
                                                                             >
                                                                                 <button
-                                                                                    class="join-item btn btn-error btn-circle btn-xs"
+                                                                                    class="join-item btn btn-ghost btn-circle btn-xs flex items-center justify-center"
                                                                                     on:click={() =>
                                                                                         toggleEditCategory(
                                                                                             category,
                                                                                         )}
                                                                                 >
-                                                                                    <CrossSvg
-                                                                                    />
+                                                                                    <div
+                                                                                        class="flex items-center justify-center"
+                                                                                    >
+                                                                                        <CrossSvg
+                                                                                        />
+                                                                                    </div>
                                                                                 </button>
                                                                             </div>
                                                                         </div>
@@ -1059,7 +1069,8 @@
                                                                     class="btn btn-outline btn-block justify-start"
                                                                     tabindex="0"
                                                                 >
-                                                                    Select Categories
+                                                                    Select
+                                                                    Categories
                                                                 </div>
                                                                 <div
                                                                     class="dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow w-full max-h-60 overflow-y-auto"
@@ -1125,10 +1136,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div
-                                                    class="join join-horizontal w-full gap-7"
-                                                ></div>
                                             </div>
                                         {:else}
                                             <!-- Display Mode -->
@@ -1170,10 +1177,10 @@
                                                                 deleteLoading}
                                                             title="Edit post"
                                                         >
-                                                            📝
+                                                            <EditSvg />
                                                         </button>
                                                         <button
-                                                            class="btn btn-ghost btn-xs text-error hover:bg-error hover:text-error-content"
+                                                            class="btn btn-ghost btn-xs"
                                                             on:click={() =>
                                                                 handleDeletePost(
                                                                     post.id,
@@ -1185,10 +1192,10 @@
                                                         >
                                                             {#if deleteLoading}
                                                                 <span
-                                                                    class="loading loading-spinner loading-xs"
+                                                                    class="loading loading-infinity loading-xs"
                                                                 ></span>
                                                             {:else}
-                                                                <CrossSvg />
+                                                                <DeleteSvg />
                                                             {/if}
                                                         </button>
                                                     </div>
