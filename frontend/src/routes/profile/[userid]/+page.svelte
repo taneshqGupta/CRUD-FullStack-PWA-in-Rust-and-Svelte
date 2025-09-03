@@ -816,12 +816,12 @@
                                             <div class="flex gap-2">
                                                 {#if post.post_type == "offer"}
                                                     <span
-                                                        class="badge badge-primary"
+                                                        class="badge badge-primary font-black"
                                                         >Offer</span
                                                     >
                                                 {:else}
                                                     <span
-                                                        class="badge badge-accent"
+                                                        class="badge badge-accent font-black"
                                                         >Request</span
                                                     >
                                                 {/if}

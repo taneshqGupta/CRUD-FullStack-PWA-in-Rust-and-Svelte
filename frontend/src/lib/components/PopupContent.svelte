@@ -30,11 +30,11 @@
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-2">
                         {#if post.post_type == "offer"}
-                            <div class="badge badge-primary badge-md">
+                            <div class="badge badge-primary font-black">
                                 Offer
                             </div>
                         {:else}
-                            <div class="badge badge-accent badge-md">
+                            <div class="badge badge-accent font-black">
                                 Request
                             </div>
                         {/if}

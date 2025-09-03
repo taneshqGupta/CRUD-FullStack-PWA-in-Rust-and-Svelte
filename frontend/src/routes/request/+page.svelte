@@ -4,11 +4,11 @@
 	import { authStore } from "$lib/auth";
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
-	import { PinSvg } from "$lib/components/icons";
+	import { CrossSvg } from "$lib/components/icons";
 	import { CATEGORIES } from "$lib/types";
 
 	let newPostDescription = "";
-	let newPostCategory: Category | null = null;
+	let newPostCategories: Category[] = [];
 	const newPostType: PostType = "request";
 	let newPinCode = "";
 	let userDefaultPinCode = "";
@@ -43,25 +43,25 @@
 			return;
 		}
 
-		if (!newPostCategory) {
-			error = "Please select a category";
+		if (newPostCategories.length == 0) {
+			error = "Please select at least one category";
 			return;
 		}
 
 		const description = newPostDescription.trim();
-		const category = newPostCategory;
+		const categories = newPostCategories;
 		const pinCode = newPinCode.trim() || userDefaultPinCode;
 
 		try {
 			loading = true;
 			error = "";
 
-			await createPost(description, category, newPostType, pinCode);
+			await createPost(description, categories, newPostType, pinCode);
 
 			success = "Help request posted successfully!";
 
 			newPostDescription = "";
-			newPostCategory = null;
+			newPostCategories = [];
 			newPinCode = userDefaultPinCode;
 
 			setTimeout(() => goto("/"), 1500);
@@ -80,8 +80,12 @@
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
-	<div class="h-full bg-base-100 flex items-center justify-center">
-		<div class="card card-border w-full max-w-md bg-base-100 shadow-2xl">
+	<div
+		class="min-h-full overflow-y-auto p-4 flex items-center justify-center"
+	>
+		<div
+			class="card card-border w-full max-w-md bg-base-100 shadow-2xl my-4"
+		>
 			<div class="card-body">
 				<div class="text-center mb-8">
 					<h2
@@ -149,17 +153,51 @@
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-1 w-full">
 						<div class="form-control pb-4">
-							<div class="label text-xs font-black">
-								<span class="label-text-alt">Category</span>
+							<div class="label text-xs font-black mb-2">
+								<span class="label-text-alt">Categories</span>
+								{#if newPostCategories.length > 0}
+									<span class="text-xs text-base-content/60"
+										>({newPostCategories.length} selected)</span
+									>
+								{/if}
 							</div>
+							{#if newPostCategories.length > 0}
+								<div
+									class="flex flex-wrap gap-2 mb-2 max-h-32 overflow-y-auto rounded"
+								>
+									{#each newPostCategories as category}
+										<div class="join">
+											<div
+												class="badge badge-lg badge-soft textarea-xs"
+											>
+												{category}
+											</div>
+											<button
+												type="button"
+												class="btn btn-ghost btn-circle btn-xs ml-1 mt-0.5"
+												on:click={() => {
+													newPostCategories =
+														newPostCategories.filter(
+															(c) =>
+																c !== category,
+														);
+												}}
+											>
+												<CrossSvg />
+											</button>
+										</div>
+									{/each}
+								</div>
+							{/if}
 							<div class="dropdown dropdown-bottom w-full">
 								<div
 									role="button"
 									class="btn btn-soft btn-block justify-start"
 									tabindex="0"
 								>
-									{newPostCategory || "Select Category"}
+									Select Categories
 								</div>
+
 								<div
 									class="dropdown-content bg-base-100 rounded-box z-[1] w-full p-2 shadow max-h-60 overflow-y-auto"
 								>
@@ -171,16 +209,50 @@
 										/>
 									</div>
 
-									<ul class="menu">
+									<ul class="menu w-full">
 										{#each filteredCategories as category}
 											<li>
 												<button
-													class="text-left text-sm"
-													on:click={() =>
-														(newPostCategory =
-															category)}
+													type="button"
+													class="text-left text-sm {newPostCategories.includes(
+														category,
+													)
+														? 'active'
+														: ''}"
+													on:click={() => {
+														if (
+															newPostCategories.includes(
+																category,
+															)
+														) {
+															newPostCategories =
+																newPostCategories.filter(
+																	(c) =>
+																		c !==
+																		category,
+																);
+														} else {
+															newPostCategories =
+																[
+																	...newPostCategories,
+																	category,
+																];
+														}
+													}}
 												>
-													{category}
+													<span
+														class="flex items-center gap-2"
+													>
+														<input
+															type="checkbox"
+															checked={newPostCategories.includes(
+																category,
+															)}
+															class="checkbox checkbox-xs"
+															readonly
+														/>
+														{category}
+													</span>
 												</button>
 											</li>
 										{/each}
@@ -198,7 +270,7 @@
 						</div>
 
 						<div class="form-control">
-							<div class="label text-xs font-black">
+							<div class="label text-xs font-black mb-2">
 								<span class="label-text-alt">
 									{userDefaultPinCode
 										? `Pin Code [Your Default: ${userDefaultPinCode}]`

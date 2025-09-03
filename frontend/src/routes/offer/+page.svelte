@@ -79,8 +79,12 @@
 </svelte:head>
 
 {#if $authStore.isAuthenticated}
-	<div class="min-h-full overflow-y-auto p-4 flex items-center justify-center">
-		<div class="card card-border w-full max-w-md shadow-2xl bg-base-100 my-4">
+	<div
+		class="min-h-full overflow-y-auto p-4 flex items-center justify-center"
+	>
+		<div
+			class="card card-border w-full max-w-md shadow-2xl bg-base-100 my-4"
+		>
 			<div class="card-body">
 				<div class="text-center mb-8">
 					<h2
@@ -151,12 +155,16 @@
 							<div class="label text-xs font-black mb-2">
 								<span class="label-text-alt">Categories</span>
 								{#if newPostCategories.length > 0}
-									<span class="text-xs text-base-content/60">({newPostCategories.length} selected)</span>
+									<span class="text-xs text-base-content/60"
+										>({newPostCategories.length} selected)</span
+									>
 								{/if}
 							</div>
 
 							{#if newPostCategories.length > 0}
-								<div class="flex flex-wrap gap-2 mb-2 max-h-32 overflow-y-auto rounded">
+								<div
+									class="flex flex-wrap gap-2 mb-2 max-h-32 overflow-y-auto rounded"
+								>
 									{#each newPostCategories as category}
 										<div class="join">
 											<div
