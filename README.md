@@ -27,7 +27,6 @@
 
 ##### Responsiveness (Compatibility with screens of all sizes, phones, tablets, monitors..)
 
-###### Click on Play
 <img src="/screenshots/responsive-2025-09-05_01.13.39-ezgif.com-optimize.gif">
 
 ---
