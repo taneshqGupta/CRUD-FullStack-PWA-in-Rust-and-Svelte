@@ -49,7 +49,7 @@
 	<!-- lol -->
 	<button
 		id="installButton"
-		class="not-lg:hidden btn btn-soft btn-sm text-xs"
+		class="not-lg:hidden btn btn-soft btn-sm ml-2 text-xs"
 		on:click={handleInstallClick}
 		aria-label="Install the application"
 	>
@@ -58,7 +58,7 @@
 	</button>
 	<button
 		id="installButton"
-		class="lg:hidden btn btn-soft btn-sm text-xs"
+		class="lg:hidden btn btn-soft btn-sm ml-2 text-xs"
 		on:click={handleInstallClick}
 		aria-label="Install the application"
 	>

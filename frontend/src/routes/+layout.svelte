@@ -78,7 +78,7 @@
                 {#if $authStore.user_id && userProfile}
                     <a
                         href="/profile/{$authStore.user_id}"
-                        class="btn btn-circle btn-sm p-1"
+                        class="btn btn-circle btn-sm w-13 p-1"
                         aria-label="Go to profile"
                     >
                         <ProfilePicture
