@@ -48,7 +48,7 @@
 {#if showInstallButton}
 	<button
 		id="installButton"
-		class="not-md:hidden btn btn-soft btn-sm text-xs"
+		class="not-lg:hidden btn btn-soft btn-sm text-xs"
 		on:click={handleInstallClick}
 		aria-label="Install the application"
 	>
@@ -57,7 +57,7 @@
 	</button>
 	<button
 		id="installButton"
-		class="md:hidden btn btn-soft btn-sm text-xs"
+		class="lg:hidden btn btn-soft btn-sm text-xs"
 		on:click={handleInstallClick}
 		aria-label="Install the application"
 	>
