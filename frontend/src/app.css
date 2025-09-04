@@ -1,41 +1,42 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
 
 @plugin "daisyui" {
     themes: all;
 }
 
-/* Global font styling */
 :root {
-    font-family: "Archivo Black", sans-serif;
+    font-family: "Radley", serif;
     font-weight: 400;
     font-style: italic;
 }
 
 body,
 html {
-    font-family: "Archivo Black", sans-serif;
-    font-weight: 400;
+    font-family: "Radley", serif;
+    font-weight: 100;
     font-style: italic;
 }
 
-/* Fix dropdown z-index to appear above map and all other elements */
+.fancy-heading-font {
+    font-family: "Lavishly Yours", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .dropdown-content {
     z-index: 99999 !important;
 }
 
-/* If using DaisyUI dropdown */
 .dropdown .dropdown-content {
     z-index: 99999 !important;
 }
 
-/* For any theme selector specifically */
 [data-theme] .dropdown-content,
 .theme-controller+.dropdown-content {
     z-index: 99999 !important;
 }
 
-/* Ensure leaflet map doesn't interfere with dropdowns */
 :global(.leaflet-container) {
     z-index: 1 !important;
 }
@@ -44,7 +45,6 @@ html {
     z-index: 1000 !important;
 }
 
-/* Make sure theme switcher dropdown is always on top */
 :global(.dropdown .dropdown-content) {
     z-index: 99999 !important;
 }

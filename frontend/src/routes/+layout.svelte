@@ -48,10 +48,10 @@
         class="flex-none navbar bg-base-100 border-b border-base-300 relative"
         style="z-index: 1000;"
     >
-        <h1>
+        <h1 class="fancy-heading-font">
             <a
                 href="/"
-                class="btn btn-ghost font-bold text-xl whitespace-nowrap"
+                class="btn btn-ghost font-bold text-3xl whitespace-nowrap"
                 aria-label="Go to SkillSwap homepage"
             >
                 <span class="not-lg:hidden"

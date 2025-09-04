@@ -250,14 +250,21 @@
     );
 
     // Function to get coordinates for pin code
-    async function getCoordinatesFromPinCode(pinCode: string): Promise<[number, number] | null> {
+    async function getCoordinatesFromPinCode(
+        pinCode: string,
+    ): Promise<[number, number] | null> {
         try {
             const response = await fetch(
-                `https://api.postalpincode.in/pincode/${pinCode}`
+                `https://api.postalpincode.in/pincode/${pinCode}`,
             );
             const data = await response.json();
-            
-            if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice) {
+
+            if (
+                data &&
+                data[0] &&
+                data[0].Status === "Success" &&
+                data[0].PostOffice
+            ) {
                 const postOffice = data[0].PostOffice[0];
                 // For Indian pin codes, we can approximate coordinates
                 // You might want to use a better geocoding service
@@ -273,7 +280,7 @@
 
     // Update map center when profile loads or changes
     $: if (profile?.pin_code) {
-        getCoordinatesFromPinCode(profile.pin_code).then(coords => {
+        getCoordinatesFromPinCode(profile.pin_code).then((coords) => {
             if (coords) {
                 mapCenter = coords;
             }
@@ -288,12 +295,12 @@
     <meta name="description" content="View a user's SkillSwap profile" />
 </svelte:head>
 
-<div class="h-full overflow-y-auto bg-base-100 p-4 relative">
+<div class="h-full overflow-y-auto bg-base-100 p-4 gap-4 relative">
     <!-- Map Background -->
     {#if profile?.pin_code}
         <div class="fixed top-16 left-0 right-0 bottom-13 z-0">
-            <Map 
-                posts={filteredPosts} 
+            <Map
+                posts={filteredPosts}
                 center={mapCenter}
                 zoom={6}
                 height="100%"
@@ -301,9 +308,9 @@
             />
         </div>
     {/if}
-    
+
     <!-- Content Overlay -->
-    <div class="max-w-4xl mx-auto my-0 relative z-10">
+    <div class="max-w-4xl mx-auto relative z-10">
         {#if loading}
             <div
                 class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"
@@ -313,7 +320,7 @@
                 <span>{error}</span>
             </div>
         {:else if profile}
-            <div class="card bg-base-100 mb-6">
+            <div class="card bg-base-100 mb-4">
                 <div class="card-body">
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="relative flex-shrink-0">
@@ -422,31 +429,6 @@
                     </div>
                 </div>
             </div>
-
-            {#if isOwnProfile}
-                <div class="card bg-base-100 mb-2 w-full">
-                    <div class="card-body w-full">
-                        <div class="flex flex-wrap gap-3 justify-center w-full">
-                            <a
-                                href="/offer"
-                                class="btn btn-soft btn-block flex-1"
-                                >Offer-Skill</a
-                            >
-                            <a
-                                href="/request"
-                                class="btn btn-soft btn-block flex-1"
-                                >Request-Help</a
-                            >
-                            <button
-                                class="btn btn-soft btn-block flex-1 hidden lg:flex lg:items-center lg:justify-center gap-2"
-                                on:click={handleLogout}
-                            >
-                                <LogoutSvg />Log-Out
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            {/if}
 
             <div class="card bg-base-100 mb-6">
                 <div class="card-body">
@@ -935,7 +917,7 @@
                 <div class="card-body">
                     <h2 class="card-title text-xl mb-4">
                         <TasksSvg />
-                        {isOwnProfile ? "My Posts" : `${profile.name}'s Posts`}
+                        {isOwnProfile ? "Your Posts" : `${profile.name}'s Posts`}
                         {#if filteredPosts.length !== userPosts.length}
                             <span
                                 class="text-sm text-base-content/60 font-normal"
