@@ -23,12 +23,19 @@
 ---
 #### Key Features:
 
+---
+
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
 <img src="/screenshots/light.png">
 <img src="/screenshots/dark.png">
 <img src="/screenshots/dim.png">
 <img src="/screenshots/retro.png">
 <img src="/screenshots/valentine.png">
+
+---
+
+##### Install-App Button that triggers your browser to let you install the PWA (Progressive Web-App)
+<img src="/screenshots/install.png">
 
 
 ---
