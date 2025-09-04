@@ -212,7 +212,7 @@
 							class="input input-bordered w-full"
 							placeholder="e.g., 110001"
 							bind:value={pinCode}
-							pattern="[0-9]{6}"
+							maxlength="10"
 							disabled={loading}
 							title="Enter a valid 6-digit pin code"
 						/>
