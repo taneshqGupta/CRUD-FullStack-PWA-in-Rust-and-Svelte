@@ -43,8 +43,15 @@
 
 ---
 
+##### Changing Profile Picture
+<img src="/screenshots/pfpppp-2025-09-05_01.45.31-ezgif.com-video-to-gif-converter.gif">
+
+---
+
 ##### Edit/Delete functionality for your Skill Offers/Requests
 <img src="/screenshots/edit.png">
+
+---
 
 ---
 
