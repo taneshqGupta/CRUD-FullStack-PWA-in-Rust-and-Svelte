@@ -1,26 +1,31 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { DownloadSvg } from './icons';
+	import { onMount } from "svelte";
+	import { PhoneSvg, ComputerSvg } from "./icons";
 
 	let deferredPrompt: any = null;
 	export let showInstallButton = false;
 
 	onMount(() => {
-		window.addEventListener('beforeinstallprompt', (e) => {
+		window.addEventListener("beforeinstallprompt", (e) => {
 			e.preventDefault();
 			deferredPrompt = e;
 			showInstallButton = true;
-			console.log('InstallAppButton: beforeinstallprompt event fired.');
+			console.log("InstallAppButton: beforeinstallprompt event fired.");
 		});
 
-		window.addEventListener('appinstalled', () => {
+		window.addEventListener("appinstalled", () => {
 			showInstallButton = false;
 			deferredPrompt = null;
-			console.log('InstallAppButton: PWA was installed successfully!');
+			console.log("InstallAppButton: PWA was installed successfully!");
 		});
 
-		if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
-			console.log('InstallAppButton: App is already in standalone mode. Hiding install button.');
+		if (
+			window.matchMedia("(display-mode: standalone)").matches ||
+			(navigator as any).standalone
+		) {
+			console.log(
+				"InstallAppButton: App is already in standalone mode. Hiding install button.",
+			);
 			showInstallButton = false;
 		}
 	});
@@ -30,7 +35,9 @@
 			deferredPrompt.prompt();
 			const { outcome } = await deferredPrompt.userChoice;
 
-			console.log(`InstallAppButton: User response to the install prompt: ${outcome}`);
+			console.log(
+				`InstallAppButton: User response to the install prompt: ${outcome}`,
+			);
 
 			deferredPrompt = null;
 			showInstallButton = false;
@@ -41,11 +48,20 @@
 {#if showInstallButton}
 	<button
 		id="installButton"
-		class="btn btn-soft text-xs"
+		class="not-md:hidden btn btn-soft btn-sm text-xs"
 		on:click={handleInstallClick}
 		aria-label="Install the application"
 	>
-		<DownloadSvg />
-		Install App
+		<ComputerSvg />
+		Install-App
+	</button>
+	<button
+		id="installButton"
+		class="md:hidden btn btn-soft btn-sm text-xs"
+		on:click={handleInstallClick}
+		aria-label="Install the application"
+	>
+		<PhoneSvg />
+		Install
 	</button>
 {/if}

@@ -22,3 +22,5 @@ export { default as LoginSvg } from './LoginSVG.svelte';
 export { default as PasskeySvg } from './PasskeySVG.svelte';
 export { default as FilterSvg } from './FilterSVG.svelte';
 export { default as EditSvg } from './EditSVG.svelte';
+export { default as PhoneSvg } from './PhoneSVG.svelte';
+export { default as ComputerSvg } from './ComputerSVG.svelte';
