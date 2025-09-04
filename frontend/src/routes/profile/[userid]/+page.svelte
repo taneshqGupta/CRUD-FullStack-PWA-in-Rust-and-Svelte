@@ -355,7 +355,7 @@
                                 {/if}
                             </div>
                             <p
-                                class="text-base-content/70 mb-2 text-wrap flex items-center justify-start gap-2"
+                                class="text-base-content/70 mb-2 text-wrap flex items-center justify-start gap-2 w-50"
                             >
                                 <MailSvg />
                                 {profile.email}
