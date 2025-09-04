@@ -121,7 +121,7 @@
 
 {#if $authStore.isAuthenticated}
 	{#if newPinCode || userDefaultPinCode}
-		<div class="fixed top-13 left-0 right-0 bottom-13 z-0">
+		<div class="fixed top-16 left-0 right-0 bottom-13 z-0">
 			<Map
 				posts={[]}
 				center={mapCenter}

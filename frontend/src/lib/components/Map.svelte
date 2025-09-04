@@ -158,7 +158,7 @@
 
         L.control
             .zoom({
-                position: "topright",
+                position: "topleft",
             })
             .addTo(map);
 

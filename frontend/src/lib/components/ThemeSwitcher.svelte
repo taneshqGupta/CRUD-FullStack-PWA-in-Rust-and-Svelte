@@ -21,14 +21,14 @@
 </script>
 
 <div
-	class="dropdown"
+	class="dropdown dropdown-start"
 	on:focusin={() => (dropdownOpen = true)}
 	on:focusout={() => (dropdownOpen = false)}
 >
 	<div
 		tabindex="0"
 		role="button"
-		class={`btn btn-soft btn-sm w-10 text-xs font-extralight ${dropdownOpen ? 'bg-base-200' : ''}`}
+		class={`btn btn-soft btn-sm w-14 ${dropdownOpen ? 'bg-base-200' : ''}`}
 		aria-label="themes"
 	>
 		<ThemeSvg />
@@ -36,7 +36,7 @@
 	</div>
 	<ul
 		tabindex="0"
-		class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-25 max-h-96 overflow-y-auto absolute right-0 top-full mt-2"
+		class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-25 max-h-96 overflow-y-auto top-full mt-2"
 		style="z-index: 9999;"
 	>
 		<form method="POST" use:enhance={submitUpdateTheme}>

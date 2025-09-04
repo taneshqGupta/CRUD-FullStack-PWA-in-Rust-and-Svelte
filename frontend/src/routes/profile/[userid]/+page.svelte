@@ -291,7 +291,7 @@
 <div class="h-full overflow-y-auto bg-base-100 p-4 relative">
     <!-- Map Background -->
     {#if profile?.pin_code}
-        <div class="fixed top-13 left-0 right-0 bottom-13 z-0">
+        <div class="fixed top-16 left-0 right-0 bottom-13 z-0">
             <Map 
                 posts={filteredPosts} 
                 center={mapCenter}
