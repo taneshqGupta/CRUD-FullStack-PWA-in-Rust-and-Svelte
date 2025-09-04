@@ -16,12 +16,7 @@
 
 ---
 #### Tech-Stack:
-- Rust-lang for Backend
-- Svelte-Kit for SSR Frontend
-- Postgres as Database
-- Cloudinary for compression and handling of profile-pictures
-- Tailwind-CSS & DaisyUI for styling
-- Leaflet for Map
+###### Rust-lang for Backend, Svelte-Kit for SSR Frontend, Postgres as Database, Cloudinary for compression and handling of profile-pictures, Tailwind-CSS & DaisyUI for styling, Leaflet for Map
 
 ###### I thank those who maintain these languages, frameworks, and services as without these, this side project of mine would never have come to fruition, or atleast, not as smoothly as it has.
 
