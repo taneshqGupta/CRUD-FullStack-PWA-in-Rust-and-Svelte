@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="dropdown"
+	class="dropdown dropdown-end"
 	on:focusin={() => (dropdownOpen = true)}
 	on:focusout={() => (dropdownOpen = false)}
 >
