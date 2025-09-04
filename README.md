@@ -25,6 +25,11 @@
 
 ---
 
+##### Responsiveness (Compatibility with screens of all sizes, phones, tablets, monitors..)
+<img src="/screenshots/responsive-2025-09-05_01.13.39-ezgif.com-optimize.gif">
+
+---
+
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
 <img src="/screenshots/light.png">
 <img src="/screenshots/dark.png">
