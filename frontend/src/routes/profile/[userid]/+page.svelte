@@ -336,7 +336,7 @@
                             {/if}
                         </div>
 
-                        <div class="text-center sm:text-left">
+                        <div class="text-left">
                             <div class="join gap-4">
                                 <h1
                                     class="join-item card-title text-2xl mb-2 flex items-center justify-center"
@@ -375,11 +375,26 @@
                                 </p>
                             {/if}
                         </div>
+                        <div class="w-full h-full"></div>
+                        <div class="join join-vertical text-right gap-2 not-md:hidden">
+                            <div class="join-item badge badge-xs badge-soft p-4 w-40">
+                                <div class="font-semibold text-xl">{userPosts.length}</div>
+                                <div class="font-normal text-xs">Total Posts</div>
+                            </div>
+                            <div class="join-item badge badge-xs badge-soft p-4 w-40">
+                                <div class="font-semibold text-xl">{offerCount}</div>
+                                <div class="font-normal text-xs">Offer Posts</div>
+                            </div>
+                            <div class="join-item badge badge-xs badge-soft p-4 w-40">
+                                <div class="font-semibold text-xl">{requestCount}</div>
+                                <div class="font-normal text-xs">Request Posts</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card bg-base-100 mb-2 w-full p-6">
+            <div class="card bg-base-100 mb-2 w-full p-6 md:hidden">
                 <div
                     class="flex flex-col lg:flex-row flex-wrap gap-3 justify-center w-full"
                 >
