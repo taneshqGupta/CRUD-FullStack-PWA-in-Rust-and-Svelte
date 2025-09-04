@@ -57,4 +57,8 @@
 
 ---
 
+#### License
 
+###### This project is open-sourced under the MIT License.
+
+###### The MIT License is a permissive license that is short and to the point. It allows for reuse within proprietary software, provided all copies of the licensed software include a copy of the MIT License terms and the copyright notice.
