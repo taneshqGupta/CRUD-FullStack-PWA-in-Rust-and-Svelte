@@ -203,7 +203,6 @@
 
             await updatePost(updatedPost);
 
-            // Update the post in the local array
             userPosts = userPosts.map((p) =>
                 p.id === editingPost?.id ? updatedPost : p,
             );
@@ -226,7 +225,6 @@
 
             await deletePost(postId);
 
-            // Remove the post from the local array
             userPosts = userPosts.filter((p) => p.id !== postId);
         } catch (err) {
             error =
@@ -249,7 +247,6 @@
         category.toLowerCase().includes(editCategorySearch.toLowerCase()),
     );
 
-    // Function to get coordinates for pin code
     async function getCoordinatesFromPinCode(
         pinCode: string,
     ): Promise<[number, number] | null> {
@@ -266,8 +263,6 @@
                 data[0].PostOffice
             ) {
                 const postOffice = data[0].PostOffice[0];
-                // For Indian pin codes, we can approximate coordinates
-                // You might want to use a better geocoding service
                 const lat = parseFloat(postOffice.Latitude) || 20.5937;
                 const lng = parseFloat(postOffice.Longitude) || 78.9629;
                 return [lat, lng];
@@ -278,7 +273,6 @@
         return null;
     }
 
-    // Update map center when profile loads or changes
     $: if (profile?.pin_code) {
         getCoordinatesFromPinCode(profile.pin_code).then((coords) => {
             if (coords) {
@@ -296,7 +290,6 @@
 </svelte:head>
 
 <div class="h-full overflow-y-auto bg-base-100 p-4 gap-4 relative">
-    <!-- Map Background -->
     {#if profile?.pin_code}
         <div class="fixed top-16 left-0 right-0 bottom-13 z-0">
             <Map
@@ -309,7 +302,6 @@
         </div>
     {/if}
 
-    <!-- Content Overlay -->
     <div class="max-w-4xl mx-auto relative z-10">
         {#if loading}
             <div
@@ -322,7 +314,7 @@
         {:else if profile}
             <div class="card bg-base-100 mb-4">
                 <div class="card-body">
-                    <div class="flex flex-col lg:flex-row items-center gap-6">
+                    <div class="flex flex-row items-center gap-6">
                         <div class="relative flex-shrink-0">
                             <ProfilePicture
                                 profilePicture={profile.profile_picture}
@@ -344,43 +336,43 @@
                             {/if}
                         </div>
 
-                        <div class="text-center md:text-left">
-                            <h1
-                                class="card-title text-2xl mb-2 items-center justify-center lg:justify-start"
-                            >
-                                {profile.name || "User"}
-                            </h1>
+                        <div class="text-center sm:text-left">
+                            <div class="join gap-4">
+                                <h1
+                                    class="join-item card-title text-2xl mb-2 flex items-center justify-center"
+                                >
+                                    {profile.name || "User"}
+                                </h1>
+                                {#if isOwnProfile}
+                                    <div class="join-item flex items-center">
+                                        <button
+                                            class="btn btn-soft btn-xs flex items-center justify-center ml-2 mb-2"
+                                            on:click={handleLogout}
+                                        >
+                                            <LogoutSvg /> Log-Out
+                                        </button>
+                                    </div>
+                                {/if}
+                            </div>
                             <p
-                                class="text-base-content/70 mb-2 flex items-center justify-center lg:justify-start gap-2"
+                                class="text-base-content/70 mb-2 flex items-center justify-start gap-2"
                             >
                                 <MailSvg />
                                 {profile.email}
                             </p>
                             {#if profile.pin_code}
                                 <p
-                                    class="text-base-content/70 flex items-center justify-center lg:justify-start gap-2"
+                                    class="text-base-content/70 flex items-center justify-start gap-2"
                                 >
                                     <PinSvg /> Pin Code: {profile.pin_code}
                                 </p>
                             {/if}
                             {#if isOwnProfile}
                                 <p
-                                    class="text-xs text-base-content/50 flex items-center justify-center lg:justify-start mt-2"
+                                    class="text-xs text-base-content/50 flex items-center justify-start mt-2"
                                 >
                                     Click profile picture to change
                                 </p>
-                            {/if}
-                            {#if isOwnProfile}
-                                <div
-                                    class="flex items-center justify-center lg:hidden mt-4"
-                                >
-                                    <button
-                                        class="btn btn-soft btn-sm flex items-center justify-center"
-                                        on:click={handleLogout}
-                                    >
-                                        <LogoutSvg /> Log-Out
-                                    </button>
-                                </div>
                             {/if}
                         </div>
                     </div>
@@ -917,7 +909,9 @@
                 <div class="card-body">
                     <h2 class="card-title text-xl mb-4">
                         <TasksSvg />
-                        {isOwnProfile ? "Your Posts" : `${profile.name}'s Posts`}
+                        {isOwnProfile
+                            ? "Your Posts"
+                            : `${profile.name}'s Posts`}
                         {#if filteredPosts.length !== userPosts.length}
                             <span
                                 class="text-sm text-base-content/60 font-normal"
