@@ -44,6 +44,7 @@ async fn main() -> Result<(), AppError> {
     let cors = CorsLayer::new()
         .allow_origin([
             "http://localhost:3000".parse().unwrap(),
+            "http://172.16.8.207:3000/".parse().unwrap(),
             std::env::var("FRONTEND_URL").unwrap().parse().unwrap(),
         ])
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
