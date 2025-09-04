@@ -63,8 +63,6 @@
 
 ---
 
----
-
 
 ##### Personal Side Note
 
