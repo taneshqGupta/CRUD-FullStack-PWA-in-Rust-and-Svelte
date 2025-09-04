@@ -44,13 +44,17 @@
 
 ---
 
-##### Install-App Button that triggers your browser to let you install the PWA (Progressive Web-App)
-<img src="/screenshots/install.png">
-
----
 
 ##### Changing Profile Picture
 <img src="/screenshots/pfpppp-2025-09-05_01.45.31-ezgif.com-video-to-gif-converter.gif">
+
+---
+
+
+##### Install-App Button that triggers your browser to let you install the PWA (Progressive Web-App)
+<img src="/screenshots/install.png">
+
+
 
 ---
 
