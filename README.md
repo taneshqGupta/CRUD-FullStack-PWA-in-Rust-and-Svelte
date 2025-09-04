@@ -24,7 +24,7 @@
 #### Key Features:
 
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
-<video src="/videos/themes-2025-09-05_00.26.04.mp4" controls></video>
+<video src="/videos/themes-2025-09-05_00.26.04.mp4" width="1920" height="1080" controls></video>
 ---
 ##### Personal Side Note
 
