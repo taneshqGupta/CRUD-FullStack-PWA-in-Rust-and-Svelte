@@ -313,7 +313,9 @@
             </div>
         {:else if profile}
             <div class="card bg-base-100 mb-4 p-4">
-                <div class="flex flex-row not-md:flex-col items-center justify-center gap-6">
+                <div
+                    class="flex flex-row not-md:flex-col items-center justify-center gap-6"
+                >
                     <div class="relative flex-shrink-0">
                         <ProfilePicture
                             profilePicture={profile.profile_picture}
@@ -336,14 +338,16 @@
                     </div>
 
                     <div class="text-left not-md:text-center w-full">
-                        <div class="join join-vertical gap-4">
-                            <h1
-                                class="join-item card-title text-2xl mb-2 flex items-center justify-center"
+                        <div class="join join-vertical">
+                            <div
+                                class="join-item card-title text-2xl mb-2 flex items-center justify-center md:justify-start"
                             >
                                 {profile.name || "User"}
-                            </h1>
+                            </div>
                             {#if isOwnProfile}
-                                <div class="join-item flex items-center justify-center md:justify-start">
+                                <div
+                                    class="join-item flex items-center justify-center md:justify-start"
+                                >
                                     <button
                                         class="btn btn-soft btn-xs flex items-center justify-center mb-2"
                                         on:click={handleLogout}
