@@ -24,7 +24,7 @@
 #### Key Features:
 
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
-
+<img src="/screenshots/light.png">
 ---
 ##### Personal Side Note
 
