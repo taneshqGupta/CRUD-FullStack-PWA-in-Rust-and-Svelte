@@ -21,5 +21,7 @@
 
 ###### Although I haven't implemented features like email-verification, IP logging, user-blocking, yet; I have implemented password-hashing in rust so any password you make at time of account creation gets hashed, and not even the creator (me) with access to database, can read your passwords.
 
+###### The code being fully open-source, any one can go and see exactly how passwords hashing is implemented and passwords are stored, which makes your account password completely safe with _Skill-Swao_
+
 ---
 
