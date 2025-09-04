@@ -24,7 +24,7 @@
 #### Key Features:
 
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
-<iframe width="560" height="315" src="https://youtu.be/vdA4jbca1pc?si=p-mKMCci19Omupqf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ---
 ##### Personal Side Note
 
