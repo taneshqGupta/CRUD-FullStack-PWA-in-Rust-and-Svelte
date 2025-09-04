@@ -37,6 +37,10 @@
 ##### Install-App Button that triggers your browser to let you install the PWA (Progressive Web-App)
 <img src="/screenshots/install.png">
 
+---
+
+##### Edit/Delete functionality for your Skill Offers/Requests
+<img src="/screenshots/edit.png">
 
 ---
 
