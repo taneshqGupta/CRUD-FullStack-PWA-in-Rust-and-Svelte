@@ -46,6 +46,7 @@
 </script>
 
 {#if showInstallButton}
+	<!-- lol -->
 	<button
 		id="installButton"
 		class="not-lg:hidden btn btn-soft btn-sm text-xs"
