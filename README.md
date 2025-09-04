@@ -27,6 +27,8 @@
 
 ##### Responsiveness (Compatibility with screens of all sizes, phones, tablets, monitors..)
 
+###### This App is well optimised to look and work well on mobile phones, as a standalone application installed as a PWA (Progressive Web-App). I am not quite sure if the PWA functionality works well on iOS or Mac yet, but I am certain it works well on Linux, Windows, and Android.
+
 <img src="/screenshots/responsive-2025-09-05_01.13.39-ezgif.com-optimize.gif">
 
 ---
