@@ -54,16 +54,16 @@
                 class="btn btn-ghost font-bold text-xl whitespace-nowrap"
                 aria-label="Go to SkillSwap homepage"
             >
-                <span class="not-md:hidden"
+                <span class="not-lg:hidden"
                     >Skill-Swap: Learn, Teach, Socialise</span
                 >
-                <span class="md:hidden">Skill-Swap</span>
+                <span class="lg:hidden">Skill-Swap</span>
             </a>
         </h1>
-        <a href="/offer" class="not-md:hidden btn btn-soft btn-sm m-2">Offer-Skill</a>
-        <a href="/offer" class="md:hidden flex btn btn-soft btn-sm m-2">Offer</a>
-        <a href="/request" class="not-md:hidden btn btn-soft btn-sm m-2">Request-Help</a>
-        <a href="/request" class="md:hidden btn btn-soft btn-sm m-2">Request</a>
+        <a href="/offer" class="not-lg:hidden btn btn-soft btn-sm m-2">Offer-Skill</a>
+        <a href="/offer" class="lg:hidden flex btn btn-soft btn-sm m-2">Offer</a>
+        <a href="/request" class="not-lg:hidden btn btn-soft btn-sm m-2">Request-Help</a>
+        <a href="/request" class="lg:hidden btn btn-soft btn-sm m-2">Request</a>
         <div class="w-full"></div>
         <div class="flex items-center gap-2">
             <InstallAppButton />
