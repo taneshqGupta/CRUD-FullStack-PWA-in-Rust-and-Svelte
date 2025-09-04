@@ -669,7 +669,7 @@
 								>
 							</div>
 							<button
-								class="btn btn-soft btn-sm w-25 text-xs"
+								class="btn btn-soft btn-sm w-28 text-xs"
 								on:click={() => {
 									textSearch = "";
 									selectedCategories = [];
