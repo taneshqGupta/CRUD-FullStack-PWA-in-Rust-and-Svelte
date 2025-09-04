@@ -32,6 +32,8 @@
 
 
 ---
+
+
 ##### Personal Side Note
 
 ###### But ofcourse, this is still just a minimum viable product, any such IRL consequences based platform must be implemented with heavy security, verification, and blocking features. I would love to implement such features in the future, but as of now, this is just a proof of concept, just an MVP.
