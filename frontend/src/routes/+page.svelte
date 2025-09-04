@@ -437,7 +437,7 @@
 				<div
 					class="flex flex-col lg:flex-row gap-3 items-center justify-between p-4"
 				>
-					<div class="flex flex-wrap gap-3 items-center">
+					<div class="flex flex-wrap gap-1 items-center">
 						<label class="label" for="text-search">
 							<span class="label-text text-xs"
 								>Pin Code Search</span
@@ -669,7 +669,7 @@
 								>
 							</div>
 							<button
-								class="btn btn-soft btn-sm text-xs"
+								class="btn btn-soft btn-sm w-25 text-xs"
 								on:click={() => {
 									textSearch = "";
 									selectedCategories = [];
