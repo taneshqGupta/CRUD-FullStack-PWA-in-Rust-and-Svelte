@@ -376,7 +376,7 @@
                             {/if}
                         </div>
                         <div
-                            class="join join-vertical text-right gap-2 not-md:hidden"
+                            class="join join-vertical text-right gap-0 not-md:hidden"
                         >
                             <div
                                 class="join-item badge badge-xs badge-soft p-4 w-40"
@@ -411,11 +411,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card bg-base-100 mb-4">
                 <div
-                    class="join join-horizontal flex items-center justify-center text-right gap-2 md:hidden p-4"
+                    class="join join-horizontal flex items-center justify-center text-right gap-0 md:hidden p-4"
                 >
                     <div class="join-item badge badge-xs badge-soft p-4 w-40">
                         <div class="font-semibold text-xl">
