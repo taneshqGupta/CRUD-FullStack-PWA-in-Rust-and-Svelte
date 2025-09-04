@@ -54,10 +54,10 @@
                 class="btn btn-ghost font-bold text-xl whitespace-nowrap"
                 aria-label="Go to SkillSwap homepage"
             >
-                <span class="not-md:hidden"
+                <span class="not-lg:hidden"
                     >Skill-Swap: Learn, Teach, Socialise</span
                 >
-                <span class="md:hidden">Skill-Swap</span>
+                <span class="lg:hidden">Skill-Swap</span>
             </a>
         </h1>
         <a href="/offer" class="not-md:hidden btn btn-soft btn-sm m-2"
