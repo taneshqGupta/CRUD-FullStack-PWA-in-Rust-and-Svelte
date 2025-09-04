@@ -28,11 +28,10 @@
 	<div
 		tabindex="0"
 		role="button"
-		class={`btn btn-soft btn-xs w-25 text-xs font-extralight ${dropdownOpen ? 'bg-base-200' : ''}`}
+		class={`btn btn-soft btn-sm w-10 text-xs font-extralight ${dropdownOpen ? 'bg-base-200' : ''}`}
 		aria-label="themes"
 	>
 		<ThemeSvg />
-		Themes
 		<DropdownSvg />
 	</div>
 	<ul
