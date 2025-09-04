@@ -1,6 +1,22 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
 @plugin "daisyui" {
-  themes: all;
+    themes: all;
+}
+
+/* Global font styling */
+:root {
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+body,
+html {
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 /* Fix dropdown z-index to appear above map and all other elements */
@@ -15,7 +31,7 @@
 
 /* For any theme selector specifically */
 [data-theme] .dropdown-content,
-.theme-controller + .dropdown-content {
+.theme-controller+.dropdown-content {
     z-index: 99999 !important;
 }
 
