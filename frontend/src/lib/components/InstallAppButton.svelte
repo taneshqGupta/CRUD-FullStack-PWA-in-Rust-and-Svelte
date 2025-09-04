@@ -54,7 +54,7 @@
 		aria-label="Install the application"
 	>
 		<ComputerSvg />
-		Install-App
+		Install
 	</button>
 	<button
 		id="installButton"
