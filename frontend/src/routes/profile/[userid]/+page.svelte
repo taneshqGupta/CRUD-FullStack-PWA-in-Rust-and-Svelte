@@ -376,10 +376,10 @@
                             {/if}
                         </div>
                         <div
-                            class="join join-vertical text-right gap-0 not-md:hidden"
+                            class="join join-vertical text-right gap-2 not-md:hidden"
                         >
                             <div
-                                class="join-item badge badge-xs badge-soft p-4 w-40"
+                                class="join-item badge badge-xs badge-soft p-4 w-80"
                             >
                                 <div class="font-semibold text-xl">
                                     {userPosts.length}
@@ -389,7 +389,7 @@
                                 </div>
                             </div>
                             <div
-                                class="join-item badge badge-xs badge-soft p-4 w-40"
+                                class="join-item badge badge-xs badge-soft p-4 w-80"
                             >
                                 <div class="font-semibold text-xl">
                                     {offerCount}
@@ -399,7 +399,7 @@
                                 </div>
                             </div>
                             <div
-                                class="join-item badge badge-xs badge-soft p-4 w-40"
+                                class="join-item badge badge-xs badge-soft p-4 w-80"
                             >
                                 <div class="font-semibold text-xl">
                                     {requestCount}
@@ -412,24 +412,25 @@
                     </div>
                 </div>
                 <div
-                    class="join join-horizontal flex items-center justify-center text-right gap-0 md:hidden p-4"
+                    class="join join-horizontal flex items-center justify-start text-right gap-0 md:hidden p-4"
                 >
                     <div class="join-item badge badge-xs badge-soft p-4 w-40">
-                        <div class="font-semibold text-xl">
+                        <div class="font-semibold text-xl p-4">
                             {userPosts.length}
                         </div>
-                        <div class="font-normal text-xs">Total Posts</div>
+                        <div class="font-normal text-xs">Posts</div>
                     </div>
                     <div class="join-item badge badge-xs badge-soft p-4 w-40">
                         <div class="font-semibold text-xl">{offerCount}</div>
-                        <div class="font-normal text-xs">Offer Posts</div>
+                        <div class="font-normal text-xs">Offers</div>
                     </div>
                     <div class="join-item badge badge-xs badge-soft p-4 w-40">
                         <div class="font-semibold text-xl">{requestCount}</div>
-                        <div class="font-normal text-xs">Request Posts</div>
+                        <div class="font-normal text-xs">Requests</div>
                     </div>
                 </div>
             </div>
+
 
             <div class="card bg-base-100 mb-4 p-4">
                 <div class="lg:hidden flex flex-wrap gap-2">
