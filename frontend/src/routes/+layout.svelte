@@ -63,12 +63,12 @@
         <a href="/offer" class="not-md:hidden btn btn-soft btn-sm m-2"
             >Offer-Skill</a
         >
-        <a href="/offer" class="md:hidden flex btn btn-soft btn-sm m-1">Offer</a
+        <a href="/offer" class="md:hidden flex btn btn-soft btn-sm m-0.5">Offer</a
         >
         <a href="/request" class="not-md:hidden btn btn-soft btn-sm m-2"
             >Request-Help</a
         >
-        <a href="/request" class="md:hidden btn btn-soft btn-sm m-1">Request</a>
+        <a href="/request" class="md:hidden btn btn-soft btn-sm ml-0.5 mr-1">Request</a>
         <div class="w-full"></div>
         <div class="flex items-center gap-2">
             <InstallAppButton />
