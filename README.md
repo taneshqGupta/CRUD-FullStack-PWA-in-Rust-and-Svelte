@@ -33,11 +33,7 @@
 ---
 
 ##### Dynamic + Persistant Theme-Switching (uses browser cookies to store user's choice of theme)
-<img src="/screenshots/light.png">
-<img src="/screenshots/dark.png">
-<img src="/screenshots/dim.png">
-<img src="/screenshots/retro.png">
-<img src="/screenshots/valentine.png">
+<img src="/screenshots/themespp-2025-09-05_01.24.49-ezgif.com-optimize.gif">
 
 ---
 
