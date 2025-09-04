@@ -51,7 +51,7 @@
         <h1 class="fancy-heading-font">
             <a
                 href="/"
-                class="btn btn-ghost font-bold text-3xl whitespace-nowrap"
+                class="btn btn-ghost font-bold text-2xl whitespace-nowrap"
                 aria-label="Go to SkillSwap homepage"
             >
                 <span class="not-lg:hidden"
