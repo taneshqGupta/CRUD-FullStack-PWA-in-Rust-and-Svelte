@@ -48,21 +48,24 @@
         class="flex-none navbar bg-base-100 border-b border-base-300 relative"
         style="z-index: 1000;"
     >
-        <div class="flex-1">
-            <h1>
-                <a
-                    href="/"
-                    class="btn btn-ghost font-bold text-xl"
-                    aria-label="Go to SkillSwap homepage"
+        <h1>
+            <a
+                href="/"
+                class="btn btn-ghost font-bold text-xl whitespace-nowrap"
+                aria-label="Go to SkillSwap homepage"
+            >
+                <span class="not-md:hidden"
+                    >Skill-Swap: Learn, Teach, Socialise</span
                 >
-                    <span class="hidden sm:inline"
-                        >Skill-Swap: Learn, Teach, Socialise</span
-                    >
-                    <span class="sm:hidden">Skill-Swap</span>
-                </a>
-            </h1>
-        </div>
-        <div class="flex-none flex items-center gap-2">
+                <span class="md:hidden">Skill-Swap</span>
+            </a>
+        </h1>
+        <a href="/offer" class="not-md:hidden btn btn-soft btn-sm m-2">Offer-Skill</a>
+        <a href="/offer" class="md:hidden flex btn btn-soft btn-sm m-2">Offer</a>
+        <a href="/request" class="not-md:hidden btn btn-soft btn-sm m-2">Request-Help</a>
+        <a href="/request" class="md:hidden btn btn-soft btn-sm m-2">Request</a>
+        <div class="w-full"></div>
+        <div class="flex items-center gap-2">
             <InstallAppButton />
 
             <nav aria-label="Theme Selection">

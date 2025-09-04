@@ -171,7 +171,7 @@
 			class="flex-none w-full bg-base-100 border-b border-base-100 shadow-sm"
 		>
 			<div class="xl:hidden p-3 w-full">
-				<div class="flex items-center justify-between mb-3 w-full">
+				<div class="flex items-center justify-center m-1 h-w-full">
 					<div class="join w-full">
 						<div class="join-item">
 							<div class="join">
@@ -226,15 +226,6 @@
 							</button>
 						</div>
 					</div>
-				</div>
-
-				<div class="flex gap-2 mb-3">
-					<a href="/offer" class="btn btn-soft btn-sm flex-1">
-						Offer-Skill
-					</a>
-					<a href="/request" class="btn btn-soft btn-sm flex-1">
-						Request-Help
-					</a>
 				</div>
 
 				{#if showMobileFilters}
@@ -466,15 +457,6 @@
 							>
 								<SearchSvg />
 							</button>
-						</div>
-
-						<div class="flex gap-2">
-							<a href="/offer" class="btn btn-soft btn-sm">
-								Offer-Skill
-							</a>
-							<a href="/request" class="btn btn-soft btn-sm">
-								Request-Help
-							</a>
 						</div>
 					</div>
 
