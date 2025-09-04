@@ -312,107 +312,99 @@
                 <span>{error}</span>
             </div>
         {:else if profile}
-            <div class="card bg-base-100 mb-4">
-                <div class="card-body">
-                    <div class="flex flex-row items-center gap-6">
-                        <div class="relative flex-shrink-0">
-                            <ProfilePicture
-                                profilePicture={profile.profile_picture}
-                                name={profile.name || "User"}
-                                size="xl"
-                                editable={isOwnProfile && !profileUpdateLoading}
-                                onImageChange={isOwnProfile
-                                    ? handleProfilePictureChange
-                                    : null}
-                            />
-                            {#if profileUpdateLoading}
+            <div class="card bg-base-100 mb-4 p-4">
+                <div class="flex flex-row not-md:flex-col items-center justify-center gap-6">
+                    <div class="relative flex-shrink-0">
+                        <ProfilePicture
+                            profilePicture={profile.profile_picture}
+                            name={profile.name || "User"}
+                            size="xl"
+                            editable={isOwnProfile && !profileUpdateLoading}
+                            onImageChange={isOwnProfile
+                                ? handleProfilePictureChange
+                                : null}
+                        />
+                        {#if profileUpdateLoading}
+                            <div
+                                class="absolute inset-0 bg-base-200 rounded-full flex items-center justify-center"
+                            >
                                 <div
-                                    class="absolute inset-0 bg-base-200 rounded-full flex items-center justify-center"
-                                >
-                                    <div
-                                        class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"
-                                    ></div>
+                                    class="skeleton flex h-full w-full justify-center items-center shrink-0 rounded-full"
+                                ></div>
+                            </div>
+                        {/if}
+                    </div>
+
+                    <div class="text-left not-md:text-center w-full">
+                        <div class="join join-vertical gap-4">
+                            <h1
+                                class="join-item card-title text-2xl mb-2 flex items-center justify-center"
+                            >
+                                {profile.name || "User"}
+                            </h1>
+                            {#if isOwnProfile}
+                                <div class="join-item flex items-center justify-center md:justify-start">
+                                    <button
+                                        class="btn btn-soft btn-xs flex items-center justify-center mb-2"
+                                        on:click={handleLogout}
+                                    >
+                                        <LogoutSvg /> Log-Out
+                                    </button>
                                 </div>
                             {/if}
                         </div>
-
-                        <div class="text-left w-full">
-                            <div class="join gap-4">
-                                <h1
-                                    class="join-item card-title text-2xl mb-2 flex items-center justify-center"
-                                >
-                                    {profile.name || "User"}
-                                </h1>
-                                {#if isOwnProfile}
-                                    <div class="join-item flex items-center">
-                                        <button
-                                            class="btn btn-soft btn-xs flex items-center justify-center ml-2 mb-2"
-                                            on:click={handleLogout}
-                                        >
-                                            <LogoutSvg /> Log-Out
-                                        </button>
-                                    </div>
-                                {/if}
-                            </div>
+                        <p
+                            class="text-sm text-base-content/70 mb-2 text-wrap break-all flex items-center justify-start not-md:justify-center gap-2"
+                        >
+                            <MailSvg />
+                            {profile.email}
+                        </p>
+                        {#if profile.pin_code}
                             <p
-                                class="text-base-content/70 mb-2 text-wrap break-all flex items-center justify-start gap-2"
+                                class="text-sm text-base-content/70 flex items-center justify-start not-md:justify-center gap-2"
                             >
-                                <MailSvg />
-                                {profile.email}
+                                <PinSvg /> Pin Code: {profile.pin_code}
                             </p>
-                            {#if profile.pin_code}
-                                <p
-                                    class="text-base-content/70 flex items-center justify-start gap-2"
-                                >
-                                    <PinSvg /> Pin Code: {profile.pin_code}
-                                </p>
-                            {/if}
-                            {#if isOwnProfile}
-                                <p
-                                    class="text-xs text-base-content/50 flex items-center justify-start mt-2"
-                                >
-                                    Click profile picture to change
-                                </p>
-                            {/if}
+                        {/if}
+                        {#if isOwnProfile}
+                            <p
+                                class="text-xs text-base-content/50 flex items-center justify-start not-md:justify-center mt-2"
+                            >
+                                Click profile picture to change
+                            </p>
+                        {/if}
+                    </div>
+                    <div
+                        class="join join-vertical text-right gap-2 not-md:hidden"
+                    >
+                        <div
+                            class="join-item badge badge-xs badge-soft p-4 w-80"
+                        >
+                            <div class="font-semibold text-xl">
+                                {userPosts.length}
+                            </div>
+                            <div class="font-normal text-xs">Total Posts</div>
                         </div>
                         <div
-                            class="join join-vertical text-right gap-2 not-md:hidden"
+                            class="join-item badge badge-xs badge-soft p-4 w-80"
                         >
-                            <div
-                                class="join-item badge badge-xs badge-soft p-4 w-80"
-                            >
-                                <div class="font-semibold text-xl">
-                                    {userPosts.length}
-                                </div>
-                                <div class="font-normal text-xs">
-                                    Total Posts
-                                </div>
+                            <div class="font-semibold text-xl">
+                                {offerCount}
                             </div>
-                            <div
-                                class="join-item badge badge-xs badge-soft p-4 w-80"
-                            >
-                                <div class="font-semibold text-xl">
-                                    {offerCount}
-                                </div>
-                                <div class="font-normal text-xs">
-                                    Offer Posts
-                                </div>
+                            <div class="font-normal text-xs">Offer Posts</div>
+                        </div>
+                        <div
+                            class="join-item badge badge-xs badge-soft p-4 w-80"
+                        >
+                            <div class="font-semibold text-xl">
+                                {requestCount}
                             </div>
-                            <div
-                                class="join-item badge badge-xs badge-soft p-4 w-80"
-                            >
-                                <div class="font-semibold text-xl">
-                                    {requestCount}
-                                </div>
-                                <div class="font-normal text-xs">
-                                    Request Posts
-                                </div>
-                            </div>
+                            <div class="font-normal text-xs">Request Posts</div>
                         </div>
                     </div>
                 </div>
                 <div
-                    class="join join-horizontal flex items-center justify-start text-right gap-0 md:hidden p-4"
+                    class="join join-horizontal flex items-center justify-center text-right gap-0 md:hidden mt-4"
                 >
                     <div class="join-item badge badge-xs badge-soft p-4 w-40">
                         <div class="font-semibold text-xl p-4">
@@ -430,7 +422,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="card bg-base-100 mb-4 p-4">
                 <div class="lg:hidden flex flex-wrap gap-2">
