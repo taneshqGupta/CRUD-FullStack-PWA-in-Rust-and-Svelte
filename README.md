@@ -14,11 +14,6 @@
 ###### Ans: In times like ours when upskilling always has a cost attached to it, regardless of domain. _Skill-Swap_ offers a  way to share your skills within your local community and get to form social bonds and learn something in return.
 ###### Intended User-Base: People of all ages, especially those new to any community, be it a city, or a village. People who struggle making friends. People who wish to learn something new & Those who love to teach.
 
----
-##### Tech-Stack:
-###### Rust-lang for Backend, Svelte-Kit for SSR Frontend, Postgres as Database, Cloudinary for compression and handling of profile-pictures, Tailwind-CSS & DaisyUI for styling, Leaflet for Map
-
-###### I thank those who maintain these languages, frameworks, and services as without these, this side project of mine would never have come to fruition, or atleast, not as smoothly as it has.
 
 ---
 #### Key Features:
@@ -60,6 +55,13 @@
 
 ##### Edit/Delete functionality for your Skill Offers/Requests
 <img src="/screenshots/edit.png">
+
+---
+
+##### Tech-Stack:
+###### Rust-lang for Backend, Svelte-Kit for SSR Frontend, Postgres as Database, Cloudinary for compression and handling of profile-pictures, Tailwind-CSS & DaisyUI for styling, Leaflet for Map
+
+###### I thank those who maintain these languages, frameworks, and services as without these, this side project of mine would never have come to fruition, or atleast, not as smoothly as it has.
 
 ---
 
